@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+		<meta charset="UTF-8" />
+		<title>Test Page</title>
+		<link type="text/css" rel="stylesheet" href="css/base_style.css">
+		<link type="text/css" href="css/blitzer/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="js/jquery-1.6.4.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="js/resize_fix.js"></script>
+		<script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+		<style type="text/css">
+
+			.input {
+				border: 1px solid #006;
+				background: #ffc;
+			}
+			.button {
+				border: 1px solid #006;
+				background: #9cf;
+			}
+			.label {
+				display: block;
+				width: 210px;
+				float: left;
+				margin: 2px 4px 6px 4px;
+				text-align: right;
+			}
+			br {
+				clear: left;
+			}
+
+			label .small {
+				color: #666666;
+				font-size: 11px;
+				font-weight: normal;
+				text-align: right;
+				width: 140px;
+			}
+
+			.ui-datepicker {
+				font-size: .75em;/* your font size here */;
+			}
+
+			.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+			.ui-timepicker-div dl{ text-align: left; }
+			.ui-timepicker-div dl dt{ height: 25px; }
+			.ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+			.ui-timepicker-div td { font-size: 90%; }
+
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<span><a href="#"><img id="logo" src="images/logo.png" /></a></span>
+			<div id="user_bar">
+				<span>Logged in as: John Doe&nbsp;&nbsp;|&nbsp;&nbsp;<a href="settings.htm">Settings</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="">Logout</a></span>
+			</div>
+		</div>
+		<div class="wrapper">
+			<div class="spacer_top"></div>
+			<div class="content">
+
+
+
+<div id="stylized" class="myform" style="border:2px solid;background-color:#F2FDED;margin-left:auto;margin-right:auto;padding:10px;width:500px;position:relative;margin-top:82px;">
+<form method="POST" action="main__.htm">
+<h1 style="text-align:center;">Schedule Meeting</h1><br />
+<hr /><br />
+
+<label class="label">Date<br />
+<span class="small">&nbsp;</span>
+</label>
+<input type="text" name="date" id="date_picker" /><br />
+
+<label class="label">Start Time<br />
+<span class="small">&nbsp;</span>
+</label>
+<input type="text" name="start" id="start_time" value="3:00 PM" /><br />
+
+<label class="label">Finish Time<br />
+<span class="small">&nbsp;</span>
+</label>
+<input type="text" name="finish" id="finish_time" value="4:15 PM" /><br />
+
+<label class="label">Meeting Type<br />
+<span class="small">&nbsp;</span>
+</label>
+<input onclick="checkMeeting()" id="interview" type="radio" name="group1" value="Milk"><label>Interview</label>
+<input onclick="checkMeeting()" id="rehearsal" type="radio" name="group1" value="Butter" checked="1"><label>Rehearsal</label><br />
+
+<div id="volunteer_info">
+<label class="label">Volunteer Type<br />
+<span class="small">&nbsp;</span>
+</label>
+<input type="radio" name="group2" value="Milk" checked="1"><label>Automatic</label>
+<input type="radio" name="group2" value="Butter"><label>Manual</label><br />
+
+
+<div style="text-align: center;">
+<label class="">Meeting will be recorded<span class="small">&nbsp;</span></label>
+<input type="checkbox" name="group2" value="Milk" checked="1">
+</div><br />
+</div>
+
+<label class="label">Description<br />
+<span class="small">&nbsp;</span>
+</label>
+<textarea></textarea><br /><br />
+
+
+<center><input type="submit" value="Submit" id="submit" /><input type="button" value="Cancel" id="submit" /></center>
+<div class="spacer"></div>
+
+</form>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		$( "#date_picker" ).datepicker({
+/*			showOn: "button",
+			buttonImage: "images/calendar.gif",
+			buttonImageOnly: true*/
+		});
+		$('#start_time').timepicker({
+			ampm: true,
+			timeFormat: 'h:mm TT'
+		});
+		$('#finish_time').timepicker({
+			ampm: true,
+			timeFormat: 'h:mm TT'
+		});
+	});
+
+	function checkMeeting()
+	{
+		if ($("#interview").is(':checked'))
+			$("#volunteer_info").show();
+		else
+			$("#volunteer_info").hide();
+	}
+	checkMeeting();
+
+
+	function getUrlVars()
+	{
+		var vars = [], hash;
+		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		for(var i = 0; i < hashes.length; i++)
+		{
+			hash = hashes[i].split('=');
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+		return vars;
+	}
+
+	function formatTime(timestamp)
+	{
+		var time = new Date(timestamp);
+		var hours = time.getHours();
+		var minutes = time.getMinutes();
+
+		var suffix = "AM";
+		if (hours > 11)
+			suffix = "PM";
+		if (hours > 12)
+			hours -= 12;
+		if (hours == 0)
+			hours = 12;
+
+		if (minutes < 10)
+			minutes = "0" + minutes;
+
+		return hours+":"+minutes+" "+suffix;		
+	}
+
+	if (getUrlVars()["start"] != undefined && getUrlVars()["end"] != undefined)
+	{
+		var start = getUrlVars()["start"];
+		var end = getUrlVars()["end"];
+		var date = new Date(start * 1000);
+
+		$("#date_picker").val($.format.date(date.toString(), "MM/dd/yyyy"));
+		$("#start_time").val(formatTime(start * 1000));
+		$("#finish_time").val(formatTime(end * 1000));
+	}
+
+</script>
+
+
+
+			</div>
+			<div class="spacer_bottom"></div>
+		</div>
+		<div class="fake_column"></div>
+		<div class="fake_border"></div>
+		<div class="footer">
+			<span>Copyright &copy; 2011</span>
+		</div>
+	</body>
+</html>
