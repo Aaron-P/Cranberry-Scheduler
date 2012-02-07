@@ -57,13 +57,26 @@
 <span>Jon Doe</span><br />
 
 <label class="label">e-ID:</label>
-<span>test</span><br />
+<span>jdoe</span><br />
 
 <label class="label">Email:</label>
 <span>test@example.com</span><br />
 
 <label class="label">Phone #:</label>
 <span>618-555-5555</span><br />
+<br />
+
+<label class="label">Name:</label>
+<span>Bob Smith</span><br />
+
+<label class="label">e-ID:</label>
+<span>bsmith</span><br />
+
+<label class="label">Email:</label>
+<span>bsmith@something.net</span><br />
+
+<label class="label">Phone #:</label>
+<span>618-555-1234</span><br />
 
 <div class="spacer"></div>
 
