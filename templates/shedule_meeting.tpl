@@ -2,220 +2,119 @@
 {block name="page_title"}Schedule Meeting{/block}
 
 {block name="page_head"}
-		<link type="text/css" rel="stylesheet" href="css/base_style.css">
-		<link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
-		<link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print' />
-		<link type="text/css" href="css/blitzer/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
-		<script type="text/javascript" src="js/jquery-1.6.4.js"></script>
-		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
-		<script type="text/javascript" src="js/resize_fix.js"></script>
-		<script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
-		<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
-		<script type='text/javascript' src='js/fullcalendar.js'></script>
-		<script type='text/javascript'>
-			$(document).ready(function() {
+	<link type="text/css" rel="stylesheet" href="css/base_style.css">
+	<link type="text/css" rel="stylesheet" href="css/schedule_meeting.css">
+	<link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
+	<link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print' />
+	<link type="text/css" href="css/blitzer/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/jquery-1.6.4.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+	<script type="text/javascript" src="js/resize_fix.js"></script>
+	<script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+	<script type='text/javascript' src='js/fullcalendar.js'></script>
+	<script type='text/javascript'>
+		$(document).ready(function() {
+		
+			var date = new Date();
+			var d = date.getDate();
+			var m = date.getMonth();
+			var y = date.getFullYear();
 			
-				var date = new Date();
-				var d = date.getDate();
-				var m = date.getMonth();
-				var y = date.getFullYear();
-				
-				var calendar = $('#calendar').fullCalendar({
-					defaultView: 'agendaDay',
-					allDaySlot: false,
-					minTime: '6:00',
-					maxTime: '22:00',
+			var calendar = $('#calendar').fullCalendar({
+				defaultView: 'agendaDay',
+				allDaySlot: false,
+				minTime: '6:00',
+				maxTime: '22:00',
 
-					header: {
-						left: 'prev',
-						center: 'today',
-						right: 'next'/*month,basicWeek,basicDay*/
-					},
+				header: {
+					left: 'prev',
+					center: 'today',
+					right: 'next'/*month,basicWeek,basicDay*/
+				},
 /*					dayClick: function(date, allDay, jsEvent, view) {
-						var timestamp = Math.round((date).getTime() / 1000);
-						document.location.href = "shedule_meeting.htm?time=" + timestamp;
-					},
+					var timestamp = Math.round((date).getTime() / 1000);
+					document.location.href = "shedule_meeting.htm?time=" + timestamp;
+				},
 */
-					aspectRatio : 0,
+				aspectRatio : 0,
 
 
-					selectable: true,
-					selectHelper: true,
-					unselectAuto: false,
-					select: function(start, end, allDay, jsEvent) {
-						if (jsEvent != undefined)
-							changeTimes(Math.round((start).getTime()/1000), Math.round((end).getTime()/1000));
+				selectable: true,
+				selectHelper: true,
+				unselectAuto: false,
+				select: function(start, end, allDay, jsEvent) {
+					if (jsEvent != undefined)
+						changeTimes(Math.round((start).getTime()/1000), Math.round((end).getTime()/1000));
 //							window.location.href = "http://localhost/Cranberry-Scheduler/index.php?page=shedule_meeting&start="+Math.round((start).getTime()/1000)+"&end="+Math.round((end).getTime()/1000);
-					},
-					editable: true,
-					events: [
-						{
-							title: 'Interview',
-							start: new Date(2011, 11, 9, 13, 15),
-							end: new Date(2011, 11, 9, 14, 30),
-							url: 'meeting_overview___.htm',
-							allDay: false
-						}
+				},
+				editable: true,
+				events: [
+					{
+						title: 'Interview',
+						start: new Date(2011, 11, 9, 13, 15),
+						end: new Date(2011, 11, 9, 14, 30),
+						url: 'meeting_overview___.htm',
+						allDay: false
+					}
 /*						{
-							title: 'All Day Event',
-							start: new Date(y, m, 1)
-						},
-						{
-							title: 'Long Event',
-							start: new Date(y, m, d-5),
-							end: new Date(y, m, d-2)
-						},
-						{
-							id: 999,
-							title: 'Repeating Event',
-							start: new Date(y, m, d-3, 16, 0),
-							allDay: false
-						},
-						{
-							id: 999,
-							title: 'Repeating Event',
-							start: new Date(y, m, d+4, 16, 0),
-							allDay: false
-						},
-						{
-							title: 'Meeting',
-							start: new Date(y, m, d, 10, 30),
-							allDay: false
-						},
-						{
-							title: 'Lunch',
-							start: new Date(y, m, d, 12, 0),
-							end: new Date(y, m, d, 14, 0),
-							allDay: false
-						},
-						{
-							title: 'Birthday Party',
-							start: new Date(y, m, d+1, 19, 0),
-							end: new Date(y, m, d+1, 22, 30),
-							allDay: false
-						},
-						{
-							title: 'Click for Google',
-							start: new Date(y, m, 28),
-							end: new Date(y, m, 29),
-							url: 'http://google.com/'
-						}*/
-					]
-				});
-				
+						title: 'All Day Event',
+						start: new Date(y, m, 1)
+					},
+					{
+						title: 'Long Event',
+						start: new Date(y, m, d-5),
+						end: new Date(y, m, d-2)
+					},
+					{
+						id: 999,
+						title: 'Repeating Event',
+						start: new Date(y, m, d-3, 16, 0),
+						allDay: false
+					},
+					{
+						id: 999,
+						title: 'Repeating Event',
+						start: new Date(y, m, d+4, 16, 0),
+						allDay: false
+					},
+					{
+						title: 'Meeting',
+						start: new Date(y, m, d, 10, 30),
+						allDay: false
+					},
+					{
+						title: 'Lunch',
+						start: new Date(y, m, d, 12, 0),
+						end: new Date(y, m, d, 14, 0),
+						allDay: false
+					},
+					{
+						title: 'Birthday Party',
+						start: new Date(y, m, d+1, 19, 0),
+						end: new Date(y, m, d+1, 22, 30),
+						allDay: false
+					},
+					{
+						title: 'Click for Google',
+						start: new Date(y, m, 28),
+						end: new Date(y, m, 29),
+						url: 'http://google.com/'
+					}*/
+				]
 			});
-		</script>
-		<style type="text/css">
-			div#calendar {
-				position: relative;
-				width: 200px;
-				height: 448px;
-/*				margin-top: 40px;
-				margin-left: 20px;
-				margin-left: auto;
-				margin-right: auto;*/
-				margin-bottom: 19px;
-			}
-			div#spacer_calendar {
-				height: 1px; /* temporary fix, find the real problem */
-			}
-			.fc-state-highlight {
-				background: #FFFFFF;
-			}
-			.fc-calendar-body {
-				cursor: pointer;
-			}
-			.fc-basic-day:hover {
-				background-color: #E6E6E6;
-			}
-			.fc-content {
-				background-color: #FFFFFF;
-			}
-			.spacer_content {
-				height: 40px;
-			}
-		</style>
-		
-		
-		<style type="text/css">
-
-			.input {
-/*				border: 1px solid #006;
-				background: #ffc;*/
-				
-				width: 180px;
-				
-				
-			}
-			.button {
-				border: 1px solid #006;
-				background: #9cf;
-			}
-			.label {
-				display: block;
-				width: 90px;
-				float: left;
-				margin: 2px 4px 6px 4px;
-				text-align: right;
-			}
-			br {
-				clear: left;
-			}
-
-			label .small {
-				color: #666666;
-				font-size: 11px;
-				font-weight: normal;
-				text-align: right;
-				width: 140px;
-			}
-
-			.ui-datepicker {
-				font-size: .75em;/* your font size here */;
-			}
-
-			.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
-			.ui-timepicker-div dl{ text-align: left; }
-			.ui-timepicker-div dl dt{ height: 25px; }
-			.ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
-			.ui-timepicker-div td { font-size: 90%; }
-
-
-
-
-
-.inputDisabled {
-	background-color: #D0D0D0;
-}
-.textDisabled {
-	color: #A0A0A0;
-}
-
-
-
-#leftcolumn { width: 300px; border: 1px solid red; float: left}
-#rightcolumn { width: 300px; border: 1px solid red; float: right}
-
-
-		</style>
+			
+		});
+	</script>
 {/block}
 
 {block name="page_content"}
-<div id="stylized" class="myform" style="border:2px solid;background-color:#F2FDED;margin-left:auto;margin-right:auto;padding:10px;width:500px;position:relative;margin-top:40px;">
-
-
-
-<h1 style="text-align:center;">Schedule Meeting</h1><br />
+<div id="stylized" class="myform">
+<h1>Schedule Meeting</h1><br />
 <hr /><br />
 
-
-<div style="/*background-color:#00FF00;*/height:448px;">
-
-
-
-
-
-<div style="/*background-color:#FF0000;*/width:300px;float:left;/*margin-top:54px;*/">
+<div id="form_background">
+<div id="form_left">
 
 <form method="POST" action="main_.htm">
 
@@ -269,8 +168,7 @@
 <label class="label">Description<br />
 <span class="small">&nbsp;</span>
 </label>
-<textarea class="input" style="height:110px;"></textarea><br /><br />
-
+<textarea id="description" class="input"></textarea><br /><br />
 
 <center><input type="submit" value="Submit" id="submit" />&nbsp;|&nbsp;<input type="button" value="Cancel" id="submit" /></center>
 <div class="spacer"></div>
@@ -278,7 +176,7 @@
 </form>
 </div>
 
-<div id="calendar" style="/*background-color:#FFFFFF;*/float:left;"></div>
+<div id="calendar"></div>
 
 </div>
 

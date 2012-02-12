@@ -1,0 +1,62 @@
+div#calendar {
+	position: relative;
+	width: 716px;
+	margin-top: 40px;
+	margin-left: 20px;
+	margin-bottom: 19px;
+	/*	
+	margin-left: auto;
+	margin-right: auto;
+	*/
+}
+
+div#spacer_calendar {
+	height: 1px; /* temporary fix, find the real problem */
+}
+
+div#right_side {
+	position:absolute;
+	width:160px;
+	right:0;
+	bottom:0;
+	top:0;
+}
+
+div.myform {
+	line-height:1.5em;
+	text-align:center;
+	border:2px solid;
+	background-color:#F2FDED;
+	position:absolute;
+}
+
+div#meeting_box {
+	padding:10px;
+	width:150px;
+	top:40px;
+	right:20px;
+	height:50px;
+}
+
+div#upcoming_events {
+	width:170px;
+	top:134px;
+	right:20px;
+	height:217px;
+}
+
+div#upcoming_events_title {
+	padding:10px;
+}
+
+span#upcoming_events_title {
+	font-weight:bold;
+}
+
+div#events_list {
+	overflow-y:scroll;
+	height:171px;
+	width:170px;
+	position:relative;
+	left:0;
+}
