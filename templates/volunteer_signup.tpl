@@ -9,7 +9,6 @@
 <div id="stylized" class="myform">
 	<form method="POST" action="volunteer_signup_2.htm">
 	<h1>Volunteer Signup</h1>
-	<hr />
 	<br />
 
 	<label class="label">e-ID:<br />

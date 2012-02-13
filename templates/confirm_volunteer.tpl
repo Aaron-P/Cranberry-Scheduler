@@ -8,7 +8,6 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<h1>Volunteer participation</h1><br />
-	<hr /><br />
 
 	<label class="label">Date:</label>
 	<span>Wedensday, November 30th, 2011</span><br />

@@ -8,8 +8,7 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<form method="POST" action="volunteer_signup_success.htm">
-	<h1>Volunteer Signup</h1>
-	<hr /><br />
+	<h1>Volunteer Signup</h1><br />
 	<!--<p>This is the basic look of my form without table</p>-->
 
 	<label class="label">Name:<br />

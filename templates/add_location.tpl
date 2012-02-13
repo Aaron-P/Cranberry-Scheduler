@@ -8,9 +8,7 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<form method="POST" action="create_group_2.htm">
-	<h1>Add location</h1>
-	<hr />
-	<br />
+	<h1>Add location</h1><br />
 
 	<label class="label">Location name:<br />
 	<span class="small">&nbsp;</span>

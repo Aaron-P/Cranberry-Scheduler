@@ -7,9 +7,9 @@
 {block name="page_title"}Main Page{/block}
 
 {block name="page_head"}
-	<link rel='stylesheet' type='text/css' href='css/main.css' />
 	<link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print' />
+	<link rel='stylesheet' type='text/css' href='css/main.css' />
 	<script type='text/javascript' src='js/jquery-ui-1.8.11.custom.min.js'></script>
 	<script type='text/javascript' src='js/fullcalendar.js'></script>
 	<script type='text/javascript'>
@@ -125,7 +125,7 @@
 
 		<div id="upcoming_events" class="myform">
 			<div id="upcoming_events_title">
-				<span id="upcoming_events_title">Upcoming Events</span>
+				<h4>Upcoming Events</h4>
 				<hr />
 			</div>
 			<div id="events_list">

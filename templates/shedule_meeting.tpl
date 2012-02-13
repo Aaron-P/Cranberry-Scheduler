@@ -2,10 +2,10 @@
 {block name="page_title"}Schedule Meeting{/block}
 
 {block name="page_head"}
-	<link type="text/css" rel="stylesheet" href="css/base_style.css">
-	<link type="text/css" rel="stylesheet" href="css/schedule_meeting.css">
 	<link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
 	<link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print' />
+	<link type="text/css" rel="stylesheet" href="css/base_style.css">
+	<link type="text/css" rel="stylesheet" href="css/schedule_meeting.css">
 	<link type="text/css" href="css/blitzer/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
 	<script type="text/javascript" src="js/jquery-1.6.4.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
@@ -110,8 +110,8 @@
 
 {block name="page_content"}
 <div id="stylized" class="myform">
-<h1>Schedule Meeting</h1><br />
-<hr /><br />
+<h1>Schedule Meeting</h1>
+<br />
 
 <div id="form_background">
 <div id="form_left">

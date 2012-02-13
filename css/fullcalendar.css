@@ -128,7 +128,7 @@ html .fc,
 	}
 	
 .fc-state-highlight { /* <td> today cell */ /* TODO: add .fc-today to <th> */
-	background: #ff0000;
+	background: #ECFFE6;
 	}
 	
 .fc-cell-overlay { /* semi-transparent rectangle while dragging */
@@ -615,4 +615,10 @@ table.fc-border-separate {
 	_overflow: hidden;
 	}
 	
-	
+.fc-calendar-body {
+	cursor: pointer;
+}
+
+.fc-basic-day:hover {
+	background-color: #E6E6E6;
+}

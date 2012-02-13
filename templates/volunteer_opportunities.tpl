@@ -7,9 +7,7 @@
 
 {block name="page_content"}
 <div id="stylized" class="myform">
-	<h1>Volunteer opportunities</h1>
-	<hr />
-	<br />
+	<h1>Volunteer opportunities</h1><br />
 
 	<h3>Wednesday, January 23, 2012</h3>
 	<table border="0">

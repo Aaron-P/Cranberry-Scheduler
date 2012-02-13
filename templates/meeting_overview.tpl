@@ -10,7 +10,6 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<h1 style="text-align:center;">Meeting Overview</h1><br />
-	<hr /><br />
 
 	<label class="label">Date:</label>
 	<span>Wedensday, November 30th, 2011</span><br />

@@ -32,6 +32,10 @@ div#spacer_calendar {
 	background-color: #FFFFFF;
 }
 
+.fc-state-highlight { /* <td> today cell */ /* TODO: add .fc-today to <th> */
+	background: #FFFFFF;
+}
+
 .spacer_content {
 	height: 40px;
 }

@@ -6,9 +6,8 @@
 {/block}
 
 {block name="page_content"}
-<div id="stylized">
+<div id="stylized" class="myform">
 	<h1>Sign up successful</h1><br />
-	<hr /><br />
 
 	{include file="meeting_info.tpl"}<br />
 	<br />

@@ -8,7 +8,6 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<h1>Create group</h1>
-	<hr />
 	<br />
 
 	<label class="label">Class:<br />

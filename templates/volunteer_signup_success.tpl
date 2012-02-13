@@ -9,7 +9,7 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<h1>Volunteer Signup Successful</h1>
-	<br /><hr /><br />
+	<br />
 	<span>You can now close this page.</span>
 </div>
 {/block}

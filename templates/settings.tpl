@@ -11,7 +11,6 @@
 <div id="stylized" class="myform">
 <form method="POST" action="main__.htm">
 <h1>Settings</h1><br />
-<hr /><br />
 
 <!--
 <label class="label">Default Calendar View:<br />
