@@ -1,22 +1,24 @@
 <?php
-
-class GetHandler
+class GetSingleton
 {
-	private function stripMagicQuotes($value)
+	private static $getInstance;
+	private function __construct()
 	{
-		if (get_magic_quotes_gpc() === 1)
-		{
-			// TODO: Change this for proper array walking, etc.
-			return stripslashes($value);
-		}
+		// handle magic quotes?
 	}
-	public function getValue($name)
+	protected static function Instance()
+	{
+		if (!self::$getInstance)
+			self::$getInstance = new GetSingleton();
+		return self::$getInstance;
+	}
+	public function get($name)
 	{
 		if (exists($name))
-			return stripMagicQuotes($_GET[$name]);
+			return $_GET[$name];
 		return null;
 	}
-	public function setValue($name, $value)
+	public function set($name, $value)
 	{
 		$_GET[$name] = $value;
 	}
@@ -25,9 +27,13 @@ class GetHandler
 		if (isset($_GET[$name]))
 			return true;
 		return false;
-	}
-	
-	
+	}	
 }
-
+class GetHandler extends GetSingleton
+{
+	public function __construct()
+	{
+		GetSingleton::Instance();
+	}
+}
 ?>

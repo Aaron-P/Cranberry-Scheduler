@@ -1,22 +1,24 @@
 <?php
-
-class CookieHandler
+class CookieSingleton
 {
-	private function stripMagicQuotes($value)
+	private static $cookieInstance;
+	private function __construct()
 	{
-		if (get_magic_quotes_gpc() === 1)
-		{
-			// TODO: Change this for proper array walking, etc.
-			return stripslashes($value);
-		}
+		// handle magic quotes?
 	}
-	public function getValue($name)
+	protected static function Instance()
 	{
-		if (isset($name))
-			return stripMagicQuotes($_COOKIE[$name]);
+		if (!self::$cookieInstance)
+			self::$cookieInstance = new CookieSingleton();
+		return self::$cookieInstance;
+	}
+	public function get($name)
+	{
+		if (exists($name))
+			return $_COOKIE[$name];
 		return null;
 	}
-	public function setValue($name, $value)
+	public function set($name, $value)
 	{
 		$_COOKIE[$name] = $value;
 	}
@@ -25,10 +27,13 @@ class CookieHandler
 		if (isset($_COOKIE[$name]))
 			return true;
 		return false;
-	}
-	
-	
+	}	
 }
-
-
+class CookieHandler extends CookieSingleton
+{
+	public function __construct()
+	{
+		CookieSingleton::Instance();
+	}
+}
 ?>
