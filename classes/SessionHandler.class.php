@@ -26,7 +26,16 @@ class SessionSingleton
 	{
 		if (isset($_SESSION[$name]))
 			return true;
-		return false;		
+		return false;
+	}
+	public function regenerate()
+	{
+		session_regenerate_id();
+	}
+	public function destroy()
+	{
+		session_unset();
+		session_destroy();
 	}
 }
 class SessionHandler extends SessionSingleton
