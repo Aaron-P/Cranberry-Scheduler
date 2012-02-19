@@ -12,19 +12,23 @@ class UserSession
 	}
 	public function auth($username, $password)
 	{
-		if (!$this->check() && true) // ldap auth check? // check not already authed?
+		if (!$this->check()) // ldap auth check? // check not already authed?
 		{
-			$userSession = array(
-				"username"   => $username,
-				"userLevel"  => "",
-				"userAgent"  => $this->serverInstance->get("HTTP_USER_AGENT"),
-				"ipAddress"  => $this->serverInstance->get("REMOTE_ADDR"),
-				"loginTime"  => time(),
-				"accessTime" => time()
-			);
-			$this->sessionInstance->regenerate();
-			$this->sessionInstance->set("UserSession", $userSession);
-			return true;
+			$ldap = new LDAP();
+			if ($ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
+			{
+				$userSession = array(
+					"username"   => $username,
+					"userLevel"  => "",
+					"userAgent"  => $this->serverInstance->get("HTTP_USER_AGENT"),
+					"ipAddress"  => $this->serverInstance->get("REMOTE_ADDR"),
+					"loginTime"  => time(),
+					"accessTime" => time()
+				);
+				$this->sessionInstance->regenerate();
+				$this->sessionInstance->set("UserSession", $userSession);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -35,10 +39,36 @@ class UserSession
 	}
 	public function check()
 	{
-		if (true)
-			;
+		$userSession = $this->sessionInstance->get("UserSession");
+		if (!is_null($userSession))
+		{
+			$currentTime = time();
+			$accessTimeout = 30 * 60;
+			$sessionTimeout = 60 * 60;
+
+			if (!isset($userSession["username"]) ||
+				!isset($userSession["userLevel"]) ||
+				!isset($userSession["userAgent"]) ||
+				!isset($userSession["ipAddress"]) ||
+				!isset($userSession["loginTime"]) ||
+				!isset($userSession["accessTime"]) ||
+				$currentTime - $sessionTimeout > $userSession["loginTime"] ||
+				$currentTime - $accessTimeout > $userSession["accessTime"] ||
+				($this->sessionSecure && $userSession["userAgent"] !== $this->serverInstance->get("HTTP_USER_AGENT")) ||
+				($this->sessionSecure && $userSession["ipAddress"] !== $this->serverInstance->get("REMOTE_ADDR")))
+			{
+				$this->destroy();
+				return false;
+			}
+			else
+			{
+				$userSession["accessTime"] = $currentTime;
+				$this->sessionInstance->set("UserSession", $userSession);
+				return true;
+			}
+		}
 		else
-			$this->destroy();
+			return false;
 	}
 	public function getUserLevel()
 	{
