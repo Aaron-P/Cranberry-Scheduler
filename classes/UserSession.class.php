@@ -76,7 +76,7 @@ class UserSession
 	}
 	public function getUsername()
 	{
-		
+		// ldap stuff
 	}
 }
 ?>
