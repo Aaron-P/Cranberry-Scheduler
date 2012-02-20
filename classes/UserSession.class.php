@@ -12,11 +12,12 @@ class UserSession
 	}
 	public function auth($username, $password)
 	{
-		if (!$this->check()) // ldap auth check? // check not already authed?
+		if (!$this->check())
 		{
 			$ldap = new LDAP();
 			if ($ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
 			{
+				// Change to a class? Possible to store this obecting in $_SESSION?
 				$userSession = array(
 					"username"   => $username,
 					"userLevel"  => "",
@@ -34,13 +35,12 @@ class UserSession
 	}
 	public function destroy()
 	{
-		//do other stuff
+		// Do other stuff?
 		$this->sessionInstance->destroy();
 	}
 	public function check()
 	{
-		$userSession = $this->sessionInstance->get("UserSession");
-		if (!is_null($userSession))
+		if (!is_null($userSession = $this->sessionInstance->get("UserSession")))
 		{
 			$currentTime = time();
 			$accessTimeout = 30 * 60;
@@ -72,11 +72,15 @@ class UserSession
 	}
 	public function getUserLevel()
 	{
-		return $this->sessionInstance->get("");
+		if (!is_null($userSession = $this->sessionInstance->get("UserSession")))
+			return $userSession["userLevel"];
+		return false;// False, null, or throw?
 	}
 	public function getUsername()
 	{
-		// ldap stuff
+		if (!is_null($userSession = $this->sessionInstance->get("UserSession")))
+			return $userSession["username"];
+		return false;// False, null, or throw?
 	}
 }
 ?>
