@@ -4,8 +4,8 @@ class DataValidator
 {
 	private function dateTimeErrors()
 	{
-		$errs = date_get_last_errors();  
-    	return ($errs['error_count'] > 0) || ($errs['warning_count'] > 0);
+		$errs = date_get_last_errors();
+		return ($errs['error_count'] > 0) || ($errs['warning_count'] > 0);
 	}
 
 	// $date format:
@@ -24,7 +24,7 @@ class DataValidator
 		return false;
 	}
 
-	public functin validVolunteerCount($count)
+	public function validVolunteerCount($count)
 	{
 		return $count > 0; // && $count <= maxAllowedVolunteers
 	}
