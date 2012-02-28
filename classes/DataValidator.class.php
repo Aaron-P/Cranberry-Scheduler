@@ -24,9 +24,9 @@ class DataValidator
 		return false;
 	}
 
-	public function validVolunteerCount($count)
+	public function checkRange($min, $max, $val)
 	{
-		return $count > 0; // && $count <= maxAllowedVolunteers
+		return $val >= $min && $val <= $max;
 	}
 }
 
