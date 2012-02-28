@@ -39,7 +39,6 @@
 */
 				aspectRatio : 0,
 
-
 				selectable: true,
 				selectHelper: true,
 				unselectAuto: false,
@@ -116,16 +115,16 @@
 <div id="form_background">
 <div id="form_left">
 
-<form method="POST" action="main_.htm">
-
+<form method="POST" action="formHandler.php">
+<input type="hidden" name="postSrc" value="schedule_meeting">
 
 <label class="label">Location<br />
 <span class="small">&nbsp;</span>
 </label>
-<select class="input">
-<option selected="selected">-- Select Location --</option>
-<option>EB 3048 - HCI Lab</option>
-<option>EB 2029 - Senior Project Lab</option>
+<select class="input" name="location">
+	<option selected="selected">-- Select Location --</option>
+	<option>EB 3048 - HCI Lab</option>
+	<option>EB 2029 - Senior Project Lab</option>
 </select><br />
 
 <label class="label">Date<br />
@@ -146,14 +145,14 @@
 <label class="label">Meeting Type<br />
 <span class="small">&nbsp;</span>
 </label>
-<input onclick="checkMeeting()" id="interview" type="radio" name="group1" value="Milk" checked="1">&nbsp;<label>Interview</label>
-<input onclick="checkMeeting()" id="rehearsal" type="radio" name="group1" value="Butter">&nbsp;<label>Rehearsal</label><br />
+<input onclick="checkMeeting()" id="interview" type="radio" name="meetingType" value="Interview" checked="1">&nbsp;<label>Interview</label>
+<input onclick="checkMeeting()" id="rehearsal" type="radio" name="meetingType" value="Rehearsal">&nbsp;<label>Rehearsal</label><br />
 
 <div id="volunteer_info">
 <label id="num_volunteers_label" class="label"># Volunteers<br />
 <span class="small">&nbsp;</span>
 </label>
-<input class="input" type="text" name="finish" id="num_volunteers" value="" /><br />
+<input class="input" type="text" name="numOfVolunteers" id="num_volunteers" value="" /><br />
 
 <!--
 <div style="text-align: center;">
@@ -161,16 +160,14 @@
 <input type="checkbox" name="group2" value="Milk" checked="1">
 </div><br />-->
 
-
-
 </div>
 
 <label class="label">Description<br />
 <span class="small">&nbsp;</span>
 </label>
-<textarea id="description" class="input"></textarea><br /><br />
+<textarea id="description" class="input" name="description"></textarea><br /><br />
 
-<center><input type="submit" value="Submit" id="submit" />&nbsp;|&nbsp;<input type="button" value="Cancel" id="submit" /></center>
+<center><input type="submit" value="Submit" id="submit" name="submit" />&nbsp;|&nbsp;<input type="submit" value="Cancel" id="submit" name="cancel" /></center>
 <div class="spacer"></div>
 
 </form>
@@ -189,8 +186,8 @@
 		var start = $("#start_time").val();
 		var end = $("#finish_time").val();
 
-		var startTime = Math.round((new Date(date+" "+start)).getTime() / 1000);
-		var endTime = Math.round((new Date(date+" "+end)).getTime() / 1000);
+		//var startTime = Math.round((new Date(date+" "+start)).getTime() / 1000);
+		//var endTime = Math.round((new Date(date+" "+end)).getTime() / 1000);
 
 		if (date != "" && start != "" && end != "")
 		{
@@ -198,13 +195,11 @@
 		}
 	}
 
-
-
-function toTimestamp(year,month,day,hour,minute,second){
- var datum = new Date(Date.UTC(year,month-1,day,hour,minute,second));
- return datum.getTime()/1000;
-}
-
+	function toTimestamp(year,month,day,hour,minute,second)
+	{
+		 var datum = new Date(Date.UTC(year,month-1,day,hour,minute,second));
+		 return datum.getTime()/1000;
+	}
 
 	$(function() {
 		$( "#date_picker" ).datepicker({
@@ -244,7 +239,6 @@ function toTimestamp(year,month,day,hour,minute,second){
 	}
 	checkMeeting();
 
-
 	function getUrlVars()
 	{
 		var vars = [], hash;
@@ -278,7 +272,6 @@ function toTimestamp(year,month,day,hour,minute,second){
 		return hours+":"+minutes+" "+suffix;		
 	}
 
-
 	function changeTimes(start, end)
 	{
 		var start = start;
@@ -304,6 +297,5 @@ function toTimestamp(year,month,day,hour,minute,second){
 
 </script>
 
-
-				<div class="spacer_content"></div>
+<div class="spacer_content"></div>
 {/block}

@@ -10,7 +10,7 @@
 	<h1>Volunteer participation</h1><br />
 
 	<label class="label">Date:</label>
-	<span>Wedensday, November 30th, 2011</span><br />
+	<span>Wednesday, November 30th, 2011</span><br />
 
 	<label class="label">Time:</label>
 	<span>From 2:00 PM to 3:00 PM</span><br />
@@ -21,20 +21,23 @@
 
 	<p>Please mark the name(s) of the volunteer(s) that showed up to the above meeting.</p><br />
 
-	<form>
+	<form method="POST" action="formHandler.php">
+	<input type="hidden" name="postSrc" value="confirm_volunteer">
 		<label class="label">Shawn LeMaster</label>
 			<span class="small">&nbsp;</span>
-			<input type="checkbox" name="vehicle" value="1" /><br />
+			<input type="checkbox" name="volunteers[]" value="Shawn LeMaster" /><br />
 		<label class="label">John Doe</label>
 			<span class="small">&nbsp;</span>
-			<input type="checkbox" name="vehicle" value="2" />
+			<input type="checkbox" name="volunteers[]" value="John Doe" />
+		<br /><br />
+		<center>
+			<input type="submit" value="Confirm" id="submit" name="submit" />
+			<input type="submit" value="Cancel" id="submit" name="cancel" />
+		</center>
 	</form> 
 	<br />
 
-	<center>
-		<input type="submit" value="Confirm" id="submit" />
-		<input type="submit" value="Cancel" id="submit" />
-	</center><div class="spacer"></div>
+	<div class="spacer"></div>
 </div>
 
 {/block}

@@ -7,21 +7,28 @@
 
 {block name="page_content"}
 <div id="stylized" class="myform">
-	<form method="POST" action="volunteer_signup_2.htm">
-	<h1>Volunteer Signup</h1>
-	<br />
+	<form method="POST" action="formHandler.php">
+	<input type="hidden" name="postSrc" value="volunteer_signup">
+	<h1>Volunteer Signup</h1><br />
+	<!--<p>This is the basic look of my form without table</p>-->
+
+	<label class="label">Name:<br />
+	<span class="small">&nbsp;</span>
+	</label>
+	<input type="text" name="name" id="name" value="" /><br />
 
 	<label class="label">e-ID:<br />
 	<span class="small">&nbsp;</span>
 	</label>
-	<input type="text" name="name" id="name" /><br />
+	<input type="text" name="eid" id="name" value="" /><br />
 
-	<label class="label">Password:<br />
+	<label class="label">Class:<br />
 	<span class="small">&nbsp;</span>
 	</label>
-	<input type="password" name="name" id="name" /><br />
+	<select name="class"><option>CS 111</option><option>CS 150</option></select><br />
 
-	<center><input type="submit" value="Submit" id="submit" /></center>
+	<center><input type="submit" value="Submit" id="submit" name="submit" /><input type="submit" value="Cancel" id="submit" name="cancel" /></center>
+	</form>
 	<div class="spacer"></div>
 </div>
 {/block}

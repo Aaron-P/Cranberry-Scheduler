@@ -7,18 +7,20 @@
 
 {block name="page_content"}
 <div id="stylized" class="myform">
-	<form method="POST" action="create_group_2.htm">
-	<h1>Add location</h1><br />
+	<form method="POST" action="formHandler.php">
+	<input type="hidden" name="postSrc" value="add_location">
 
+	<h1>Add location</h1><br />
 	<label class="label">Location name:<br />
 	<span class="small">&nbsp;</span>
 	</label>
-	<input type="text" name="name" id="name" /><br />
+	<input type="text" name="location" id="name" /><br />
 
 	<center>
-		<input type="submit" value="Create" id="submit" />
-		<input type="submit" value="Cancel" id="submit" />
+		<input type="submit" value="Create" name="submit" id="submit" />
+		<input type="submit" value="Cancel" name="cancel" id="submit" />
 	</center>
+	</form>
 	<div class="spacer"></div>
 </div>
 
