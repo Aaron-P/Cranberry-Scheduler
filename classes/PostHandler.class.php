@@ -14,7 +14,7 @@ class PostSingleton
 	}
 	public function get($name)
 	{
-		if (exists($name))
+		if ($this->exists($name))
 			return $_POST[$name];
 		return null;
 	}
