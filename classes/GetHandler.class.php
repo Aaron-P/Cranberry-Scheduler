@@ -14,7 +14,7 @@ class GetSingleton
 	}
 	public function get($name)
 	{
-		if (exists($name))
+		if ($this->exists($name))
 			return $_GET[$name];
 		return null;
 	}

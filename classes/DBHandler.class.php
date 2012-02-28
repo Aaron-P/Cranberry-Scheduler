@@ -1,57 +1,63 @@
 <?php
-
 class DBSingleton
 {
 	private static $dbInstance;
-	private $connection = false;
-	private $host = "localhost:3306";
-	private $userName = "root";
-	private $password = "";
-	private $dbName = "cranberryscheduler";
-
-	private function __construct()
+	private static $pdo;
+	private $driver;
+	private $database;
+	private $host;
+	private $port;
+	private $username;
+	private $password;
+	private function __construct($database, $host = "127.0.0.1", $port = null, $username = null, $password = null)
 	{
+		$this->driver = "mysql";
+		$this->database = $database;
+		$this->host = $host;
+		$this->port = $port;
+		$this->username = $username;
+		$this->password = $password;
 		$this->connect();
 	}
-
 	private function connect()
 	{
-		$this->connection = mysql_connect($this->host, $this->userName, $this->password);
-		if ($this->connection)
+		$dsn = $this->driver.":host=".$this->host.";dbname=".$this->database;
+		if (!is_null($this->port))
+			$dsn .= ";port=".$this->port;
+		try
 		{
-			if (mysql_select_db($this->dbName))
-				return true;
-			$this->disconnect();
+			self::$pdo = new PDO($dsn, $this->username, $this->password);
+			// self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
-		return false;
+		catch (PDOException $e)
+		{
+			// handle exception, we should probably rethrow and kill the object so we can attempt to remake.
+		}
 	}
-
 	private function disconnect()
 	{
-		if ($this->connection)
-			return mysql_close($this->connection);
+		$this->connection = null;
 	}
-
-	protected static function Instance()
+	protected static function Instance($database, $host = "127.0.0.1", $port = null, $username = null, $password = null)
 	{
 		if (!self::$dbInstance)
-			self::$dbInstance = new DBSingleton();
+			self::$dbInstance = new DBSingleton($database, $host, $port, $username, $password);
 		return self::$dbInstance;
 	}
-
-	public function query($sql)
+	public function query($sql, $variables = null)
 	{
-		$escSql = mysql_real_escape_string($sql);
-		return mysql_query($escSql);
+		// array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL)
+		if (($statement = self::$pdo->prepare($sql)) !== false)
+			if ($statement->execute($variables))
+				return $statement->fetchAll();
+		return null;
 	}
 }
-
 class DBHandler extends DBSingleton
 {
-	public function __construct()
+	public function __construct($database, $host = "127.0.0.1", $port = null, $username = null, $password = null)
 	{
-		DBSingleton::Instance();
+		DBSingleton::Instance($database, $host, $port, $username, $password);
 	}
 }
-
 ?>

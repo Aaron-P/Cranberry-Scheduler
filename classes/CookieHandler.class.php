@@ -14,7 +14,7 @@ class CookieSingleton
 	}
 	public function get($name)
 	{
-		if (exists($name))
+		if ($this->exists($name))
 			return $_COOKIE[$name];
 		return null;
 	}

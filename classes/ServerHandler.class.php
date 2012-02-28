@@ -14,7 +14,7 @@ class ServerSingleton
 	}
 	public function get($name)
 	{
-		if (exists($name))
+		if ($this->exists($name))
 			return $_SERVER[$name];
 		return null;
 	}
