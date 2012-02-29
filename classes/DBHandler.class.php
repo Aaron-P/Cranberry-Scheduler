@@ -36,7 +36,7 @@ class DBSingleton
 	}
 	private function disconnect()
 	{
-		$this->connection = null;
+		self::$pdo = null;
 	}
 	protected static function Instance($database, $host = "127.0.0.1", $port = null, $username = null, $password = null)
 	{
