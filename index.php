@@ -9,7 +9,7 @@ $smarty->debugging = false;
 $smarty->caching = false;
 $smarty->cache_lifetime = 120;
 
-$page = "main.tpl";
+$page = "login.tpl";
 if (isset($_GET["page"]))
 {
 	if ($_GET["page"] === "")
@@ -18,7 +18,7 @@ if (isset($_GET["page"]))
 		die();
 	}
 	else
-		$page = $_GET["page"].".tpl";
+		$page = $_GET["page"] . ".tpl";
 }
 
 if (!$smarty->templateExists($page))

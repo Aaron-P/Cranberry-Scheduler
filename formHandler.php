@@ -1,7 +1,11 @@
 <?php
 
 error_reporting(E_ALL | E_STRICT);
+require_once("classes/smarty/Smarty.class.php");
 require_once("classes/PostHandler.class.php");
+//require_once("classes/GetHandler.class.php");
+require_once("classes/SessionHandler.class.php");
+require_once("classes/DataManager.class.php");
 
 $ph = new PostHandler();
 $nl = "<br />";
@@ -12,7 +16,7 @@ if ($ph->exists('cancel'))
 	return;
 }
 
-echo var_dump($_POST) . $nl . $nl;
+//echo var_dump($_POST) . $nl . $nl;
 
 $page = $ph->get('postSrc');
 switch ($page)
@@ -21,6 +25,7 @@ switch ($page)
 		$loc = $ph->get('location');
 		echo "Adding location: " . $loc . $nl;
 		break;
+
 
 	case "schedule_meeting":
 		$loc = $ph->get('location');
@@ -38,12 +43,14 @@ switch ($page)
 		echo "Description: " . $description . $nl;
 		break;
 
+
 	case "confirm_volunteer":
 		$vols = $ph->get('volunteers');
 		echo "Volunteers: " . $nl;
 		foreach ($vols as $v)
 			echo $v . $nl;
 		break;
+
 
 	case "create_group":
 		$class = $ph->get('class');
@@ -56,12 +63,40 @@ switch ($page)
 			echo $m . $nl;
 		break;
 
+
 	case "login":
 		$username = $ph->get('username');
 		$password = $ph->get('password');
-		echo "Username: " . $username . $nl;
-		echo "Password: " . $password . $nl;
+
+		$sh = new SessionHandler();
+		$sh->set("username", $username);
+
+		$smarty = new Smarty();
+		$page = "main.tpl";
+		if ($smarty->templateExists($page))
+		{
+			$dm = new DataManager();
+			$upcomingEvents = $dm->getUpcomingTeamEvents($username);
+			$userInfoArr = $dm->getPersonInfo($username);
+			$userInfo = $userInfoArr[0];
+			$smarty->assign('upcomingEvents', $upcomingEvents);
+			$smarty->assign('eid', $userInfo['Eid']);
+			$smarty->assign('firstName', $userInfo['FirstName']);
+			$smarty->assign('lastName', $userInfo['LastName']);
+			$sh->set("firstName", $firstName);
+			$sh->set("lastName", $lastName);
+			//echo var_dump($userInfo);
+		}
+		else
+		{
+			$page = "error_404.tpl";
+		}
+		$smarty->display($page);
+		//$gh = new GetHandler();
+		//$gh->set('page', 'main');
+		//header('Location: index.php?page=main') ;
 		break;
+
 
 	case "settings":
 		$notifyVia = $ph->get('notifyVia');
@@ -76,9 +111,11 @@ switch ($page)
 		echo "Reminding " . $reminderTime . " hour(s) beforehand." . $nl;
 		break;
 
+
 	case "volunteer_confirm":
 		echo "Signed up." . $nl;
 		break;
+
 
 	case "volunteer_signup":
 		$name = $ph->get('name');
@@ -88,6 +125,7 @@ switch ($page)
 		echo "E-id: " . $eid . $nl;
 		echo "Class: " . $class . $nl;
 		break;
+
 
 	default:
 		echo "Something else";

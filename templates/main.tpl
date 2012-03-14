@@ -35,6 +35,24 @@
 			selectable: false,
 			selectHelper: false,
 
+			eventClick: function(calEvent, jsEvent, view) {
+				window.location.href = "event_click.php?eventID=" + calEvent.id;
+
+				//$.post("event_click.php", { eventID: calEvent.id });
+				//,
+				// 	function(data) {
+				// 		alert(data);
+				// 	}
+				// );
+		        //alert('Event: ' + calEvent.title);
+		        //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+		        //alert('View: ' + view.name);
+		        //alert('ID: ' + calEvent.id);
+
+		        // change the border color just for fun
+		        //$(this).css('border-color', 'red');
+		    },
+
 			select: function(start, end, allDay) {
 				calendar.fullCalendar('unselect');
 				window.location.href = "http://localhost/Cranberry-Scheduler/index.php?page=shedule_meeting&start="+Math.round((start).getTime()/1000)+"&end="+Math.round((end).getTime()/1000);
@@ -59,15 +77,9 @@
 			},
 			
 			editable: false,
-			events: [
-				{
-					title: 'Interview',
-					start: new Date(2011, 11, 9, 13, 15),
-					end: new Date(2011, 11, 9, 14, 30),
-					url: 'meeting_overview___.htm',
-					allDay: false
-				}
-			]
+
+			events: '/Cranberry-Scheduler/event_feed.php',
+			eventColor: 'green'
 		});
 	});
 </script>
@@ -80,7 +92,7 @@
 <div id="right_side">
 	<div id="meeting_box" class="myform">
 		<p><a href="http://localhost/Cranberry-Scheduler/index.php?page=shedule_meeting">Create Meeting</a></p>
-		<p><a href="http://localhost/Cranberry-Scheduler/index.php?page=view_meetings">View Meetings</a></p>
+		<p><a href="view_meetings.php">View Meetings</a></p>
 	</div>
 
 	<div id="upcoming_events" class="myform">
@@ -89,7 +101,11 @@
 			<hr />
 		</div>
 		<div id="events_list">
-			<p><a href="meeting_overview___.htm">Interview - 12/09/11</a></p>
+			{if $upcomingEvents}
+				{foreach $upcomingEvents as $e}
+					<p><a href="event_click.php?eventID={$e.MeetingID}">{$e.Date} - {$e.MeetingType}</a></p>
+				{/foreach}
+			{/if}
 		</div>
 	</div>
 </div>

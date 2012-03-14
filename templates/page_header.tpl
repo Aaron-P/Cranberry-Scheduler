@@ -6,7 +6,7 @@
 
 {if true}
 <div id="user_bar">
-	<span>Logged in as: John Doe&nbsp;&nbsp;|&nbsp;&nbsp;
+	<span>Logged in as: {$firstName} {$lastName}&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a href="http://localhost/Cranberry-Scheduler/index.php?page=settings">Settings</a>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
 		<a href="">Logout</a>
