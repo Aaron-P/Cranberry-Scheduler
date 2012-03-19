@@ -3,6 +3,7 @@ class LDAP
 {
 	private $handle;
 	private $bind;
+
 	public function __construct($hostname = null, $port = 389)
 	{
 		$this->handle = null;
@@ -11,6 +12,7 @@ class LDAP
 			if (!$this->connect($hostname, $port))
 				throw new Exception("Could not connect to LDAP server at {$hostname}:{$port}.");
 	}
+
 	public function connect($hostname, $port = 389)
 	{
 		$this->handle = ldap_connect($hostname, $port);
@@ -21,6 +23,7 @@ class LDAP
 		}
 		return true;
 	}
+
 	public function bind($username, $password)
 	{
 		if (is_null($this->handle))
@@ -33,6 +36,7 @@ class LDAP
 		}
 		return true;
 	}
+
 	public function __destruct()
 	{
 		if (!is_null($this->handle))

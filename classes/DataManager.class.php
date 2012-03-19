@@ -56,7 +56,7 @@ class DataManager
 				AND m.NumVolunteers > (SELECT COUNT(v.MeetingID)
 												FROM volunteer AS v
 												WHERE v.MeetingID = m.MeetingID);";
-		
+
 		return $db->query($sql);
 	}
 
@@ -157,12 +157,12 @@ class DataManager
 	{
 		$db = new DBHandler("cranberryscheduler", "127.0.0.1", null, "root", null);
 
-		$sql = "SELECT DISTINCT m.Description, 
+		$sql = "SELECT DISTINCT m.Description,
 								DATE(m.StartTime) AS Date,
 								TIME(m.StartTime) AS Start,
 								TIME(m.EndTime) AS End,
                 				l.LocationName AS Location,
-                				m.RequiredForms 
+                				m.RequiredForms
 				FROM meeting As m, location AS l, volunteer, person
 				WHERE m.MeetingID = volunteer.MeetingID
 				AND l.LocationID = m.LocationID
@@ -181,14 +181,14 @@ class DataManager
 
 		$sql = "SELECT DISTINCT l.LocationName AS Location,
 								m.MeetingType,
-								m.Description, 
+								m.Description,
                					DATE(m.StartTime) AS Date,
                					TIME(m.StartTime) AS Start,
-               					TIME(m.EndTime) AS End				              
+               					TIME(m.EndTime) AS End
 				FROM location AS l, meeting AS m, teamperson AS t, person AS p
 				WHERE l.LocationID = m.LocationID
 				AND m.TeamID = t.TeamID
-				AND t.PersonID = p.PersonID 
+				AND t.PersonID = p.PersonID
 				AND p.Eid = :eid && l.LocationName = :location;";
 
 		return $db->query($sql, array(":eid" => $eid, ":location" => $location));
@@ -203,11 +203,11 @@ class DataManager
 
 		$sql = "SELECT DISTINCT l.LocationName AS Location,
 								m.Description,
-								DATE(m.StartTime) AS Date,    
+								DATE(m.StartTime) AS Date,
                             	TIME(m.StartTime) AS Start,
                             	TIME(m.EndTime) AS End
 				FROM location AS l, meeting AS m, volunteer AS v, person AS p
-				WHERE l.LocationID = m.LocationID 
+				WHERE l.LocationID = m.LocationID
 				AND m.MeetingID = v. MeetingID
 				AND v.PersonID = p.PersonID
 				AND p.Eid = :eid && l.LocationName = :location;";
@@ -227,11 +227,11 @@ class DataManager
 								m.Description,
             					DATE(m.StartTime) AS Date,
             					TIME(m.StartTime) AS Start,
-            					TIME(m.EndTime) AS End				              
+            					TIME(m.EndTime) AS End
 				FROM location AS l, meeting AS m, teamperson AS t, person AS p
 				WHERE l.LocationID = m.LocationID
 				AND m.TeamID != t.TeamID
-				AND t.PersonID = p.PersonID 
+				AND t.PersonID = p.PersonID
 				AND p.Eid = :eid && l.LocationName = :location;";
 
 		return $db->query($sql, array(":eid" => $eid, ":location" => $location));
@@ -273,7 +273,7 @@ class DataManager
 
 		$sql = "UPDATE meeting
 				SET MeetingType = :meetType,
-					Description = :description, 
+					Description = :description,
                  	StartTime = :startTime,
                  	EndTime = :endTime,
                  	LocationID = :locID,

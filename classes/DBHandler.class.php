@@ -1,4 +1,7 @@
 <?php
+define("DB_DEFAULT_HOST",   "127.0.0.1");
+define("DB_DEFAULT_DRIVER", "mysql");
+
 class DBSingleton
 {
 	private static $dbInstance;
@@ -9,9 +12,10 @@ class DBSingleton
 	private $port;
 	private $username;
 	private $password;
-	private function __construct($database, $host = "127.0.0.1", $port = null, $username = null, $password = null)
+
+	private function __construct($database, $host = DB_DEFAULT_HOST, $port = null, $username = null, $password = null, $driver = DB_DEFAULT_DRIVER)
 	{
-		$this->driver = "mysql";
+		$this->driver = $driver;
 		$this->database = $database;
 		$this->host = $host;
 		$this->port = $port;
@@ -19,6 +23,7 @@ class DBSingleton
 		$this->password = $password;
 		$this->connect();
 	}
+
 	private function connect()
 	{
 		$dsn = $this->driver.":host=".$this->host.";dbname=".$this->database;
@@ -34,16 +39,19 @@ class DBSingleton
 			// handle exception, we should probably rethrow and kill the object so we can attempt to remake.
 		}
 	}
+
 	private function disconnect()
 	{
 		self::$pdo = null;
 	}
-	protected static function Instance($database, $host = "127.0.0.1", $port = null, $username = null, $password = null)
+
+	protected static function Instance($database, $host = DB_DEFAULT_HOST, $port = null, $username = null, $password = null, $driver = DB_DEFAULT_DRIVER)
 	{
 		if (!self::$dbInstance)
 			self::$dbInstance = new DBSingleton($database, $host, $port, $username, $password);
 		return self::$dbInstance;
 	}
+
 	public function query($sql, $variables = null)
 	{
 		// array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL)
@@ -53,9 +61,10 @@ class DBSingleton
 		return null;
 	}
 }
+
 class DBHandler extends DBSingleton
 {
-	public function __construct($database, $host = "127.0.0.1", $port = null, $username = null, $password = null)
+	public function __construct($database, $host = DB_DEFAULT_HOST, $port = null, $username = null, $password = null, $driver = DB_DEFAULT_DRIVER)
 	{
 		DBSingleton::Instance($database, $host, $port, $username, $password);
 	}

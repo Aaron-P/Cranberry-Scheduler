@@ -12,3 +12,121 @@
 			return stripMagicQuotes($_COOKIE[$name]);
 		return null;
 	}
+
+
+
+
+<?php
+require_once("LDAP.class.php");
+require_once("UserInfo.class.php");
+
+define("ACCESS_TIMEOUT_LIMIT", 30 * 60);
+define("SESSION_TIMEOUT_LIMIT", 60 * 60);
+
+class UserSession
+{
+	private $serverInstance;
+	private $sessionInstance;
+	private $sessionSecure;
+	
+	public function __construct($secure = true)
+	{
+		$this->serverInstance = new ServerHandler();
+		$this->sessionInstance = new SessionHandler();
+		$this->sessionSecure = (bool)$secure;
+	}
+	
+	public function auth($username, $password)
+	{
+		if (!$this->check())
+		{
+			$ldap = new LDAP();
+			if (true || $ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
+			{
+				// Change to a class? Possible to store this object in in $_SESSION?
+//				$userSession = array(
+//					"username"   => $username,
+//					"userLevel"  => "",
+//					"userAgent"  => $this->serverInstance->get("HTTP_USER_AGENT"),
+//					"ipAddress"  => $this->serverInstance->get("REMOTE_ADDR"),
+//					"loginTime"  => time(),
+//					"accessTime" => time()
+//				);
+//				$this->sessionInstance->set("UserSession", $userSession);
+
+				$userInfo = new UserInfo($username, "");
+				$this->sessionInstance->regenerate();
+				$this->sessionInstance->set("UserInfo", $userInfo);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public function destroy()
+	{
+		// Do other stuff?
+		$this->sessionInstance->destroy();
+	}
+	
+	public function check()
+	{
+//		if (!is_null($userSession = $this->sessionInstance->get("UserSession")))
+		if (!is_null($userInfo = $this->sessionInstance->get("UserInfo")))
+		{
+			$currentTime = time();
+
+
+/*			if (!isset($userSession["username"]) ||
+				!isset($userSession["userLevel"]) ||
+				!isset($userSession["userAgent"]) ||
+				!isset($userSession["ipAddress"]) ||
+				!isset($userSession["loginTime"]) ||
+				!isset($userSession["accessTime"]) ||
+				$currentTime - SESSION_TIMEOUT_LIMIT > $userSession["loginTime"] ||
+				$currentTime - ACCESS_TIMEOUT_LIMIT > $userSession["accessTime"] ||
+				($this->sessionSecure && $userSession["userAgent"] !== $this->serverInstance->get("HTTP_USER_AGENT")) ||
+				($this->sessionSecure && $userSession["ipAddress"] !== $this->serverInstance->get("REMOTE_ADDR")))*/
+
+			if (!is_object($userInfo) ||
+				!($userInfo instanceof UserInfo) ||
+				$currentTime - SESSION_TIMEOUT_LIMIT > $userInfo->getLoginTime() ||
+				$currentTime - ACCESS_TIMEOUT_LIMIT > $userInfo->getAccessTime() ||
+				($this->sessionSecure && $userInfo->getUserAgent() !== $this->serverInstance->get("HTTP_USER_AGENT")) ||
+				($this->sessionSecure && $userInfo->getIpAddress() !== $this->serverInstance->get("REMOTE_ADDR")))
+			{
+				$this->destroy();
+				return false;
+			}
+			else
+			{
+				$userInfo->setAccessTime($currentTime);
+				$this->sessionInstance->set("UserInfo", $userInfo);
+//				$userSession["accessTime"] = $currentTime;
+//				$this->sessionInstance->set("UserSession", $userSession);
+				return true;
+			}
+		}
+		else
+			return false;
+	}
+	
+	public function getUserLevel()
+	{
+//		if (!is_null($userSession = $this->sessionInstance->get("UserSession")))
+//			return $userSession["userLevel"];
+		if (!is_null($userInfo = $this->sessionInstance->get("UserInfo")))
+			return $userInfo->getUserLevel();
+		return false;// False, null, or throw?
+	}
+	
+	public function getUsername()
+	{
+//		if (!is_null($userSession = $this->sessionInstance->get("UserSession")))
+//			return $userSession["username"];
+		if (!is_null($userInfo = $this->sessionInstance->get("UserInfo")))
+			return $userInfo->getUsername();
+		return false;// False, null, or throw?
+	}
+}
+?>
