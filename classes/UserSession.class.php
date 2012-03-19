@@ -23,7 +23,7 @@ class UserSession
 		if (!$this->check())
 		{
 			$ldap = new LDAP();
-			if (true || $ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
+			if ($ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
 			{
 				$userInfo = new UserInfo($username, "");
 				$this->sessionInstance->regenerate();
