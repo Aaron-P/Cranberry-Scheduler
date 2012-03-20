@@ -4,6 +4,7 @@ require_once("UserInfo.class.php");
 
 define("ACCESS_TIMEOUT_LIMIT", 30 * 60);
 define("SESSION_TIMEOUT_LIMIT", 60 * 60);
+define("USER_INFO_SESSION_VARIABLE", "UserInfo");
 
 class UserSession
 {
@@ -25,9 +26,9 @@ class UserSession
 			$ldap = new LDAP();
 			if ($ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
 			{
-				$userInfo = new UserInfo($username, "");
+				$userInfo = new UserInfo($username, "", "");
 				$this->sessionInstance->regenerate();
-				$this->sessionInstance->set("UserInfo", $userInfo);
+				$this->sessionInstance->set(USER_INFO_SESSION_VARIABLE, $userInfo);
 				return true;
 			}
 		}
@@ -42,7 +43,7 @@ class UserSession
 
 	public function check()
 	{
-		if (!is_null($userInfo = $this->sessionInstance->get("UserInfo")))
+		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
 		{
 			$currentTime = time();
 
@@ -60,7 +61,7 @@ class UserSession
 			else
 			{
 				$userInfo->setAccessTime($currentTime);
-				$this->sessionInstance->set("UserInfo", $userInfo);
+				$this->sessionInstance->set(USER_INFO_SESSION_VARIABLE, $userInfo);
 				return true;
 			}
 		}
@@ -70,15 +71,22 @@ class UserSession
 
 	public function getUserLevel()
 	{
-		if (!is_null($userInfo = $this->sessionInstance->get("UserInfo")))
+		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
 			return $userInfo->getUserLevel();
 		return false;// False, null, or throw?
 	}
 
 	public function getUsername()
 	{
-		if (!is_null($userInfo = $this->sessionInstance->get("UserInfo")))
+		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
 			return $userInfo->getUsername();
+		return false;// False, null, or throw?
+	}
+
+	public function getName()
+	{
+		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
+			return $userInfo->getName();
 		return false;// False, null, or throw?
 	}
 }
