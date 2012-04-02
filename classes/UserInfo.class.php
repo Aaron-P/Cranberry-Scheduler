@@ -5,19 +5,21 @@ class UserInfo
 {
 	private $serverInstance;
 	private $username;
-	private $name;
+	private $firstName;
+	private $lastName;
 	private $userLevel;
 	private $userAgent;
 	private $ipAddress;
 	private $loginTime;
 	private $accessTime;
 
-	public function __construct($username, $name, $userLevel)
+	public function __construct($username, $firstName, $lastName, $userLevel)
 	{
 		$currentTime = time();
 		$this->serverInstance = new ServerHandler();
 		$this->username = $username;
-		$this->name = $name;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
 		$this->userLevel = $userLevel;
 		$this->userAgent = $this->serverInstance->get("HTTP_USER_AGENT");
 		$this->ipAddress = $this->serverInstance->get("REMOTE_ADDR");
@@ -30,9 +32,14 @@ class UserInfo
 		return $this->username;
 	}
 
-	public function getName()
+	public function getFirstName()
 	{
-		return $this->name;
+		return $this->firstName;
+	}
+
+	public function getLastName()
+	{
+		return $this->lastName;
 	}
 
 	public function getUserLevel()

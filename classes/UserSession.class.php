@@ -26,7 +26,11 @@ class UserSession
 			$ldap = new LDAP();
 			if ($ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
 			{
-				$userInfo = new UserInfo($username, "", "");
+				if (!is_null($userFullName = $ldap->getUserName()))
+					$userInfo = new UserInfo($username, $userFullName["firstName"], $userFullName["lastName"], "");
+				else
+					$userInfo = new UserInfo($username, "", "", "");
+
 				$this->sessionInstance->regenerate();
 				$this->sessionInstance->set(USER_INFO_SESSION_VARIABLE, $userInfo);
 				return true;
@@ -83,10 +87,17 @@ class UserSession
 		return false;// False, null, or throw?
 	}
 
-	public function getName()
+	public function getFirstName()
 	{
 		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
-			return $userInfo->getName();
+			return $userInfo->getFirstName();
+		return false;// False, null, or throw?
+	}
+
+	public function getLastName()
+	{
+		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
+			return $userInfo->getLastName();
 		return false;// False, null, or throw?
 	}
 }
