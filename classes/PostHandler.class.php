@@ -33,9 +33,7 @@ class PostSingleton
 
 	public function exists($name)
 	{
-		if (isset($_POST[$name]))
-			return true;
-		return false;
+		return isset($_POST[$name]);
 	}
 }
 

@@ -5,8 +5,10 @@
 
 error_reporting(E_ALL | E_STRICT);
 require_once("classes/smarty/Smarty.class.php");
+require_once("classes/GetHandler.class.php");
 
 $smarty = new Smarty();
+$gh = new GetHandler();
 
 //$smarty->force_compile = true;
 $smarty->debugging = false;
@@ -14,15 +16,16 @@ $smarty->caching = false;
 $smarty->cache_lifetime = 120;
 
 $page = "login.tpl";
-if (isset($_GET["page"]))
+if ($gh->exists("page"))
 {
-	if ($_GET["page"] === "")
+    $pageGet = $gh->get("page");
+	if ($pageGet === "")
 	{
 		header("Location: http://localhost/Cranberry-Scheduler/index.php");
 		die();
 	}
 	else
-		$page = $_GET["page"] . ".tpl";
+		$page = $pageGet . ".tpl";
 }
 
 if (!$smarty->templateExists($page))

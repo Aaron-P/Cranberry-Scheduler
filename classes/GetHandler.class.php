@@ -33,9 +33,7 @@ class GetSingleton
 
 	public function exists($name)
 	{
-		if (isset($_GET[$name]))
-			return true;
-		return false;
+		return isset($_GET[$name]);
 	}
 }
 
