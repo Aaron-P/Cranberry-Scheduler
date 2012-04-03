@@ -56,7 +56,7 @@ class DBSingleton
 		return self::$dbInstance;
 	}
 
-	public function query($sql, $variables = null)
+	public function query($sql, $variables = array())
 	{
 		// array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL)
 		if (($statement = self::$pdo->prepare($sql)) !== false)
