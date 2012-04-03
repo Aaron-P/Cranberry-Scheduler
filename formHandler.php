@@ -71,33 +71,15 @@ switch ($page)
 		$username = $ph->get('username');
 		$password = $ph->get('password');
 
+		// should use UserSession class
 		$sh = new SessionHandler();
+		$dm = new DataManager();
 		$sh->set("username", $username);
+		$userInfo = $dm->getPersonInfo($username);
+		$sh->set("firstName", $userInfo['FirstName']);
+		$sh->set("lastName", $userInfo['LastName']);
 
-		$smarty = new Smarty();
-		$page = "main.tpl";
-		if ($smarty->templateExists($page))
-		{
-			$dm = new DataManager();
-			$upcomingEvents = $dm->getUpcomingTeamEvents($username);
-			$userInfoArr = $dm->getPersonInfo($username);
-			$userInfo = $userInfoArr[0];
-			$smarty->assign('upcomingEvents', $upcomingEvents);
-			$smarty->assign('eid', $userInfo['Eid']);
-			$smarty->assign('firstName', $userInfo['FirstName']);
-			$smarty->assign('lastName', $userInfo['LastName']);
-			$sh->set("firstName", $firstName);
-			$sh->set("lastName", $lastName);
-			//echo var_dump($userInfo);
-		}
-		else
-		{
-			$page = "error_404.tpl";
-		}
-		$smarty->display($page);
-		//$gh = new GetHandler();
-		//$gh->set('page', 'main');
-		//header('Location: index.php?page=main') ;
+		header('Location: index.php?page=main');
 		break;
 
 
