@@ -197,7 +197,8 @@ class DataManagerSingleton
 
     public function getPersonInfo($eid)
     {
-        return self::$db->query($this->personInfoSQL, array(":eid" => $eid));
+        $result = self::$db->query($this->personInfoSQL, array(":eid" => $eid));
+        return $result[0];
     }
 
 
@@ -221,7 +222,8 @@ class DataManagerSingleton
 
     public function getEventInfo($eventID)
     {
-        return self::$db->query($this->eventInfoSQL, array(":eventID" => $eventID));
+        $result = self::$db->query($this->eventInfoSQL, array(":eventID" => $eventID));
+        return $result[0];
     }
 
 
