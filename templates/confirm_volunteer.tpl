@@ -1,4 +1,4 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+{* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Copyright (c) 2012 Aaron Papp                                               *
  *                    De'Liyuon Hamb                                           *
  *                    Shawn LeMaster                                           *
@@ -31,7 +31,7 @@
  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,       *
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER *
  * DEALINGS WITH THE SOFTWARE.                                                 *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
 
 {extends file="template.tpl"}
 {block name="page_title"}Volunteer participation{/block}
@@ -57,7 +57,7 @@
 
 	<form method="POST" action="formHandler.php">
 		<input type="hidden" name="postSrc" value="confirm_volunteer">
-		
+
 		<label class="label">Shawn LeMaster</label>
 		<span class="small">&nbsp;</span>
 		<input type="checkbox" name="volunteers[]" value="Shawn LeMaster" /><br />
@@ -70,7 +70,7 @@
 			<input type="submit" value="Confirm" id="submit" name="submit" />
 			<input type="submit" value="Cancel" id="submit" name="cancel" />
 		</center>
-	</form> 
+	</form>
 	<br />
 
 	<div class="spacer"></div>

@@ -1,4 +1,4 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+{* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Copyright (c) 2012 Aaron Papp                                               *
  *                    De'Liyuon Hamb                                           *
  *                    Shawn LeMaster                                           *
@@ -31,7 +31,7 @@
  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,       *
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER *
  * DEALINGS WITH THE SOFTWARE.                                                 *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
 
 {extends file="template.tpl"}
 
@@ -46,12 +46,12 @@
 <div id="stylized" class="myform">
 	<form method="POST" action="formHandler.php">
 		<input type="hidden" name="postSrc" value="login">
-		
+
 		<h1>Log in</h1><br />
 		<label>e-ID: </label><input name="username" type="text" class="input" /><br />
 		<label>Password: </label><input name="password" type="password" class="input" /><br />
 		<br />
-		
+
 		<label>&nbsp;</label><input type="submit" value="Login" name="submit" />
 	</form>
 </div>

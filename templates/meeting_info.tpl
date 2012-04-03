@@ -1,4 +1,4 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+{* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Copyright (c) 2012 Aaron Papp                                               *
  *                    De'Liyuon Hamb                                           *
  *                    Shawn LeMaster                                           *
@@ -31,7 +31,7 @@
  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,       *
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER *
  * DEALINGS WITH THE SOFTWARE.                                                 *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
 
 <label class="label">Description:</label>
 <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec elefend rutrum urna porttitor ultrices. Morbi orci augue, facilisis porttitor convallis eu, tristique ut nibh.</span><br />

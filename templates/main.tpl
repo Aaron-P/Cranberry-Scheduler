@@ -1,4 +1,4 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+{* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Copyright (c) 2012 Aaron Papp                                               *
  *                    De'Liyuon Hamb                                           *
  *                    Shawn LeMaster                                           *
@@ -31,7 +31,7 @@
  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,       *
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER *
  * DEALINGS WITH THE SOFTWARE.                                                 *
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *}
 
 {extends file="template.tpl"}
 
@@ -49,12 +49,12 @@
 <script type='text/javascript' src='js/fullcalendar.js'></script>
 <script type='text/javascript'>
 	$(document).ready(function() {
-	
+
 		var date = new Date();
 		var d = date.getDate();
 		var m = date.getMonth();
 		var y = date.getFullYear();
-		
+
 		var calendar = $('#calendar').fullCalendar({
 			header: {
 				left: '',
@@ -110,7 +110,7 @@
 				else
 					$("#calendar").fullCalendar('option', 'selectable', false); //true
 			},
-			
+
 			editable: false,
 
 			events: '/Cranberry-Scheduler/event_feed.php',
