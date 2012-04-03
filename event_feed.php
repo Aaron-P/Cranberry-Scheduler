@@ -1,3 +1,4 @@
+<?php
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Copyright (c) 2012 Aaron Papp                                               *
  *                    De'Liyuon Hamb                                           *
@@ -33,7 +34,6 @@
  * DEALINGS WITH THE SOFTWARE.                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-<?php
 error_reporting(E_ALL | E_STRICT);
 require_once("classes/SessionHandler.class.php");
 require_once("classes/GetHandler.class.php");

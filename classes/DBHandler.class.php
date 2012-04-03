@@ -1,3 +1,4 @@
+<?php
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Copyright (c) 2012 Aaron Papp                                               *
  *                    De'Liyuon Hamb                                           *
@@ -33,7 +34,6 @@
  * DEALINGS WITH THE SOFTWARE.                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-<?php
 define("DB_DEFAULT_HOST",   "127.0.0.1");
 define("DB_DEFAULT_DRIVER", "mysql");
 

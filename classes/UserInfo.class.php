@@ -1,3 +1,4 @@
+<?php
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Copyright (c) 2012 Aaron Papp                                               *
  *                    De'Liyuon Hamb                                           *
@@ -33,7 +34,6 @@
  * DEALINGS WITH THE SOFTWARE.                                                 *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-<?php
 require_once("ServerHandler.class.php");
 
 class UserInfo
