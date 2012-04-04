@@ -124,5 +124,5 @@ switch ($page)
 	default:
 		echo "Something else";
 		break;
-
+}
 ?>
