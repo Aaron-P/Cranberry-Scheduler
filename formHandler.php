@@ -4,6 +4,7 @@
  */
 
 error_reporting(E_ALL | E_STRICT);
+require_once("classes/UserSession.class.php");
 require_once("classes/smarty/Smarty.class.php");
 require_once("classes/PostHandler.class.php");
 //require_once("classes/GetHandler.class.php");
@@ -16,10 +17,18 @@ $nl = "<br />";
 if ($ph->exists('cancel'))
 {
 	header('Location: http://localhost/Cranberry-Scheduler');
-	return;
+	die();
 }
 
 //echo var_dump($_POST) . $nl . $nl;
+
+if (!$userSession->check())
+{
+	if ($gh->exists("page"))
+		;// add a get variable to login page so we can redirect to the correct page on login
+	header('Location: http://localhost/Cranberry-Scheduler/index.php?page=login');
+	die();
+}
 
 $page = $ph->get('postSrc');
 switch ($page)
@@ -115,6 +124,5 @@ switch ($page)
 	default:
 		echo "Something else";
 		break;
-}
 
 ?>
