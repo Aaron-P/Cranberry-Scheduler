@@ -66,7 +66,7 @@ class ScriptUrls
 		$base = "";
 		if (!is_null($this->serverHandler->get("DOCUMENT_ROOT")))
 			$base = str_replace("\\", "/", str_replace(realpath($this->serverHandler->get("DOCUMENT_ROOT")), "", realpath(dirname(__FILE__).$relativeLocation)));
-		return $base;
+		return implode("/", array_map("rawurlencode", explode("/", $base)));
 	}
 
 	private function getPath()
