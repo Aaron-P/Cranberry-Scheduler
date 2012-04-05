@@ -13,6 +13,7 @@ class ScriptUrls
 	private $scheme;
 	private $host;
 	private $port;
+	private $base;
 	private $path;
 	private $query;
 
@@ -23,6 +24,7 @@ class ScriptUrls
 		$this->scheme = $this->getScheme();
 		$this->host = $this->getHost();
 		$this->port = $this->getPort();
+		$this->base = $this->getBase("\\..");
 		$this->path = $this->getPath();
 		$this->query = $this->getQuery();
 	}
@@ -57,6 +59,14 @@ class ScriptUrls
 		if ((!$this->ssl && $this->serverHandler->get("SERVER_PORT") === "80") || ($this->ssl && $this->serverHandler->get("SERVER_PORT") === "443"))
 			return "";
 		return ":".preg_replace("/[^0-9]/", "", $this->serverHandler->get("SERVER_PORT"));
+	}
+
+	private function getBase($relativeLocation = "")
+	{
+		$base = "";
+		if (!is_null($this->serverHandler->get("DOCUMENT_ROOT")))
+			$base = str_replace("\\", "/", str_replace(realpath($this->serverHandler->get("DOCUMENT_ROOT")), "", realpath(dirname(__FILE__).$relativeLocation)));
+		return $base."/";
 	}
 
 	private function getPath()
@@ -95,7 +105,10 @@ class ScriptUrls
 		return $this->scheme.$this->host.$this->port."/";
 	}
 
-	// TODO: Try to find some method to get a base folder url
+	public function getBaseUrl()
+	{
+		return $this->scheme.$this->host.$this->port.$this->base;
+	}
 
 	public function getScriptUrl()
 	{
