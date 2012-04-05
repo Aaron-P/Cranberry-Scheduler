@@ -66,7 +66,7 @@ class ScriptUrls
 		$base = "";
 		if (!is_null($this->serverHandler->get("DOCUMENT_ROOT")))
 			$base = str_replace("\\", "/", str_replace(realpath($this->serverHandler->get("DOCUMENT_ROOT")), "", realpath(dirname(__FILE__).$relativeLocation)));
-		return $base."/";
+		return $base;
 	}
 
 	private function getPath()
@@ -107,7 +107,7 @@ class ScriptUrls
 
 	public function getBaseUrl()
 	{
-		return $this->scheme.$this->host.$this->port.$this->base;
+		return $this->scheme.$this->host.$this->port.$this->base."/";
 	}
 
 	public function getScriptUrl()
