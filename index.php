@@ -20,7 +20,7 @@ $smarty->cache_lifetime = 120;
 
 $userSession = new UserSession();
 
-if (!$userSession->check())
+if (!$userSession->check() && $gh->get("page") !== "login")
 {
 	if ($gh->exists("page"))
 		;// bind a hidden return page value to login form
