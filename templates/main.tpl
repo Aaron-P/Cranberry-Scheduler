@@ -81,9 +81,17 @@
 			},
 
 			editable: false,
-
-			events: '/Cranberry-Scheduler/event_feed.php',
-			eventColor: 'green'
+			
+			eventSources: [
+				{
+					url: '/Cranberry-Scheduler/event_feed.php',
+					color: 'green',
+					type: 'POST',
+		            data: {
+		                page: 'main'
+		            }
+				}
+			]
 		});
 	});
 </script>

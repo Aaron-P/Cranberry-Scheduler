@@ -5,38 +5,21 @@
 
 error_reporting(E_ALL | E_STRICT);
 require_once("classes/SessionHandler.class.php");
-require_once("classes/GetHandler.class.php");
 require_once("classes/DataManager.class.php");
+require_once("classes/PostHandler.class.php");
 
 $sh = new SessionHandler();
-$gh = new GetHandler();
+$ph = new PostHandler();
 $dm = new DataManager();
 
 $eid = $sh->get('username');
-$start = $gh->get('start');
-$end = $gh->get('end');
-
-//echo $eid . " " . $start . " " . $end;
+$start = $ph->get('start');
+$end = $ph->get('end');
+//$page = $ph->get('page');     TODO
 
 $events = $dm->getTeamEventsBetween($eid, $start, $end);
-//echo " got em";
-if (!$events) {
-//	echo var_dump($events);
+if (!$events)
 	return json_encode(array());
-}
-
-//echo "yeah" ;
-
-//echo "<br /><br />";
-
-//echo print_r(json_encode($events));
-
-//echo "<br /><br />";
-
-//$evs = array();
-
-//for ($i = 0; $events[$i] != null; $i++)
-//	$evs[] = $events[$i];
 
 print_r(json_encode($events));
 
