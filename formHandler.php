@@ -10,6 +10,7 @@ require_once("classes/PostHandler.class.php");
 //require_once("classes/GetHandler.class.php");
 require_once("classes/SessionHandler.class.php");
 require_once("classes/DataManager.class.php");
+require_once("classes/DataValidator.class.php");
 
 $ph = new PostHandler();
 $nl = "<br />";
@@ -22,13 +23,15 @@ if ($ph->exists('cancel'))
 
 //echo var_dump($_POST) . $nl . $nl;
 
-if (!$userSession->check())
-{
-	if ($gh->exists("page"))
-		;// add a get variable to login page so we can redirect to the correct page on login
-	header('Location: http://localhost/Cranberry-Scheduler/index.php?page=login');
-	die();
-}
+// $userSession = new UserSession();
+// if (!$userSession->check())
+// {
+// 	print "Nope";
+// 	if ($gh->exists("page"))
+// 		;// add a get variable to login page so we can redirect to the correct page on login
+// 	header('Location: http://localhost/Cranberry-Scheduler/index.php?page=login');
+// 	die();
+// }
 
 $page = $ph->get('postSrc');
 switch ($page)
@@ -40,6 +43,8 @@ switch ($page)
 
 
 	case "schedule_meeting":
+		$dm = new DataManager();
+		$dv = new DataValidator();
 		$loc = $ph->get('location');
 		$date = $ph->get('date') . ' ';
 		$start = $date . $ph->get('start');
@@ -47,12 +52,20 @@ switch ($page)
 		$type = $ph->get('meetingType');
 		$numOfVolunteers = $ph->get('numOfVolunteers');
 		$description = $ph->get('description');
-		echo "Location: " . $loc . $nl;
-		echo "Start: " . $start . $nl;
-		echo "Finish: " . $finish . $nl;
-		echo "Meeting type: " . $type . $nl;
-		echo "Volunteer #: " . $numOfVolunteers . $nl;
-		echo "Description: " . $description . $nl;
+		$startTimestamp = $dv->validDateTime($start);
+		$finishTimestamp = $dv->validDateTime($finish);
+		// echo "Location: " . $loc . $nl;
+		// echo "Start: " . $start . $nl;
+		// echo "Finish: " . $finish . $nl;
+		// echo "Meeting type: " . $type . $nl;
+		// echo "Volunteer #: " . $numOfVolunteers . $nl;
+		// echo "Description: " . $description . $nl;
+		// echo $startTimestamp . $nl;
+		// echo $finishTimestamp . $nl;
+		if ($startTimestamp != false && $finishTimestamp != false)
+			$dm->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers);
+		else
+			echo "Bad date/time: " . $start . " --- " . $finish;	// Throw a real exception sometime.
 		break;
 
 

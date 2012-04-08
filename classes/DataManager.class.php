@@ -2,8 +2,9 @@
 /**
  * @copyright University of Illinois/NCSA Open Source License
  */
-
+error_reporting(E_ALL | E_STRICT);
 require_once("DBHandler.class.php");
+require_once("classes/SessionHandler.class.php");
 
 class DataManagerSingleton
 {
@@ -161,6 +162,28 @@ class DataManagerSingleton
              JOIN person AS p ON p.PersonID = v.PersonID
              ORDER BY p.LastName ASC;";
 
+    private $allLocationsSQL =
+        "SELECT LocationName
+         FROM location
+         ORDER BY LocationName ASC;";
+
+   private $locationIDSQL =
+        "SELECT LocationID
+         FROM location
+         WHERE LocationName = :locName;";
+
+    private $teamIDSQL =
+        "SELECT teamperson.TeamID
+         FROM teamperson, person
+         WHERE teamperson.PersonID = person.PersonID
+               AND person.Eid = :eid;";
+
+    private $insertMeetingSQL =
+        "INSERT INTO meeting(MeetingType, Description,
+                     StartTime, EndTime, LocationID, 
+                     TeamID, NumVolunteers) 
+                VALUES (:type, :description, FROM_UNIXTIME(:start), FROM_UNIXTIME(:finish), :loc, :teamID, :numOfVolunteers);";
+
     private $updateMeetingSQL =
             "UPDATE meeting
              SET MeetingType = :meetType,
@@ -179,7 +202,7 @@ class DataManagerSingleton
              SET Participated = Participated + :incValue
              WHERE m.MeetingID = :meetID && v.PersonID = :personID;";
 
-
+ 
     protected static function Instance()
     {
         if (!self::$db)
@@ -286,6 +309,50 @@ class DataManagerSingleton
     }
 
 
+    public function getAllLocations($locName)
+    {
+        return self::$db->query($this->allLocationsSQL);
+    }
+
+
+    public function getLocationID($locName)
+    {
+        $result = self::$db->query($this->locationIDSQL, array(":locName" => $locName));
+        return $result[0][0];
+    }
+
+
+    public function getTeamID($eid)
+    {
+        $result = self::$db->query($this->teamIDSQL, array(":eid" => $eid));
+        return $result[0][0];
+    }
+
+
+    public function insertMeeting($type, $description, $start, $finish, $locName, $numOfVolunteers)
+    {
+        $sh = new SessionHandler();
+        $eid = $sh->get("username");
+        $loc = $this->getLocationID($locName);
+        $teamID = $this->getTeamID($eid);
+
+        if ($numOfVolunteers == NULL || $numOfVolunteers <= 0)
+            $numOfVolunteers = 0;
+
+        $sqlVars = array(
+            ":type" => $type,
+            ":description" => $description,
+            ":start" => $start,
+            ":finish" => $finish,
+            ":loc" => $loc,
+            ":teamID" => $teamID,
+            ":numOfVolunteers" => $numOfVolunteers
+        );
+
+        return self::$db->query($this->insertMeetingSQL, $sqlVars);
+    }
+
+
     // Update a meeting
     public function updateMeeting($meetID, $meetType, $description, $startTime, $endTime, $locID, $teamID, $numVolunteers, $reqForms)
     {
@@ -299,7 +366,7 @@ class DataManagerSingleton
             ":teamID" => $teamID,
             ":numVolunteers" => $numVolunteers,
             ":reqForms" => $reqForms
-            );
+        );
 
         return self::$db->query($this->updateMeetingSQL, $sqlVars);
     }

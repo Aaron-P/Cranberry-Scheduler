@@ -18,15 +18,14 @@ $smarty->debugging = false;
 $smarty->caching = false;
 $smarty->cache_lifetime = 120;
 
-$userSession = new UserSession();
-
-if (!$userSession->check() && $gh->get("page") !== "login")
-{
-	if ($gh->exists("page"))
-		;// bind a hidden return page value to login form
-	header('Location: http://localhost/Cranberry-Scheduler/index.php?page=login');
-	die();
-}
+// $userSession = new UserSession();
+// if (!$userSession->check() && $gh->get("page") !== "login")
+// {
+// 	if ($gh->exists("page"))
+// 		;// bind a hidden return page value to login form
+// 	header('Location: http://localhost/Cranberry-Scheduler/index.php?page=login');
+// 	die();
+// }
 
 $sh = new SessionHandler();
 $dm = new DataManager();
@@ -64,7 +63,8 @@ switch ($pageGet)
 		break;
 
 	case "schedule_meeting":
-		// TODO
+		$locations = $dm->getAllLocations();
+		$smarty->assign('locations', $locations);
 		break;
 
 	case "settings":

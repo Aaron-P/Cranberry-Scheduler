@@ -55,13 +55,14 @@
 
 			editable: true,
 
-			events: [
+			eventSources: [
 				{
-					title: 'Interview',
-					start: new Date(2011, 11, 9, 13, 15),
-					end: new Date(2011, 11, 9, 14, 30),
-					url: 'meeting_overview___.htm',
-					allDay: false
+					url: '/Cranberry-Scheduler/event_feed.php',
+					color: 'red',
+					type: 'POST',
+		            data: {
+		                page: 'schedule_meeting'
+		            }
 				}
 			]
 		});
@@ -84,8 +85,9 @@
 				</label>
 				<select class="input" name="location">
 					<option selected="selected">-- Select Location --</option>
-					<option>EB 3048 - HCI Lab</option>
-					<option>EB 2029 - Senior Project Lab</option>
+					{foreach $locations as $l}
+					<option>{$l['LocationName']}</option>
+					{/foreach}
 				</select><br />
 
 				<label class="label">Date<br />
