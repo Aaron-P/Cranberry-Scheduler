@@ -202,6 +202,22 @@ class DataManagerSingleton
              SET Participated = Participated + :incValue
              WHERE m.MeetingID = :meetID && v.PersonID = :personID;";
 
+    private $settingsSQL =
+            "SELECT s.EmailAddress, s.EmailNotify, s.SMSNotify, s.reminderTime
+            FROM setting s, person p
+            WHERE s.PersonID = p.PersonID
+            AND p.Eid = :eid;";
+
+    private $updateSettingsSQL =
+            "UPDATE setting AS s
+            JOIN person AS p ON p.PersonID = s.PersonID
+            SET EmailAddress = :email, EmailNotify = :enotify, reminderTime = :rtime
+            WHERE s.PersonID = :pid;";
+
+    private $personIDSQL =
+            "SELECT PersonID
+            FROM person
+            WHERE Eid = :eid;";
  
     protected static function Instance()
     {
@@ -382,6 +398,34 @@ class DataManagerSingleton
             );
 
         return self::$db->query($this->updateVolunteerSQL, $sqlVars);
+    }
+
+
+    public function getSettings($eid)
+    {
+        $result = self::$db->query($this->settingsSQL, array(":eid" => $eid));
+        return $result[0];
+    }
+
+
+    public function updateSettings($eid, $email, $enotify, $rtime)
+    {
+        $pid = $this->getPersonID($eid);
+        $sqlVars = array(
+            ":pid" => $pid,
+            ":email" => $email,
+            ":enotify" => $enotify,
+            ":rtime" => $rtime
+        );
+
+        return self::$db->query($this->updateSettingsSQL, $sqlVars);
+    }
+
+
+    public function getPersonID($eid)
+    {
+        $result = self::$db->query($this->personIDSQL, array(":eid" => $eid));
+        return $result[0][0];
     }
 }
 
