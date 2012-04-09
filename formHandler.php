@@ -63,7 +63,10 @@ switch ($page)
 		// echo $startTimestamp . $nl;
 		// echo $finishTimestamp . $nl;
 		if ($startTimestamp != false && $finishTimestamp != false)
+		{
 			$dm->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers);
+			header('Location: /Cranberry-Scheduler');
+		}
 		else
 			echo "Bad date/time: " . $start . " --- " . $finish;	// Throw a real exception sometime.
 		break;
