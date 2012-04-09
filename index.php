@@ -68,7 +68,8 @@ switch ($pageGet)
 		break;
 
 	case "settings":
-		// TODO
+		$settings = $dm->getSettings($username);
+		$smarty->assign('settings', $settings);
 		break;
 
 	case "login":

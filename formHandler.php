@@ -109,16 +109,17 @@ switch ($page)
 
 
 	case "settings":
-		$notifyVia = $ph->get('notifyVia');
-		$remind = $ph->get('remind');
+		$sh = new SessionHandler();
+		$dm = new DataManager();
+		$eid = $sh->get("username");
+		$remind = $ph->get("remind");
 		$reminderTime = $ph->get('reminderTime');
-		echo "Notifying by:" . $nl;
-		foreach ($notifyVia as $n)
-			echo $n . $nl;
-		echo "Sending notifications? ";
-		if ($remind == "1")
-			echo "Yes" . $nl;
-		echo "Reminding " . $reminderTime . " hour(s) beforehand." . $nl;
+		$email = $ph->get('email');
+		if ($email === "")
+			$email = NULL;
+		$enotify = isset($remind) ? 1 : 0;
+		$dm->updateSettings($eid, $email, $enotify, $reminderTime);
+		header('Location: /Cranberry-Scheduler');
 		break;
 
 
