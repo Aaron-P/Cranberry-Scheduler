@@ -59,7 +59,6 @@ switch ($pageGet)
 	case "volunteer_opportunities":
 		$opportunities = $dm->getVolunteerOpportunities();
 		$smarty->assign('opportunities', $opportunities);
-		// INCOMPLETE
 		break;
 
 	case "schedule_meeting":
