@@ -37,13 +37,16 @@ class DataManagerSingleton
                          DATE_FORMAT(m.StartTime, '%l:%i %p') AS Start,
                          DATE_FORMAT(m.EndTime, '%l:%i %p') AS End,
                          l.LocationName AS Location,
-                         m.RequiredForms
+                         m.RequiredForms,
+                         m.MeetingID
          FROM meeting As m, location AS l
          WHERE l.LocationID = m.LocationID
               AND m.MeetingType = 'Interview'
               AND m.NumVolunteers > (SELECT COUNT(v.MeetingID)
                                      FROM volunteer AS v
-                                     WHERE v.MeetingID = m.MeetingID);";
+                                     WHERE v.MeetingID = m.MeetingID)
+              AND m.StartTime > NOW()
+         ORDER BY m.StartTime;";
 
     private $upcomingTeamEventsDetailedSQL =
         "SELECT DISTINCT m.MeetingType,
