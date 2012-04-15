@@ -14,7 +14,8 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<form method="POST" action="formHandler.php">
-		<input type="hidden" name="postSrc" value="login">
+		<input type="hidden" name="postSrc" value="login" />
+		<input type="hidden" name="return" value="{$return}" />
 
 		<h1>Log in</h1><br />
 		<label>e-ID: </label><input name="username" type="text" class="input" /><br />

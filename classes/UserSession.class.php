@@ -27,11 +27,24 @@ class UserSession
 	{
 		if (!$this->check())
 		{
+			/*
 			$ldap = new LDAP();
 			if ($ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
 			{
 				if (!is_null($userFullName = $ldap->getUserName()))
 					$userInfo = new UserInfo($username, $userFullName["firstName"], $userFullName["lastName"], "");
+				else
+					$userInfo = new UserInfo($username, "", "", "");
+
+				$this->sessionInstance->regenerate();
+				$this->sessionInstance->set(USER_INFO_SESSION_VARIABLE, $userInfo);
+				return true;
+			}*/
+
+			if (true)
+			{
+				if (true)
+					$userInfo = new UserInfo($username, "John", "Doe", "");
 				else
 					$userInfo = new UserInfo($username, "", "", "");
 

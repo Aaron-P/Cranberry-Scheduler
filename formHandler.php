@@ -99,12 +99,17 @@ switch ($page)
 		// should use UserSession class
 		$sh = new SessionHandler();
 		$dm = new DataManager();
+		$userSession = new UserSession();
+		$userSession->auth($username, $password);
+
 		$sh->set("username", $username);
 		$userInfo = $dm->getPersonInfo($username);
 		$sh->set("firstName", $userInfo['FirstName']);
 		$sh->set("lastName", $userInfo['LastName']);
 
-		header('Location: index.php?page=main');
+		if (is_null($return = $ph->get("return")))
+			$return = "main";
+		header("Location: http://localhost/Cranberry-Scheduler/index.php?page=".$return);
 		break;
 
 

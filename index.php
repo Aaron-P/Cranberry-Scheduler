@@ -18,14 +18,21 @@ $smarty->debugging = false;
 $smarty->caching = false;
 $smarty->cache_lifetime = 120;
 
-// $userSession = new UserSession();
-// if (!$userSession->check() && $gh->get("page") !== "login")
-// {
-// 	if ($gh->exists("page"))
-// 		;// bind a hidden return page value to login form
-// 	header('Location: http://localhost/Cranberry-Scheduler/index.php?page=login');
-// 	die();
-// }
+$userSession = new UserSession();
+
+if ($gh->exists("logout"))
+{
+	$userSession->destroy();
+}
+
+if (!$userSession->check() && $gh->get("page") !== "login")
+{
+	$returnPage = "";
+	if ($gh->exists("page"))
+		$returnPage = "&return=".$gh->get("page");// bind a hidden return page value to login form
+	header('Location: http://localhost/Cranberry-Scheduler/index.php?page=login'.$returnPage);
+	die();
+}
 
 $sh = new SessionHandler();
 $dm = new DataManager();
@@ -35,6 +42,11 @@ $smarty->assign('username', $username);
 $smarty->assign('firstName', $sh->get("firstName"));
 $smarty->assign('lastName', $sh->get("lastName"));
 $pageGet = $gh->get("page");
+
+if ($userSession->check())
+	$smarty->assign('loggedIn', true);
+else
+	$smarty->assign('loggedIn', false);
 
 switch ($pageGet)
 {
@@ -73,7 +85,9 @@ switch ($pageGet)
 		break;
 
 	case "login":
-		// TODO
+		if (is_null($return = $gh->get("return")))
+			$return = "";
+		$smarty->assign('return', $return);
 		break;
 
 	default:
