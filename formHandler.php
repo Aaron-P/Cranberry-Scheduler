@@ -12,10 +12,10 @@ require_once("classes/SessionHandler.class.php");
 require_once("classes/DataManager.class.php");
 require_once("classes/DataValidator.class.php");
 
-$ph = new PostHandler();
+$postHandler = new PostHandler();
 $nl = "<br />";
 
-if ($ph->exists('cancel'))
+if ($postHandler->exists('cancel'))
 {
 	header('Location: http://localhost/Cranberry-Scheduler');
 	die();
@@ -33,11 +33,11 @@ if ($ph->exists('cancel'))
 // 	die();
 // }
 
-$page = $ph->get('postSrc');
+$page = $postHandler->get('postSrc');
 switch ($page)
 {
 	case "add_location":
-		$loc = $ph->get('location');
+		$loc = $postHandler->get('location');
 		echo "Adding location: " . $loc . $nl;
 		break;
 
@@ -45,13 +45,13 @@ switch ($page)
 	case "schedule_meeting":
 		$dm = new DataManager();
 		$dv = new DataValidator();
-		$loc = $ph->get('location');
-		$date = $ph->get('date') . ' ';
-		$start = $date . $ph->get('start');
-		$finish = $date . $ph->get('finish');
-		$type = $ph->get('meetingType');
-		$numOfVolunteers = $ph->get('numOfVolunteers');
-		$description = $ph->get('description');
+		$loc = $postHandler->get('location');
+		$date = $postHandler->get('date') . ' ';
+		$start = $date . $postHandler->get('start');
+		$finish = $date . $postHandler->get('finish');
+		$type = $postHandler->get('meetingType');
+		$numOfVolunteers = $postHandler->get('numOfVolunteers');
+		$description = $postHandler->get('description');
 		$startTimestamp = $dv->validDateTime($start);
 		$finishTimestamp = $dv->validDateTime($finish);
 		// echo "Location: " . $loc . $nl;
@@ -73,7 +73,7 @@ switch ($page)
 
 
 	case "confirm_volunteer":
-		$vols = $ph->get('volunteers');
+		$vols = $postHandler->get('volunteers');
 		echo "Volunteers: " . $nl;
 		foreach ($vols as $v)
 			echo $v . $nl;
@@ -81,9 +81,9 @@ switch ($page)
 
 
 	case "create_group":
-		$class = $ph->get('class');
-		$groupName = $ph->get('groupName');
-		$members = $ph->get('members');
+		$class = $postHandler->get('class');
+		$groupName = $postHandler->get('groupName');
+		$members = $postHandler->get('members');
 		echo "Class: " . $class . $nl;
 		echo "Group name: " . $groupName . $nl;
 		echo "Members:" . $nl;
@@ -93,8 +93,8 @@ switch ($page)
 
 
 	case "login":
-		$username = $ph->get('username');
-		$password = $ph->get('password');
+		$username = $postHandler->get('username');
+		$password = $postHandler->get('password');
 
 		// should use UserSession class
 		$sh = new SessionHandler();
@@ -107,24 +107,24 @@ switch ($page)
 		$sh->set("firstName", $userInfo['FirstName']);
 		$sh->set("lastName", $userInfo['LastName']);
 
-		if (is_null($return = $ph->get("return")))
+		if (is_null($return = $postHandler->get("return")))
 			$return = "main";
 		header("Location: http://localhost/Cranberry-Scheduler/index.php?page=".$return);
 		break;
 
 
 	case "settings":
-		$sh = new SessionHandler();
+		$userSession = new UserSession();
 		$dm = new DataManager();
-		$eid = $sh->get("username");
-		$remind = $ph->get("remind");
-		$reminderTime = $ph->get('reminderTime');
-		$email = $ph->get('email');
+		$eid = $userSession->getUsername();
+		$remind = $postHandler->get("remind");
+		$reminderTime = $postHandler->get('reminderTime');
+		$email = $postHandler->get('email');
 		if ($email === "")
 			$email = NULL;
 		$enotify = isset($remind) ? 1 : 0;
 		$dm->updateSettings($eid, $email, $enotify, $reminderTime);
-		header('Location: /Cranberry-Scheduler');
+		header('Location: http://localhost/Cranberry-Scheduler/index.php?page=settings');
 		break;
 
 
@@ -134,9 +134,9 @@ switch ($page)
 
 
 	case "volunteer_signup":
-		$name = $ph->get('name');
-		$eid = $ph->get('eid');
-		$class = $ph->get('class');
+		$name = $postHandler->get('name');
+		$eid = $postHandler->get('eid');
+		$class = $postHandler->get('class');
 		echo "Name: " . $name . $nl;
 		echo "E-id: " . $eid . $nl;
 		echo "Class: " . $class . $nl;

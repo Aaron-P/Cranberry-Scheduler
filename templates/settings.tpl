@@ -22,14 +22,14 @@
 			<input type="checkbox" name="remind" {if $settings['EmailNotify'] === "1"}checked{/if}>
 				&nbsp;<label>Send an email reminder
 					<select name="reminderTime">
-						<option value="1" {if $settings['reminderTime'] === "1"}selected{/if}>1 hour</option>
-						<option value="2" {if $settings['reminderTime'] === "2"}selected{/if}>2 hours</option>
-						<option value="3" {if $settings['reminderTime'] === "3"}selected{/if}>3 hours</option>
-						<option value="4" {if $settings['reminderTime'] === "4"}selected{/if}>4 hours</option>
-						<option value="5" {if $settings['reminderTime'] === "5"}selected{/if}>5 hours</option>
-						<option value="6" {if $settings['reminderTime'] === "6"}selected{/if}>6 hours</option>
-						<option value="12" {if $settings['reminderTime'] === "12"}selected{/if}>12 hours</option>
-						<option value="24" {if $settings['reminderTime'] === "24"}selected{/if}>24 hours</option>
+						<option value="1"{if $settings['reminderTime'] === "1"} selected="selected"{/if}>1 hour</option>
+						<option value="2"{if $settings['reminderTime'] === "2"} selected="selected"{/if}>2 hours</option>
+						<option value="3"{if $settings['reminderTime'] === "3"} selected="selected"{/if}>3 hours</option>
+						<option value="4"{if $settings['reminderTime'] === "4"} selected="selected"{/if}>4 hours</option>
+						<option value="5"{if $settings['reminderTime'] === "5"} selected="selected"{/if}>5 hours</option>
+						<option value="6"{if $settings['reminderTime'] === "6"} selected="selected"{/if}>6 hours</option>
+						<option value="12"{if $settings['reminderTime'] === "12"} selected="selected"{/if}>12 hours</option>
+						<option value="24"{if $settings['reminderTime'] === "24"} selected="selected"{/if}>24 hours</option>
 					</select> before an appointment.
 				</label>
 		</div><br />

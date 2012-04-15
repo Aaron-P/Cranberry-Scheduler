@@ -24,7 +24,7 @@ class DataManagerSingleton
                AND l.LocationID = m.LocationID
                AND teamperson.PersonID = person.PersonID
                AND person.Eid = :eid;";
-                
+
     private $personInfoSQL =
         "SELECT Eid, FirstName, LastName
          FROM person
@@ -183,8 +183,8 @@ class DataManagerSingleton
 
     private $insertMeetingSQL =
         "INSERT INTO meeting(MeetingType, Description,
-                     StartTime, EndTime, LocationID, 
-                     TeamID, NumVolunteers) 
+                     StartTime, EndTime, LocationID,
+                     TeamID, NumVolunteers)
                 VALUES (:type, :description, FROM_UNIXTIME(:start), FROM_UNIXTIME(:finish), :loc, :teamID, :numOfVolunteers);";
 
     private $updateMeetingSQL =
@@ -212,16 +212,15 @@ class DataManagerSingleton
             AND p.Eid = :eid;";
 
     private $updateSettingsSQL =
-            "UPDATE setting AS s
-            JOIN person AS p ON p.PersonID = s.PersonID
-            SET EmailAddress = :email, EmailNotify = :enotify, reminderTime = :rtime
-            WHERE s.PersonID = :pid;";
+			"INSERT INTO setting (PersonID, EmailAddress, EmailNotify, reminderTime)
+			VALUES (:pid, :email, :enotify, :rtime)
+			ON DUPLICATE KEY UPDATE EmailAddress = :email, EmailNotify = :enotify, reminderTime = :rtime";
 
     private $personIDSQL =
             "SELECT PersonID
             FROM person
             WHERE Eid = :eid;";
- 
+
     protected static function Instance()
     {
         if (!self::$db)
@@ -406,9 +405,11 @@ class DataManagerSingleton
 
     public function getSettings($eid)
     {
-        $result = self::$db->query($this->settingsSQL, array(":eid" => $eid));
-        return $result[0];
-    }
+		$result = self::$db->query($this->settingsSQL, array(":eid" => $eid));
+		if (!empty($result))
+	        return $result[0];
+		return null;
+	}
 
 
     public function updateSettings($eid, $email, $enotify, $rtime)
@@ -420,7 +421,6 @@ class DataManagerSingleton
             ":enotify" => $enotify,
             ":rtime" => $rtime
         );
-
         return self::$db->query($this->updateSettingsSQL, $sqlVars);
     }
 
