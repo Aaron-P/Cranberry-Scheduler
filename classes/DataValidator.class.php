@@ -8,13 +8,13 @@ class DataValidator
 	private function dateTimeErrors()
 	{
 		$errs = date_get_last_errors();
-		return ($errs['error_count'] > 0) || ($errs['warning_count'] > 0);
+		return ($errs["error_count"] > 0) || ($errs["warning_count"] > 0);
 	}
 
 
 	public function validDateTime($datetime)
 	{
-		$datetimeR = preg_replace('/[-\.]/', '/', $datetime);
+		$datetimeR = preg_replace("/[-\.]/", "/", $datetime);
 		$dateObj = date_create_from_format("m/d/Y g:i a", $datetimeR);
 
 		if ($dateObj && !$this->dateTimeErrors())

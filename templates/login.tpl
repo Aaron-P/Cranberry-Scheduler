@@ -7,8 +7,8 @@
 {block name="page_title"}Login{/block}
 
 {block name="page_head"}
-<link rel='stylesheet' type='text/css' href='css/view_meetings.css' />
-<link rel='stylesheet' type='text/css' href='css/login.css' />
+<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
+<link rel="stylesheet" type="text/css" href="css/login.css" />
 {/block}
 
 {block name="page_content"}

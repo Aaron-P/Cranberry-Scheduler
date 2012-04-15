@@ -11,12 +11,12 @@
 {block name="page_title"}Main Page{/block}
 
 {block name="page_head"}
-<link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
-<link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print' />
-<link rel='stylesheet' type='text/css' href='css/main.css' />
-<script type='text/javascript' src='js/jquery-ui-1.8.11.custom.min.js'></script>
-<script type='text/javascript' src='js/fullcalendar.js'></script>
-<script type='text/javascript'>
+<link rel="stylesheet" type="text/css" href="css/fullcalendar.css" />
+<link rel="stylesheet" type="text/css" href="css/fullcalendar.print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<script type="text/javascript" src="js/jquery-ui-1.8.11.custom.min.js"></script>
+<script type="text/javascript" src="js/fullcalendar.js"></script>
+<script type="text/javascript">
 	$(document).ready(function() {
 
 		var date = new Date();
@@ -24,11 +24,11 @@
 		var m = date.getMonth();
 		var y = date.getFullYear();
 
-		var calendar = $('#calendar').fullCalendar({
+		var calendar = $("#calendar").fullCalendar({
 			header: {
-				left: '',
-				center: 'title',
-				right: 'prev,next today month,agendaDay'/*month,basicWeek,basicDay*/
+				left: "",
+				center: "title",
+				right: "prev,next today month,agendaDay"/*month,basicWeek,basicDay*/
 			},
 
 /*			dayClick: function(date, allDay, jsEvent, view) {
@@ -48,17 +48,17 @@
 				// 		alert(data);
 				// 	}
 				// );
-		        //alert('Event: ' + calEvent.title);
-		        //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-		        //alert('View: ' + view.name);
-		        //alert('ID: ' + calEvent.id);
+		        //alert("Event: " + calEvent.title);
+		        //alert("Coordinates: " + jsEvent.pageX + "," + jsEvent.pageY);
+		        //alert("View: " + view.name);
+		        //alert("ID: " + calEvent.id);
 
 		        // change the border color just for fun
-		        //$(this).css('border-color', 'red');
+		        //$(this).css("border-color", "red");
 		    },
 
 			select: function(start, end, allDay) {
-				calendar.fullCalendar('unselect');
+				calendar.fullCalendar("unselect");
 				window.location.href = "http://localhost/Cranberry-Scheduler/index.php?page=shedule_meeting&start="+Math.round((start).getTime()/1000)+"&end="+Math.round((end).getTime()/1000);
 			},
 
@@ -73,22 +73,22 @@
 			viewChange: function() {
 				if ($("#calendar").fullCalendar("getView").name == "month")
 				{
-					$("#calendar").fullCalendar('option', 'selectable', false);
+					$("#calendar").fullCalendar("option", "selectable", false);
 
 				}
 				else
-					$("#calendar").fullCalendar('option', 'selectable', false); //true
+					$("#calendar").fullCalendar("option", "selectable", false); //true
 			},
 
 			editable: false,
-			
+
 			eventSources: [
 				{
-					url: '/Cranberry-Scheduler/event_feed.php',
-					color: 'green',
-					type: 'POST',
+					url: "/Cranberry-Scheduler/event_feed.php",
+					color: "green",
+					type: "POST",
 		            data: {
-		                page: 'main'
+		                page: "main"
 		            }
 				}
 			]

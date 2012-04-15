@@ -6,8 +6,8 @@
 {block name="page_title"}Schedule Meeting{/block}
 
 {block name="page_head"}
-<link rel='stylesheet' type='text/css' href='css/fullcalendar.css' />
-<link rel='stylesheet' type='text/css' href='css/fullcalendar.print.css' media='print' />
+<link rel="stylesheet" type="text/css" href="css/fullcalendar.css" />
+<link rel="stylesheet" type="text/css" href="css/fullcalendar.print.css" media="print" />
 <link type="text/css" rel="stylesheet" href="css/base_style.css">
 <link type="text/css" rel="stylesheet" href="css/schedule_meeting.css">
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
@@ -16,17 +16,17 @@
 <script type="text/javascript" src="js/resize_fix.js"></script>
 <script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
 <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
-<script type='text/javascript' src='js/fullcalendar.js'></script>
-<script type='text/javascript'>
+<script type="text/javascript" src="js/fullcalendar.js"></script>
+<script type="text/javascript">
 	var currentLocation = "";
 
 	function changeLocation()
 	{
-		if ($('#location'))
-			currentLocation = $('#location').val();
+		if ($("#location"))
+			currentLocation = $("#location").val();
 		else
 			currentLocation = "";
-		$('#calendar').empty();
+		$("#calendar").empty();
 		doCal();
 	}
 
@@ -39,16 +39,16 @@ function doCal()
 		var d = date.getDate();
 		var m = date.getMonth();
 		var y = date.getFullYear();
-		var calendar = $('#calendar').fullCalendar({
-			defaultView: 'agendaDay',
+		var calendar = $("#calendar").fullCalendar({
+			defaultView: "agendaDay",
 			allDaySlot: false,
-			minTime: '6:00',
-			maxTime: '22:00',
+			minTime: "6:00",
+			maxTime: "22:00",
 
 			header: {
-				left: 'prev',
-				center: 'today',
-				right: 'next'/*month,basicWeek,basicDay*/
+				left: "prev",
+				center: "today",
+				right: "next"/*month,basicWeek,basicDay*/
 			},
 
 /*			dayClick: function(date, allDay, jsEvent, view) {
@@ -69,9 +69,9 @@ function doCal()
 			editable: false,
 			eventSources: [
 				{
-					url: 'http://localhost/Cranberry-Scheduler/event_feed.php',
-					color: 'red',
-					type: 'POST',
+					url: "http://localhost/Cranberry-Scheduler/event_feed.php",
+					color: "red",
+					type: "POST",
 		            data: {
 		                location: currentLocation
 		            }
@@ -109,7 +109,7 @@ doCal()
 				<select id="location" class="input" name="location" onchange="changeLocation();">
 					<option selected="selected" value="">-- Select Location --</option>
 					{foreach $locations as $l}
-					<option value="{$l['LocationID']}">{$l['LocationName']}</option>
+					<option value="{$l["LocationID"]}">{$l["LocationName"]}</option>
 					{/foreach}
 				</select><br />
 
@@ -171,7 +171,7 @@ doCal()
 
 		if (date != "" && start != "" && end != "")
 		{
-			$('#calendar').fullCalendar('select', new Date(date+" "+start), new Date(date+" "+end), false);
+			$("#calendar").fullCalendar("select", new Date(date+" "+start), new Date(date+" "+end), false);
 		}
 	}
 
@@ -187,34 +187,34 @@ doCal()
 			buttonImage: "images/calendar.gif",
 			buttonImageOnly: true*/
 		});
-		$('#start_time').timepicker({
+		$("#start_time").timepicker({
 			ampm: true,
-			timeFormat: 'h:mm TT'
+			timeFormat: "h:mm TT"
 		});
-		$('#finish_time').timepicker({
+		$("#finish_time").timepicker({
 			ampm: true,
-			timeFormat: 'h:mm TT'
+			timeFormat: "h:mm TT"
 		});
 	});
 
 	function checkMeeting()
 	{
-/*		if ($("#interview").is(':checked'))
+/*		if ($("#interview").is(":checked"))
 			$("#volunteer_info").show();
 		else
 			$("#volunteer_info").hide();*/
 
-		if ($("#interview").is(':checked'))
+		if ($("#interview").is(":checked"))
 		{
-			$("#num_volunteers").prop('disabled', false);
-			$("#num_volunteers").removeClass('inputDisabled');
-			$("#num_volunteers_label").removeClass('textDisabled');
+			$("#num_volunteers").prop("disabled", false);
+			$("#num_volunteers").removeClass("inputDisabled");
+			$("#num_volunteers_label").removeClass("textDisabled");
 		}
 		else
 		{
-			$("#num_volunteers").prop('disabled', true);
-			$("#num_volunteers").addClass('inputDisabled');
-			$("#num_volunteers_label").addClass('textDisabled');
+			$("#num_volunteers").prop("disabled", true);
+			$("#num_volunteers").addClass("inputDisabled");
+			$("#num_volunteers_label").addClass("textDisabled");
 		}
 	}
 	checkMeeting();
@@ -222,10 +222,10 @@ doCal()
 	function getUrlVars()
 	{
 		var vars = [], hash;
-		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		var hashes = window.location.href.slice(window.location.href.indexOf("?") + 1).split("&");
 		for(var i = 0; i < hashes.length; i++)
 		{
-			hash = hashes[i].split('=');
+			hash = hashes[i].split("=");
 			vars.push(hash[0]);
 			vars[hash[0]] = hash[1];
 		}

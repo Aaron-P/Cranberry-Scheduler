@@ -6,7 +6,7 @@
 {block name="page_title"}Meeting overview{/block}
 
 {block name="page_head"}
-<link rel='stylesheet' type='text/css' href='css/view_meetings.css' />
+<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
 {/block}
 
 {block name="page_content"}

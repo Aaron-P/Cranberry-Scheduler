@@ -30,7 +30,7 @@ if (!$userSession->check() && $gh->get("page") !== "login")
 	$returnPage = "";
 	if ($gh->exists("page"))
 		$returnPage = "&return=".$gh->get("page");// bind a hidden return page value to login form
-	header('Location: http://localhost/Cranberry-Scheduler/index.php?page=login'.$returnPage);
+	header("Location: http://localhost/Cranberry-Scheduler/index.php?page=login".$returnPage);
 	die();
 }
 
@@ -38,55 +38,55 @@ $sh = new SessionHandler();
 $dm = new DataManager();
 
 $username = $sh->get("username");
-$smarty->assign('username', $username);
-$smarty->assign('firstName', $sh->get("firstName"));
-$smarty->assign('lastName', $sh->get("lastName"));
+$smarty->assign("username", $username);
+$smarty->assign("firstName", $sh->get("firstName"));
+$smarty->assign("lastName", $sh->get("lastName"));
 $pageGet = $gh->get("page");
 
 if ($userSession->check())
-	$smarty->assign('loggedIn', true);
+	$smarty->assign("loggedIn", true);
 else
-	$smarty->assign('loggedIn', false);
+	$smarty->assign("loggedIn", false);
 
 switch ($pageGet)
 {
 	case "main":
 		$upcomingEvents = $dm->getUpcomingTeamEvents($username);
-		$smarty->assign('upcomingEvents', $upcomingEvents);
+		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "view_meetings":
 		$upcomingEvents = $dm->getUpcomingTeamEventsDetailed($username);
-		$smarty->assign('upcomingEvents', $upcomingEvents);
+		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "meeting_overview":
 		$eventID = $gh->get("eventID");
 		$event = $dm->getEventInfo($eventID);
 		$volunteers = $dm->getMeetingVolunteers($eventID);
-		$smarty->assign('event', $event);
-		$smarty->assign('volunteers', $volunteers);
+		$smarty->assign("event", $event);
+		$smarty->assign("volunteers", $volunteers);
 		break;
 
 	case "volunteer_opportunities":
 		$opportunities = $dm->getVolunteerOpportunities();
-		$smarty->assign('opportunities', $opportunities);
+		$smarty->assign("opportunities", $opportunities);
 		break;
 
 	case "schedule_meeting":
 		$locations = $dm->getAllLocations();
-		$smarty->assign('locations', $locations);
+		$smarty->assign("locations", $locations);
 		break;
 
 	case "settings":
 		$settings = $dm->getSettings($username);
-		$smarty->assign('settings', $settings);
+		$smarty->assign("settings", $settings);
 		break;
 
 	case "login":
 		if (is_null($return = $gh->get("return")))
 			$return = "";
-		$smarty->assign('return', $return);
+		$smarty->assign("return", $return);
 		break;
 
 	default:
