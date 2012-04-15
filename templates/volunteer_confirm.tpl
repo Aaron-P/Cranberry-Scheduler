@@ -18,7 +18,7 @@
 	<p align="center">Would you like to sign up for this meeting?</p><br />
 
 	<form method="POST" action="formHandler.php">
-		<input type="hidden" name="postSrc" value="volunteer_confirm">
+		<input type="hidden" name="source" value="volunteer_confirm">
 		<center>
 			<input type="submit" value="Sign up" id="submit" name="submit" />
 			<input type="submit" value="Cancel" id="submit" name="cancel" />

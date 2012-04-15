@@ -15,7 +15,7 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<form method="POST" action="formHandler.php">
-		<input type="hidden" name="postSrc" value="settings">
+		<input type="hidden" name="source" value="settings">
 
 		<h1>Settings</h1><br />
 		<div class="centered">

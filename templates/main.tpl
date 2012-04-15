@@ -117,6 +117,8 @@
 				{foreach $upcomingEvents as $e}
 					<p><a href="index.php?page=meeting_overview&eventID={$e.MeetingID}">{$e.Date} - {$e.MeetingType}</a></p>
 				{/foreach}
+			{else}
+				<p style="font-weight:bold;">No<br>Upcoming<br>Events</p><!-- verticle center? -->
 			{/if}
 		</div>
 	</div>

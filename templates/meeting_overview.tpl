@@ -45,6 +45,6 @@
 <br />
 
 <div id="stylized2" class="myform">
-	<a href="#">Edit Meeting</a>
+	<a href="http://localhost/Cranberry-Scheduler/index.php?page=schedule_meeting&eventID={$eventId}">Edit Meeting</a>
 </div>
 {/block}

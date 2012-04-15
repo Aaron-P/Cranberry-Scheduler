@@ -23,24 +23,24 @@ if ($postHandler->exists("cancel"))
 
 //echo var_dump($_POST) . $nl . $nl;
 
-// $userSession = new UserSession();
-// if (!$userSession->check())
-// {
-// 	print "Nope";
-// 	if ($gh->exists("page"))
-// 		;// add a get variable to login page so we can redirect to the correct page on login
-// 	header("Location: http://localhost/Cranberry-Scheduler/index.php?page=login");
-// 	die();
-// }
+$source = $postHandler->get("source");
 
-$page = $postHandler->get("postSrc");
-switch ($page)
+$userSession = new UserSession();
+if (!$userSession->check() && $source !== "login")
+{
+//	print "Nope";
+//	if ($getHandler->exists("page"))
+//		;// add a get variable to login page so we can redirect to the correct page on login
+	header("Location: http://localhost/Cranberry-Scheduler/index.php?page=login");
+	die();
+}
+
+switch ($source)
 {
 	case "add_location":
 		$loc = $postHandler->get("location");
 		echo "Adding location: " . $loc . $nl;
 		break;
-
 
 	case "schedule_meeting":
 		$dm = new DataManager();
@@ -71,14 +71,12 @@ switch ($page)
 			echo "Bad date/time: " . $start . " --- " . $finish;	// Throw a real exception sometime.
 		break;
 
-
 	case "confirm_volunteer":
 		$vols = $postHandler->get("volunteers");
 		echo "Volunteers: " . $nl;
 		foreach ($vols as $v)
 			echo $v . $nl;
 		break;
-
 
 	case "create_group":
 		$class = $postHandler->get("class");
@@ -90,7 +88,6 @@ switch ($page)
 		foreach ($members as $m)
 			echo $m . $nl;
 		break;
-
 
 	case "login":
 		$username = $postHandler->get("username");
@@ -112,7 +109,6 @@ switch ($page)
 		header("Location: http://localhost/Cranberry-Scheduler/index.php?page=".$return);
 		break;
 
-
 	case "settings":
 		$userSession = new UserSession();
 		$dm = new DataManager();
@@ -127,11 +123,9 @@ switch ($page)
 		header("Location: http://localhost/Cranberry-Scheduler/index.php?page=settings");
 		break;
 
-
 	case "volunteer_confirm":
 		echo "Signed up." . $nl;
 		break;
-
 
 	case "volunteer_signup":
 		$name = $postHandler->get("name");
@@ -141,7 +135,6 @@ switch ($page)
 		echo "E-id: " . $eid . $nl;
 		echo "Class: " . $class . $nl;
 		break;
-
 
 	default:
 		echo "Something else";

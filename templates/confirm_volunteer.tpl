@@ -25,7 +25,7 @@
 	<p>Please mark the name(s) of the volunteer(s) that showed up to the above meeting.</p><br />
 
 	<form method="POST" action="formHandler.php">
-		<input type="hidden" name="postSrc" value="confirm_volunteer">
+		<input type="hidden" name="source" value="confirm_volunteer">
 
 		<label class="label">Shawn LeMaster</label>
 		<span class="small">&nbsp;</span>

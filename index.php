@@ -11,7 +11,7 @@ require_once("classes/SessionHandler.class.php");
 require_once("classes/DataManager.class.php");
 
 $smarty = new Smarty();
-$gh = new GetHandler();
+$getHandler = new GetHandler();
 
 //$smarty->force_compile = true;
 $smarty->debugging = false;
@@ -20,16 +20,16 @@ $smarty->cache_lifetime = 120;
 
 $userSession = new UserSession();
 
-if ($gh->exists("logout"))
+if ($getHandler->exists("logout"))
 {
 	$userSession->destroy();
 }
 
-if (!$userSession->check() && $gh->get("page") !== "login")
+if (!$userSession->check() && $getHandler->get("page") !== "login")
 {
 	$returnPage = "";
-	if ($gh->exists("page"))
-		$returnPage = "&return=".$gh->get("page");// bind a hidden return page value to login form
+	if ($getHandler->exists("page"))
+		$returnPage = "&return=".$getHandler->get("page");// bind a hidden return page value to login form
 	header("Location: http://localhost/Cranberry-Scheduler/index.php?page=login".$returnPage);
 	die();
 }
@@ -41,7 +41,7 @@ $username = $sh->get("username");
 $smarty->assign("username", $username);
 $smarty->assign("firstName", $sh->get("firstName"));
 $smarty->assign("lastName", $sh->get("lastName"));
-$pageGet = $gh->get("page");
+$pageGet = $getHandler->get("page");
 
 if ($userSession->check())
 	$smarty->assign("loggedIn", true);
@@ -61,9 +61,14 @@ switch ($pageGet)
 		break;
 
 	case "meeting_overview":
-		$eventID = $gh->get("eventID");
-		$event = $dm->getEventInfo($eventID);
-		$volunteers = $dm->getMeetingVolunteers($eventID);
+		if (is_null($eventId = $getHandler->get("eventID")))
+		{
+			header("Location: http://localhost/Cranberry-Scheduler/index.php?page=main");
+			die();
+		}
+		$event = $dm->getEventInfo($eventId);
+		$volunteers = $dm->getMeetingVolunteers($eventId);
+		$smarty->assign("eventId", $eventId);
 		$smarty->assign("event", $event);
 		$smarty->assign("volunteers", $volunteers);
 		break;
@@ -84,7 +89,7 @@ switch ($pageGet)
 		break;
 
 	case "login":
-		if (is_null($return = $gh->get("return")))
+		if (is_null($return = $getHandler->get("return")))
 			$return = "";
 		$smarty->assign("return", $return);
 		break;

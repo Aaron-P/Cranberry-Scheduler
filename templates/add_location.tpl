@@ -12,7 +12,7 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<form method="POST" action="formHandler.php">
-		<input type="hidden" name="postSrc" value="add_location">
+		<input type="hidden" name="source" value="add_location">
 
 		<h1>Add location</h1><br />
 		<label class="label">Location name:<br />

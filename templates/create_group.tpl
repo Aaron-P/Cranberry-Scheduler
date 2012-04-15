@@ -15,7 +15,7 @@
 	<br />
 
 	<form method="POST" action="formHandler.php">
-		<input type="hidden" name="postSrc" value="create_group">
+		<input type="hidden" name="source" value="create_group">
 
 		<label class="label">Class:<br />
 			<span class="small">&nbsp;</span>

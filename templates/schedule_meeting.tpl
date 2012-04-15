@@ -101,7 +101,7 @@ doCal()
 	<div id="form_background">
 		<div id="form_left">
 			<form method="POST" action="formHandler.php">
-				<input type="hidden" name="postSrc" value="schedule_meeting">
+				<input type="hidden" name="source" value="schedule_meeting">
 
 				<label class="label">Location<br />
 				<span class="small">&nbsp;</span>

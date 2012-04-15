@@ -12,7 +12,7 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<form method="POST" action="formHandler.php">
-		<input type="hidden" name="postSrc" value="volunteer_signup">
+		<input type="hidden" name="source" value="volunteer_signup">
 		<h1>Volunteer Signup</h1><br />
 
 		<label class="label">Name:<br />
