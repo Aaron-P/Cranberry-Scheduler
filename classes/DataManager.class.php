@@ -166,7 +166,7 @@ class DataManagerSingleton
              ORDER BY p.LastName ASC;";
 
     private $allLocationsSQL =
-        "SELECT LocationName
+        "SELECT LocationID, LocationName
          FROM location
          ORDER BY LocationName ASC;";
 
@@ -220,6 +220,18 @@ class DataManagerSingleton
             "SELECT PersonID
             FROM person
             WHERE Eid = :eid;";
+
+	private $locationEventsBetweenSQL =
+			"SELECT DISTINCT m.MeetingType AS title,
+                         UNIX_TIMESTAMP(m.StartTime) AS start,
+                         UNIX_TIMESTAMP(m.EndTime) AS end,
+                         m.MeetingID as id
+	         FROM meeting As m
+	         WHERE m.StartTime BETWEEN FROM_UNIXTIME(:start) AND FROM_UNIXTIME(:end)
+	         AND m.LocationID = :location";
+
+
+
 
     protected static function Instance()
     {
@@ -281,6 +293,10 @@ class DataManagerSingleton
         return self::$db->query($this->teamEventsBetweenSQL, array(":eid" => $eid, ":start" => $start, ":end" => $end));
     }
 
+	public function getLocationEventsBetween($location, $start, $end)
+	{
+		return self::$db->query($this->locationEventsBetweenSQL, array(":location" => $location, ":start" => $start, ":end" => $end));
+	}
 
     // Given an e-id for a volunteer, return that volunteer's events
     public function getVolEvents($eid)
@@ -327,7 +343,7 @@ class DataManagerSingleton
     }
 
 
-    public function getAllLocations($locName)
+    public function getAllLocations($locName = NULL)
     {
         return self::$db->query($this->allLocationsSQL);
     }

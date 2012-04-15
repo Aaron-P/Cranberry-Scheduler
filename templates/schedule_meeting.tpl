@@ -18,13 +18,27 @@
 <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
 <script type='text/javascript' src='js/fullcalendar.js'></script>
 <script type='text/javascript'>
-	$(document).ready(function() {
+	var currentLocation = "";
+
+	function changeLocation()
+	{
+		if ($('#location'))
+			currentLocation = $('#location').val();
+		else
+			currentLocation = "";
+		$('#calendar').empty();
+		doCal();
+	}
+
+
+function doCal()
+{
+
 
 		var date = new Date();
 		var d = date.getDate();
 		var m = date.getMonth();
 		var y = date.getFullYear();
-
 		var calendar = $('#calendar').fullCalendar({
 			defaultView: 'agendaDay',
 			allDaySlot: false,
@@ -43,7 +57,6 @@
 			},
 */
 			aspectRatio : 0,
-
 			selectable: true,
 			selectHelper: true,
 			unselectAuto: false,
@@ -53,19 +66,29 @@
 //				window.location.href = "http://localhost/Cranberry-Scheduler/index.php?page=shedule_meeting&start="+Math.round((start).getTime()/1000)+"&end="+Math.round((end).getTime()/1000);
 			},
 
-			editable: true,
-
+			editable: false,
 			eventSources: [
 				{
-					url: '/Cranberry-Scheduler/event_feed.php',
+					url: 'http://localhost/Cranberry-Scheduler/event_feed.php',
 					color: 'red',
 					type: 'POST',
 		            data: {
-		                page: 'schedule_meeting'
+		                location: currentLocation
 		            }
 				}
 			]
 		});
+
+
+}
+
+
+
+
+
+	$(document).ready(function() {
+doCal()
+
 	});
 </script>
 {/block}
@@ -83,10 +106,10 @@
 				<label class="label">Location<br />
 				<span class="small">&nbsp;</span>
 				</label>
-				<select class="input" name="location">
-					<option selected="selected">-- Select Location --</option>
+				<select id="location" class="input" name="location" onchange="changeLocation();">
+					<option selected="selected" value="">-- Select Location --</option>
 					{foreach $locations as $l}
-					<option>{$l['LocationName']}</option>
+					<option value="{$l['LocationID']}">{$l['LocationName']}</option>
 					{/foreach}
 				</select><br />
 
