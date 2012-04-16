@@ -4,7 +4,6 @@
  */
 error_reporting(E_ALL | E_STRICT);
 require_once("DBHandler.class.php");
-require_once("classes/SessionHandler.class.php");
 
 class DataManagerSingleton
 {
@@ -363,11 +362,9 @@ class DataManagerSingleton
     }
 
 
-    public function insertMeeting($type, $description, $start, $finish, $locName, $numOfVolunteers)
+    public function insertMeeting($type, $description, $start, $finish, $locName, $numOfVolunteers, $eid)
     {
-        $sh = new SessionHandler();
-        $eid = $sh->get("username");
-        $loc = $this->getLocationID($locName);
+        $loc = $locName;//$this->getLocationID($locName);
         $teamID = $this->getTeamID($eid);
 
         if ($numOfVolunteers == NULL || $numOfVolunteers <= 0)

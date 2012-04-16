@@ -22,6 +22,8 @@
 			</span></p>
 			<br />
 		{/foreach}
+	{else}
+		<p style="font-weight:bold;text-align:center;">No Upcoming Events<br><br></p><!-- verticle center? -->
 	{/if}
 </div>
 {/block}

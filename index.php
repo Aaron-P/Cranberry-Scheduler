@@ -37,10 +37,10 @@ if (!$userSession->check() && $getHandler->get("page") !== "login")
 $sh = new SessionHandler();
 $dm = new DataManager();
 
-$username = $sh->get("username");
+$username = $userSession->getUsername();
 $smarty->assign("username", $username);
-$smarty->assign("firstName", $sh->get("firstName"));
-$smarty->assign("lastName", $sh->get("lastName"));
+$smarty->assign("firstName", $userSession->getFirstName());
+$smarty->assign("lastName", $userSession->getLastName());
 $pageGet = $getHandler->get("page");
 
 if ($userSession->check())

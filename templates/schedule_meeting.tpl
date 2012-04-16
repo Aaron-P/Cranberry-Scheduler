@@ -122,12 +122,12 @@ doCal()
 				<label class="label">Start Time<br />
 					<span class="small">&nbsp;</span>
 				</label>
-				<input class="input" type="text" name="start" id="start_time" value="00:00" onchange="checkSelect();" /><br />
+				<input class="input" type="text" name="start" id="start_time" value="" onchange="checkSelect();" /><br />
 
 				<label class="label">Finish Time<br />
 					<span class="small">&nbsp;</span>
 				</label>
-				<input class="input" type="text" name="finish" id="finish_time" value="00:00" onchange="checkSelect();" /><br />
+				<input class="input" type="text" name="finish" id="finish_time" value="" onchange="checkSelect();" /><br />
 
 				<label class="label">Meeting Type<br />
 					<span class="small">&nbsp;</span>
@@ -172,6 +172,8 @@ doCal()
 
 		if (date != "" && start != "" && end != "")
 		{
+			var day = new Date(date);
+			$("#calendar").fullCalendar("gotoDate", day.getFullYear(), day.getMonth(), day.getDate());
 			$("#calendar").fullCalendar("select", new Date(date+" "+start), new Date(date+" "+end), false);
 		}
 	}
@@ -190,10 +192,14 @@ doCal()
 		});
 		$("#start_time").timepicker({
 			ampm: true,
+			hourMin: 6,
+			hourMax: 21,
 			timeFormat: "h:mm TT"
 		});
 		$("#finish_time").timepicker({
 			ampm: true,
+			hourMin: 6,
+			hourMax: 21,
 			timeFormat: "h:mm TT"
 		});
 	});

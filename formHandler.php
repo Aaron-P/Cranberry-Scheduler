@@ -73,7 +73,8 @@ switch ($source)
 		// echo $finishTimestamp . $nl;
 		if ($startTimestamp != false && $finishTimestamp != false)
 		{
-			$dm->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers);
+			$eid = $userSession->getUsername();
+			$dm->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers, $eid);
 			header("Location: /Cranberry-Scheduler");
 		}
 		else

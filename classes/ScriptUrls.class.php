@@ -119,5 +119,10 @@ class ScriptUrls
 	{
 		return $this->scheme.$this->host.$this->port.$this->path.$this->query;
 	}
+
+	public function redirectToPage($page)
+	{
+
+	}
 }
 ?>

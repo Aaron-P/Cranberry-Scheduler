@@ -5,6 +5,7 @@
 
 require_once("LDAP.class.php");
 require_once("UserInfo.class.php");
+require_once("SessionHandler.class.php");
 
 define("ACCESS_TIMEOUT_LIMIT", 30 * 60);
 define("SESSION_TIMEOUT_LIMIT", 60 * 60);
