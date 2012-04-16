@@ -13,8 +13,13 @@ require_once("classes/DataManager.class.php");
 require_once("classes/DataValidator.class.php");
 require_once("classes/ScriptUrls.class.php");
 
-$postHandler = new PostHandler();
 $scriptUrls = new ScriptUrls();
+$dataManager = new DataManager();
+$userSession = new UserSession();
+$postHandler = new PostHandler();
+$dataValidator = new DataValidator();
+$sessionHandler = new SessionHandler();
+
 $nl = "<br />";
 
 if ($postHandler->exists("cancel"))
@@ -24,7 +29,6 @@ if ($postHandler->exists("cancel"))
 
 $source = $postHandler->get("source");
 
-$userSession = new UserSession();
 if (!$userSession->check() && $source !== "login")
 {
 //	print "Nope";
@@ -49,8 +53,6 @@ switch ($source)
 		break;
 
 	case "schedule_meeting":
-		$dm = new DataManager();
-		$dv = new DataValidator();
 		$loc = $postHandler->get("location");
 		$date = $postHandler->get("date") . " ";
 		$start = $date . $postHandler->get("start");
@@ -58,8 +60,8 @@ switch ($source)
 		$type = $postHandler->get("meetingType");
 		$numOfVolunteers = $postHandler->get("numOfVolunteers");
 		$description = $postHandler->get("description");
-		$startTimestamp = $dv->validDateTime($start);
-		$finishTimestamp = $dv->validDateTime($finish);
+		$startTimestamp = $dataValidator->validDateTime($start);
+		$finishTimestamp = $dataValidator->validDateTime($finish);
 		// echo "Location: " . $loc . $nl;
 		// echo "Start: " . $start . $nl;
 		// echo "Finish: " . $finish . $nl;
@@ -71,7 +73,7 @@ switch ($source)
 		if ($startTimestamp != false && $finishTimestamp != false)
 		{
 			$eid = $userSession->getUsername();
-			$dm->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers, $eid);
+			$dataManager->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers, $eid);
 			header("Location: /Cranberry-Scheduler");
 		}
 		else
@@ -101,15 +103,12 @@ switch ($source)
 		$password = $postHandler->get("password");
 
 		// should use UserSession class
-		$sh = new SessionHandler();
-		$dm = new DataManager();
-		$userSession = new UserSession();
 		$userSession->auth($username, $password);
 
-		$sh->set("username", $username);
-		$userInfo = $dm->getPersonInfo($username);
-		$sh->set("firstName", $userInfo["FirstName"]);
-		$sh->set("lastName", $userInfo["LastName"]);
+		$sessionHandler->set("username", $username);
+		$userInfo = $dataManager->getPersonInfo($username);
+		$sessionHandler->set("firstName", $userInfo["FirstName"]);
+		$sessionHandler->set("lastName", $userInfo["LastName"]);
 
 		if (is_null($return = $postHandler->get("return")))
 			$return = "main";
@@ -117,8 +116,6 @@ switch ($source)
 		break;
 
 	case "settings":
-		$userSession = new UserSession();
-		$dm = new DataManager();
 		$eid = $userSession->getUsername();
 		$remind = $postHandler->get("remind");
 		$reminderTime = $postHandler->get("reminderTime");
@@ -126,7 +123,7 @@ switch ($source)
 		if ($email === "")
 			$email = NULL;
 		$enotify = isset($remind) ? 1 : 0;
-		$dm->updateSettings($eid, $email, $enotify, $reminderTime);
+		$dataManager->updateSettings($eid, $email, $enotify, $reminderTime);
 		$scriptUrls->redirectTo("settings");
 		break;
 

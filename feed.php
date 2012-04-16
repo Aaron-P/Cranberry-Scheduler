@@ -8,9 +8,9 @@ require_once("classes/UserSession.class.php");
 require_once("classes/DataManager.class.php");
 require_once("classes/PostHandler.class.php");
 
-$userSession = new UserSession();
-$postHandler = new PostHandler();
 $dataManager = new DataManager();
+$postHandler = new PostHandler();
+$userSession = new UserSession();
 
 $eid = $userSession->getUsername();
 $location = $postHandler->get("location");

@@ -13,13 +13,15 @@ require_once("classes/ScriptUrls.class.php");
 
 $smarty = new Smarty();
 $getHandler = new GetHandler();
+$dataManager = new DataManager();
+$userSession = new UserSession();
+$sessionHandler = new SessionHandler();
 
 //$smarty->force_compile = true;
 $smarty->debugging = false;
 $smarty->caching = false;
 $smarty->cache_lifetime = 120;
 
-$userSession = new UserSession();
 
 if ($getHandler->exists("logout"))
 {
@@ -34,8 +36,6 @@ if (!$userSession->check() && $getHandler->get("page") !== "login")
 	$scriptUrls->redirectTo("login", $getHandler->get("page"));
 }
 
-$sh = new SessionHandler();
-$dm = new DataManager();
 
 $username = $userSession->getUsername();
 $smarty->assign("username", $username);
@@ -54,37 +54,37 @@ $smarty->assign("baseUrl", $scriptUrls->getBaseUrl());
 switch ($pageGet)
 {
 	case "main":
-		$upcomingEvents = $dm->getUpcomingTeamEvents($username);
+		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "view_meetings":
-		$upcomingEvents = $dm->getUpcomingTeamEventsDetailed($username);
+		$upcomingEvents = $dataManager->getUpcomingTeamEventsDetailed($username);
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "meeting_overview":
 		if (is_null($eventId = $getHandler->get("eventID")))
 			$scriptUrls->redirectTo("main");
-		$event = $dm->getEventInfo($eventId);
-		$volunteers = $dm->getMeetingVolunteers($eventId);
+		$event = $dataManager->getEventInfo($eventId);
+		$volunteers = $dataManager->getMeetingVolunteers($eventId);
 		$smarty->assign("eventId", $eventId);
 		$smarty->assign("event", $event);
 		$smarty->assign("volunteers", $volunteers);
 		break;
 
 	case "volunteer_opportunities":
-		$opportunities = $dm->getVolunteerOpportunities();
+		$opportunities = $dataManager->getVolunteerOpportunities();
 		$smarty->assign("opportunities", $opportunities);
 		break;
 
 	case "schedule_meeting":
-		$locations = $dm->getAllLocations();
+		$locations = $dataManager->getAllLocations();
 		$smarty->assign("locations", $locations);
 		break;
 
 	case "settings":
-		$settings = $dm->getSettings($username);
+		$settings = $dataManager->getSettings($username);
 		$smarty->assign("settings", $settings);
 		break;
 
