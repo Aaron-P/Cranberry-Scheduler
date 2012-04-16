@@ -17,7 +17,7 @@
 
 	<p align="center">Would you like to sign up for this meeting?</p><br />
 
-	<form method="POST" action="{$baseUrl}formHandler.php">
+	<form method="POST" action="{$baseUrl}post.php">
 		<input type="hidden" name="source" value="volunteer_confirm">
 		<input type="hidden" name="token" value="{$token}" />
 

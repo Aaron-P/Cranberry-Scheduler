@@ -24,7 +24,7 @@
 
 	<p>Please mark the name(s) of the volunteer(s) that showed up to the above meeting.</p><br />
 
-	<form method="POST" action="{$baseUrl}formHandler.php">
+	<form method="POST" action="{$baseUrl}post.php">
 		<input type="hidden" name="source" value="confirm_volunteer">
 		<input type="hidden" name="token" value="{$token}" />
 

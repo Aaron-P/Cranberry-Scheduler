@@ -84,7 +84,7 @@
 
 			eventSources: [
 				{
-					url: "{$baseUrl}event_feed.php",
+					url: "{$baseUrl}feed.php",
 					color: "green",
 					type: "POST",
 		            data: {

@@ -69,7 +69,7 @@ function doCal()
 			editable: false,
 			eventSources: [
 				{
-					url: "{$baseUrl}event_feed.php",
+					url: "{$baseUrl}feed.php",
 					color: "red",
 					type: "POST",
 		            data: {
@@ -100,7 +100,7 @@ doCal()
 
 	<div id="form_background">
 		<div id="form_left">
-			<form method="POST" action="{$baseUrl}formHandler.php">
+			<form method="POST" action="{$baseUrl}post.php">
 				<input type="hidden" name="source" value="schedule_meeting">
 				<input type="hidden" name="token" value="{$token}" />
 

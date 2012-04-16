@@ -14,7 +14,7 @@
 
 {block name="page_content"}
 <div id="stylized" class="myform">
-	<form method="POST" action="{$baseUrl}formHandler.php">
+	<form method="POST" action="{$baseUrl}post.php">
 		<input type="hidden" name="source" value="settings">
 		<input type="hidden" name="token" value="{$token}" />
 

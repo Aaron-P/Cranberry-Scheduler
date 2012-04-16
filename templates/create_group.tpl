@@ -14,7 +14,7 @@
 	<h1>Create group</h1>
 	<br />
 
-	<form method="POST" action{$baseUrl}formHandler.php">
+	<form method="POST" action{$baseUrl}post.php">
 		<input type="hidden" name="source" value="create_group">
 		<input type="hidden" name="token" value="{$token}" />
 
