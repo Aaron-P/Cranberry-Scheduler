@@ -7,9 +7,9 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>{block name="page_title"}{/block}</title>
-		<link type="text/css" rel="stylesheet" href="css/base_style.css" />
-		<script type="text/javascript" src="js/jquery-1.6.4.js"></script>
-		<script type="text/javascript" src="js/resize_fix.js"></script>
+		<link type="text/css" rel="stylesheet" href="{$baseUrl}css/base_style.css" />
+		<script type="text/javascript" src="{$baseUrl}js/jquery-1.6.4.js"></script>
+		<script type="text/javascript" src="{$baseUrl}js/resize_fix.js"></script>
 		{block name="page_head"}{/block}
 	</head>
 	<body>

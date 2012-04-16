@@ -6,7 +6,7 @@
 {block name="page_title"}Meetings{/block}
 
 {block name="page_head"}
-<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />
 {/block}
 
 {block name="page_content"}
@@ -18,7 +18,7 @@
 				<h3>{$e.Date}</h3>
 				{$e.Start} - {$e.End}<br />
 				{$e.MeetingType}: {$e.Description}<br />
-				<a href="event_click.php?eventID={$e.MeetingID}">View details</a>
+				<a href="{$baseUrl}event_click.php?eventID={$e.MeetingID}">View details</a>
 			</span></p>
 			<br />
 		{/foreach}

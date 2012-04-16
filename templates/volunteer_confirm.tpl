@@ -6,7 +6,7 @@
 {block name="page_title"}Meeting overview{/block}
 
 {block name="page_head"}
-<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />
 {/block}
 
 {block name="page_content"}
@@ -17,7 +17,7 @@
 
 	<p align="center">Would you like to sign up for this meeting?</p><br />
 
-	<form method="POST" action="formHandler.php">
+	<form method="POST" action="{$baseUrl}formHandler.php">
 		<input type="hidden" name="source" value="volunteer_confirm">
 		<input type="hidden" name="token" value="{$token}" />
 

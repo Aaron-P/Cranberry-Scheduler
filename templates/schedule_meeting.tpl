@@ -6,17 +6,17 @@
 {block name="page_title"}Schedule Meeting{/block}
 
 {block name="page_head"}
-<link rel="stylesheet" type="text/css" href="css/fullcalendar.css" />
-<link rel="stylesheet" type="text/css" href="css/fullcalendar.print.css" media="print" />
-<link type="text/css" rel="stylesheet" href="css/base_style.css">
-<link type="text/css" rel="stylesheet" href="css/schedule_meeting.css">
-<link type="text/css" href="css/blitzer/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
-<script type="text/javascript" src="js/jquery-1.6.4.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="js/resize_fix.js"></script>
-<script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
-<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
-<script type="text/javascript" src="js/fullcalendar.js"></script>
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/fullcalendar.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/fullcalendar.print.css" media="print" />
+<link type="text/css" rel="stylesheet" href="{$baseUrl}css/base_style.css">
+<link type="text/css" rel="stylesheet" href="{$baseUrl}css/schedule_meeting.css">
+<link type="text/css" href="{$baseUrl}css/blitzer/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="{$baseUrl}js/jquery-1.6.4.js"></script>
+<script type="text/javascript" src="{$baseUrl}js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="{$baseUrl}js/resize_fix.js"></script>
+<script type="text/javascript" src="{$baseUrl}js/jquery.dateFormat-1.0.js"></script>
+<script type="text/javascript" src="{$baseUrl}js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="{$baseUrl}js/fullcalendar.js"></script>
 <script type="text/javascript">
 	var currentLocation = "";
 
@@ -69,7 +69,7 @@ function doCal()
 			editable: false,
 			eventSources: [
 				{
-					url: "http://localhost/Cranberry-Scheduler/event_feed.php",
+					url: "{$baseUrl}event_feed.php",
 					color: "red",
 					type: "POST",
 		            data: {
@@ -100,7 +100,7 @@ doCal()
 
 	<div id="form_background">
 		<div id="form_left">
-			<form method="POST" action="formHandler.php">
+			<form method="POST" action="{$baseUrl}formHandler.php">
 				<input type="hidden" name="source" value="schedule_meeting">
 				<input type="hidden" name="token" value="{$token}" />
 

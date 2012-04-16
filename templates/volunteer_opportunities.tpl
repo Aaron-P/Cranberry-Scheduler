@@ -6,7 +6,7 @@
 {block name="page_title"}Volunteer opportunities{/block}
 
 {block name="page_head"}
-<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />
 {/block}
 
 {block name="page_content"}
@@ -18,7 +18,7 @@
 	<table border="0">
 		<tr>
 			<td width="150" valign="top">{$o["Start"]} - {$o["End"]}</td>
-			<td>{$o["Description"]}<br /><a href="index.php?page=meeting_overview&eventID={$o.MeetingID}">Sign up</a></td>
+			<td>{$o["Description"]}<br /><a href="{$baseUrl}index.php?page=meeting_overview&eventID={$o.MeetingID}">Sign up</a></td>
 		</tr>
 	</table>
 	<br />

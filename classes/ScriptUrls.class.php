@@ -120,9 +120,14 @@ class ScriptUrls
 		return $this->scheme.$this->host.$this->port.$this->path.$this->query;
 	}
 
-	public function redirectToPage($page)
+	public function redirectTo($page, $return = NULL)
 	{
-
+		if (!is_null($return))
+			$return = "&return=".$return;
+		else
+			$return = "";
+		header("Location: ".$this->getBaseUrl()."index.php?page=".$page.$return);
+		die();
 	}
 }
 ?>

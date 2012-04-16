@@ -11,15 +11,14 @@ require_once("classes/PostHandler.class.php");
 require_once("classes/SessionHandler.class.php");
 require_once("classes/DataManager.class.php");
 require_once("classes/DataValidator.class.php");
+require_once("classes/ScriptUrls.class.php");
 
 $postHandler = new PostHandler();
+$scriptUrls = new ScriptUrls();
 $nl = "<br />";
 
 if ($postHandler->exists("cancel"))
-{
-	header("Location: http://localhost/Cranberry-Scheduler");
-	die();
-}
+	$scriptUrls->redirectTo("main");
 
 //echo var_dump($_POST) . $nl . $nl;
 
@@ -31,8 +30,7 @@ if (!$userSession->check() && $source !== "login")
 //	print "Nope";
 //	if ($getHandler->exists("page"))
 //		;// add a get variable to login page so we can redirect to the correct page on login
-	header("Location: http://localhost/Cranberry-Scheduler/index.php?page=login");
-	die();
+	$scriptUrls->redirectTo("login");
 }
 
 if ($postHandler->get("token") !== $userSession->getPostToken())
@@ -40,8 +38,7 @@ if ($postHandler->get("token") !== $userSession->getPostToken())
 	// should probably make some sort of error page so they know something went wrong
 	if (is_null($location = $postHandler->get("source")))
 		$location = "main";
-	header("Location: http://localhost/Cranberry-Scheduler/index.php?page=".$location);
-	die();
+	$scriptUrls->redirectTo($location);
 }
 
 switch ($source)
@@ -116,7 +113,7 @@ switch ($source)
 
 		if (is_null($return = $postHandler->get("return")))
 			$return = "main";
-		header("Location: http://localhost/Cranberry-Scheduler/index.php?page=".$return);
+		$scriptUrls->redirectTo($return);
 		break;
 
 	case "settings":
@@ -130,7 +127,7 @@ switch ($source)
 			$email = NULL;
 		$enotify = isset($remind) ? 1 : 0;
 		$dm->updateSettings($eid, $email, $enotify, $reminderTime);
-		header("Location: http://localhost/Cranberry-Scheduler/index.php?page=settings");
+		$scriptUrls->redirectTo("settings");
 		break;
 
 	case "volunteer_confirm":

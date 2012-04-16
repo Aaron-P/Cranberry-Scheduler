@@ -6,7 +6,7 @@
 {block name="page_title"}Volunteer participation{/block}
 
 {block name="page_head"}
-<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />
 {/block}
 
 {block name="page_content"}
@@ -24,7 +24,7 @@
 
 	<p>Please mark the name(s) of the volunteer(s) that showed up to the above meeting.</p><br />
 
-	<form method="POST" action="formHandler.php">
+	<form method="POST" action="{$baseUrl}formHandler.php">
 		<input type="hidden" name="source" value="confirm_volunteer">
 		<input type="hidden" name="token" value="{$token}" />
 

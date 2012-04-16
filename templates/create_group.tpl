@@ -6,7 +6,7 @@
 {block name="page_title"}Create group{/block}
 
 {block name="page_head"}
-<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />
 {/block}
 
 {block name="page_content"}
@@ -14,7 +14,7 @@
 	<h1>Create group</h1>
 	<br />
 
-	<form method="POST" action="formHandler.php">
+	<form method="POST" action{$baseUrl}formHandler.php">
 		<input type="hidden" name="source" value="create_group">
 		<input type="hidden" name="token" value="{$token}" />
 

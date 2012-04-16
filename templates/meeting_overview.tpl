@@ -6,8 +6,8 @@
 {block name="page_title"}Meeting Overview{/block}
 
 {block name="page_head"}
-<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
-<link rel="stylesheet" type="text/css" href="css/meeting_overview.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/meeting_overview.css" />
 {/block}
 
 {block name="page_content"}
@@ -45,6 +45,6 @@
 <br />
 
 <div id="stylized2" class="myform">
-	<a href="http://localhost/Cranberry-Scheduler/index.php?page=schedule_meeting&eventID={$eventId}">Edit Meeting</a>
+	<a href="{$baseUrl}index.php?page=schedule_meeting&eventID={$eventId}">Edit Meeting</a>
 </div>
 {/block}

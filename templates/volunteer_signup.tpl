@@ -6,12 +6,12 @@
 {block name="page_title"}Volunteer Signup{/block}
 
 {block name="page_head"}
-<link rel="stylesheet" type="text/css" href="css/view_meetings.css" />
+<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />
 {/block}
 
 {block name="page_content"}
 <div id="stylized" class="myform">
-	<form method="POST" action="formHandler.php">
+	<form method="POST" action="{$baseUrl}formHandler.php">
 		<input type="hidden" name="source" value="volunteer_signup">
 		<input type="hidden" name="token" value="{$token}" />
 

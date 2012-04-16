@@ -9,6 +9,7 @@ require_once("classes/smarty/Smarty.class.php");
 require_once("classes/GetHandler.class.php");
 require_once("classes/SessionHandler.class.php");
 require_once("classes/DataManager.class.php");
+require_once("classes/ScriptUrls.class.php");
 
 $smarty = new Smarty();
 $getHandler = new GetHandler();
@@ -25,13 +26,12 @@ if ($getHandler->exists("logout"))
 	$userSession->destroy();
 }
 
+
+$scriptUrls = new ScriptUrls();
+
 if (!$userSession->check() && $getHandler->get("page") !== "login")
 {
-	$returnPage = "";
-	if ($getHandler->exists("page"))
-		$returnPage = "&return=".$getHandler->get("page");// bind a hidden return page value to login form
-	header("Location: http://localhost/Cranberry-Scheduler/index.php?page=login".$returnPage);
-	die();
+	$scriptUrls->redirectTo("login", $getHandler->get("page"));
 }
 
 $sh = new SessionHandler();
@@ -49,6 +49,7 @@ else
 	$smarty->assign("loggedIn", false);
 
 $smarty->assign("token", $userSession->getPostToken());
+$smarty->assign("baseUrl", $scriptUrls->getBaseUrl());
 
 switch ($pageGet)
 {
@@ -64,10 +65,7 @@ switch ($pageGet)
 
 	case "meeting_overview":
 		if (is_null($eventId = $getHandler->get("eventID")))
-		{
-			header("Location: http://localhost/Cranberry-Scheduler/index.php?page=main");
-			die();
-		}
+			$scriptUrls->redirectTo("main");
 		$event = $dm->getEventInfo($eventId);
 		$volunteers = $dm->getMeetingVolunteers($eventId);
 		$smarty->assign("eventId", $eventId);
@@ -97,8 +95,7 @@ switch ($pageGet)
 		break;
 
 	default:
-		header("Location: http://localhost/Cranberry-Scheduler/index.php?page=main");
-		die();
+		$scriptUrls->redirectTo("main");
 }
 
 // if (is_null($pageGet)) $pageGet = "main";
