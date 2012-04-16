@@ -16,6 +16,7 @@
 <div id="stylized" class="myform">
 	<form method="POST" action="formHandler.php">
 		<input type="hidden" name="source" value="settings">
+		<input type="hidden" name="token" value="{$token}" />
 
 		<h1>Settings</h1><br />
 		<div class="centered">

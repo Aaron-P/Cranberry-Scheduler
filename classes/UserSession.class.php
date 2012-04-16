@@ -16,11 +16,24 @@ class UserSession
 	private $sessionInstance;
 	private $sessionSecure;
 
+	private function getInfoObject()
+	{
+		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
+			return $userInfo;
+		return null;
+	}
+
 	public function __construct($secure = true)
 	{
 		$this->serverInstance = new ServerHandler();
 		$this->sessionInstance = new SessionHandler();
 		$this->sessionSecure = (bool)$secure;
+
+		if (is_null($this->getInfoObject()))
+		{
+			$userInfo = new UserInfo(NULL, NULL, NULL, NULL);
+			$this->sessionInstance->set(USER_INFO_SESSION_VARIABLE, $userInfo);
+		}
 	}
 
 	public function auth($username, $password)
@@ -48,6 +61,7 @@ class UserSession
 				else
 					$userInfo = new UserInfo($username, "", "", "");
 
+				$this->sessionInstance->destroy();
 				$this->sessionInstance->regenerate();
 				$this->sessionInstance->set(USER_INFO_SESSION_VARIABLE, $userInfo);
 				return true;
@@ -59,19 +73,28 @@ class UserSession
 	public function destroy()
 	{
 		// Do other stuff?
-		$this->sessionInstance->destroy();
+		if (!is_null($userInfo = $this->getInfoObject()) &&
+			!is_null($userInfo->getUsername()) &&
+			!is_null($userInfo->getFirstName()) &&
+			!is_null($userInfo->getLastName()) &&
+			!is_null($userInfo->getUserLevel()))
+			$this->sessionInstance->destroy();
 	}
 
 	public function check()
 	{
-		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
+		if (!is_null($userInfo = $this->getInfoObject()))
 		{
 			$currentTime = time();
 
 //			!is_object($userInfo) ||
 //			!($userInfo instanceof UserInfo) ||
 
-			if ($currentTime - SESSION_TIMEOUT_LIMIT > $userInfo->getLoginTime() ||
+			if (is_null($userInfo->getUsername()) ||
+				is_null($userInfo->getFirstName()) ||
+				is_null($userInfo->getLastName()) ||
+				is_null($userInfo->getUserLevel()) ||
+				$currentTime - SESSION_TIMEOUT_LIMIT > $userInfo->getLoginTime() ||
 				$currentTime - ACCESS_TIMEOUT_LIMIT > $userInfo->getAccessTime() ||
 				($this->sessionSecure && $userInfo->getUserAgent() !== $this->serverInstance->get("HTTP_USER_AGENT")) ||
 				($this->sessionSecure && $userInfo->getIpAddress() !== $this->serverInstance->get("REMOTE_ADDR")))
@@ -92,29 +115,36 @@ class UserSession
 
 	public function getUserLevel()
 	{
-		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
+		if (!is_null($userInfo = $this->getInfoObject()))
 			return $userInfo->getUserLevel();
 		return false;// False, null, or throw?
 	}
 
 	public function getUsername()
 	{
-		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
+		if (!is_null($userInfo = $this->getInfoObject()))
 			return $userInfo->getUsername();
 		return false;// False, null, or throw?
 	}
 
 	public function getFirstName()
 	{
-		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
+		if (!is_null($userInfo = $this->getInfoObject()))
 			return $userInfo->getFirstName();
 		return false;// False, null, or throw?
 	}
 
 	public function getLastName()
 	{
-		if (!is_null($userInfo = $this->sessionInstance->get(USER_INFO_SESSION_VARIABLE)))
+		if (!is_null($userInfo = $this->getInfoObject()))
 			return $userInfo->getLastName();
+		return false;// False, null, or throw?
+	}
+
+	public function getPostToken()
+	{
+		if (!is_null($userInfo = $this->getInfoObject()))
+			return $userInfo->getPostToken();
 		return false;// False, null, or throw?
 	}
 }

@@ -19,6 +19,8 @@
 
 	<form method="POST" action="formHandler.php">
 		<input type="hidden" name="source" value="volunteer_confirm">
+		<input type="hidden" name="token" value="{$token}" />
+
 		<center>
 			<input type="submit" value="Sign up" id="submit" name="submit" />
 			<input type="submit" value="Cancel" id="submit" name="cancel" />

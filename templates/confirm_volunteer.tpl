@@ -26,6 +26,7 @@
 
 	<form method="POST" action="formHandler.php">
 		<input type="hidden" name="source" value="confirm_volunteer">
+		<input type="hidden" name="token" value="{$token}" />
 
 		<label class="label">Shawn LeMaster</label>
 		<span class="small">&nbsp;</span>

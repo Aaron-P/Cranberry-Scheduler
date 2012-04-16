@@ -16,6 +16,7 @@
 
 	<form method="POST" action="formHandler.php">
 		<input type="hidden" name="source" value="create_group">
+		<input type="hidden" name="token" value="{$token}" />
 
 		<label class="label">Class:<br />
 			<span class="small">&nbsp;</span>

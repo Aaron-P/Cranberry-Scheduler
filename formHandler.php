@@ -35,6 +35,15 @@ if (!$userSession->check() && $source !== "login")
 	die();
 }
 
+if ($postHandler->get("token") !== $userSession->getPostToken())
+{
+	// should probably make some sort of error page so they know something went wrong
+	if (is_null($location = $postHandler->get("source")))
+		$location = "main";
+	header("Location: http://localhost/Cranberry-Scheduler/index.php?page=".$location);
+	die();
+}
+
 switch ($source)
 {
 	case "add_location":

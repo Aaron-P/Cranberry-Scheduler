@@ -16,6 +16,7 @@ class UserInfo
 	private $ipAddress;
 	private $loginTime;
 	private $accessTime;
+	private $postToken;
 
 	public function __construct($username, $firstName, $lastName, $userLevel)
 	{
@@ -29,6 +30,13 @@ class UserInfo
 		$this->ipAddress = $this->serverInstance->get("REMOTE_ADDR");
 		$this->loginTime = $currentTime;
 		$this->accessTime = $currentTime;
+		$this->postToken = $this->generatePostToken();
+	}
+
+	private function generatePostToken()
+	{
+		// This should use something more secure like a random uuid generated from dev/random or something, but this should be fine for this.
+		return sha1(mt_rand().microtime().$this->serverInstance->get("HTTP_USER_AGENT").$this->serverInstance->get("REMOTE_ADDR"));
 	}
 
 	public function getUsername()
@@ -75,6 +83,11 @@ class UserInfo
 	{
 		if ($time >= $this->accessTime)
 			$this->accessTime = $time;
+	}
+
+	public function getPostToken()
+	{
+		return $this->postToken;
 	}
 }
 ?>

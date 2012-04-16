@@ -48,6 +48,8 @@ if ($userSession->check())
 else
 	$smarty->assign("loggedIn", false);
 
+$smarty->assign("token", $userSession->getPostToken());
+
 switch ($pageGet)
 {
 	case "main":
