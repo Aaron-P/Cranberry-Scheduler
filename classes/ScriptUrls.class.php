@@ -120,13 +120,20 @@ class ScriptUrls
 		return $this->scheme.$this->host.$this->port.$this->path.$this->query;
 	}
 
-	public function redirectTo($page, $return = NULL)
+	public function redirectTo($location, $variables = array())
 	{
-		if (!is_null($return))
-			$return = "&return=".$return;
+		$getVariables = array();
+		foreach ($variables as $variable => $value)
+		{
+			if (!is_null($value))
+				array_push($getVariables, rawurlencode($variable)."=".rawurlencode($value));
+		}
+		if (!empty($getVariables))
+			$getVariables = "?".implode("&", $getVariables);
 		else
-			$return = "";
-		header("Location: ".$this->getBaseUrl()."index.php?page=".$page.$return);
+			$getVariables = "";
+
+		header("Location: ".$this->getBaseUrl().$location.$getVariables);
 		die();
 	}
 }

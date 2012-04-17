@@ -23,7 +23,7 @@ $sessionHandler = new SessionHandler();
 $nl = "<br />";
 
 if ($postHandler->exists("cancel"))
-	$scriptUrls->redirectTo("main");
+	$scriptUrls->redirectTo("index.php", array("page" => "main"));
 
 //echo var_dump($_POST) . $nl . $nl;
 
@@ -34,7 +34,7 @@ if (!$userSession->check() && $source !== "login")
 //	print "Nope";
 //	if ($getHandler->exists("page"))
 //		;// add a get variable to login page so we can redirect to the correct page on login
-	$scriptUrls->redirectTo("login");
+	$scriptUrls->redirectTo("index.php", array("page" => "login"));
 }
 
 if ($postHandler->get("token") !== $userSession->getPostToken())
@@ -42,7 +42,7 @@ if ($postHandler->get("token") !== $userSession->getPostToken())
 	// should probably make some sort of error page so they know something went wrong
 	if (is_null($location = $postHandler->get("source")))
 		$location = "main";
-	$scriptUrls->redirectTo($location);
+	$scriptUrls->redirectTo("index.php", array("page" => $location));
 }
 
 switch ($source)
@@ -112,7 +112,7 @@ switch ($source)
 
 		if (is_null($return = $postHandler->get("return")))
 			$return = "main";
-		$scriptUrls->redirectTo($return);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "settings":
@@ -124,7 +124,7 @@ switch ($source)
 			$email = NULL;
 		$enotify = isset($remind) ? 1 : 0;
 		$dataManager->updateSettings($eid, $email, $enotify, $reminderTime);
-		$scriptUrls->redirectTo("settings");
+		$scriptUrls->redirectTo("index.php", array("page" => "settings"));
 		break;
 
 	case "volunteer_confirm":

@@ -33,7 +33,7 @@ $scriptUrls = new ScriptUrls();
 
 if (!$userSession->check() && $getHandler->get("page") !== "login")
 {
-	$scriptUrls->redirectTo("login", $getHandler->get("page"));
+	$scriptUrls->redirectTo("index.php", array("page" => "login", "return" => $getHandler->get("page")));
 }
 
 
@@ -65,7 +65,7 @@ switch ($pageGet)
 
 	case "meeting_overview":
 		if (is_null($eventId = $getHandler->get("eventID")))
-			$scriptUrls->redirectTo("main");
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$event = $dataManager->getEventInfo($eventId);
 		$volunteers = $dataManager->getMeetingVolunteers($eventId);
 		$smarty->assign("eventId", $eventId);
@@ -95,7 +95,7 @@ switch ($pageGet)
 		break;
 
 	default:
-		$scriptUrls->redirectTo("main");
+		$scriptUrls->redirectTo("index.php", array("page" => "main"));
 }
 
 // if (is_null($pageGet)) $pageGet = "main";
