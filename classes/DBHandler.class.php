@@ -61,7 +61,7 @@ class DBSingleton
 		// array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL)
 		if (($statement = self::$pdo->prepare($sql)) !== false)
 			if ($statement->execute($variables))
-				return $statement->fetchAll();
+				return $statement->fetchAll(PDO::FETCH_ASSOC);
 		return null;
 	}
 }

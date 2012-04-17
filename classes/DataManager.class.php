@@ -9,8 +9,7 @@ class DataManagerSingleton
 {
     private static $db;
 
-    private $teamEventsSQL =
-        "SELECT DISTINCT m.MeetingType,
+    private $teamEventsSQL = "SELECT DISTINCT m.MeetingType,
                          m.Description,
                          DATE(m.StartTime) AS Date,
                          TIME(m.StartTime) AS Start,
@@ -229,8 +228,14 @@ class DataManagerSingleton
 	         WHERE m.StartTime BETWEEN FROM_UNIXTIME(:start) AND FROM_UNIXTIME(:end)
 	         AND m.LocationID = :location";
 
-
-
+	private $reminderInfo = "SELECT TIME_TO_SEC(TIMEDIFF(m.StartTime, NOW())) AS diff, s.EmailAddress, m.MeetingType, m.Description, UNIX_TIMESTAMP(m.StartTime) AS StartTime, UNIX_TIMESTAMP(m.EndTime) AS EndTime, l.LocationName, p.FirstName, p.LastName
+							FROM setting s, person p, teamperson t, meeting m, location l
+							WHERE s.PersonID = p.PersonID
+							AND p.PersonID = t.PersonID
+							AND t.TeamID = m.TeamID
+							AND m.LocationID = l.LocationID
+							AND m.StartTime > NOW()
+							AND s.EmailNotify = 1";
 
     protected static function Instance()
     {
@@ -443,8 +448,13 @@ class DataManagerSingleton
         $result = self::$db->query($this->personIDSQL, array(":eid" => $eid));
         return $result[0][0];
     }
-}
 
+	public function getReminderInfo()
+	{
+		$result = self::$db->query($this->reminderInfo, array());
+        return $result;
+	}
+}
 
 class DataManager extends DataManagerSingleton
 {
@@ -453,5 +463,4 @@ class DataManager extends DataManagerSingleton
         DataManagerSingleton::Instance();
     }
 }
-
 ?>
