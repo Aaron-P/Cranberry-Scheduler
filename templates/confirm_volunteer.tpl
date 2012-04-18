@@ -12,29 +12,26 @@
 {block name="page_content"}
 <div id="stylized" class="myform">
 	<h1>Volunteer participation</h1><br />
-
-	<label class="label">Date:</label>
-	<span>Wednesday, November 30th, 2011</span><br />
-
-	<label class="label">Time:</label>
-	<span>From 2:00 PM to 3:00 PM</span><br />
-
-	<label class="label">Meeting Type:</label>
-	<span>Interview</span><br /><br />
-
-	<p>Please mark the name(s) of the volunteer(s) that showed up to the above meeting.</p><br />
-
 	<form method="POST" action="{$baseUrl}post.php">
 		<input type="hidden" name="source" value="confirm_volunteer">
 		<input type="hidden" name="token" value="{$token}" />
 
-		<label class="label">Shawn LeMaster</label>
+{foreach $meetings as $m}
+		<label class="label">Date:</label>
+		<span>{$m.StartTime}</span><br />
+
+		<label class="label">Time:</label>
+		<span>{$m.StartTime} to {$m.EndTime}</span><br />
+
+		<p>Please mark the name(s) of the volunteer(s) that showed up to the above meeting.</p><br />
+
+	{foreach $m.Volunteers as $v}
+		<label class="label">{$v.FirstName} {$v.LastName}</label>
 		<span class="small">&nbsp;</span>
-		<input type="checkbox" name="volunteers[]" value="Shawn LeMaster" /><br />
-		<label class="label">John Doe</label>
-		<span class="small">&nbsp;</span>
-		<input type="checkbox" name="volunteers[]" value="John Doe" />
-		<br /><br />
+		<input type="checkbox" name="volunteers[]" value="{$m.MeetingID}|{$v.PersonID}" /><br />
+	{/foreach}
+{/foreach}
+		<br />
 
 		<center>
 			<input type="submit" value="Confirm" id="submit" name="submit" />

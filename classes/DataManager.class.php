@@ -245,6 +245,18 @@ class DataManagerSingleton
 							AND m.MeetingID = :meetingId
 							AND p.Eid = :eid;";
 
+	private $unconfirmedVolunteersSQL = "SELECT m.*, p.PersonID, p.FirstName, p.LastName
+										FROM meeting m, volunteer v, person p
+										WHERE m.NumVolunteers > 0
+										AND m.AllVolunteersConfirmed = '0'
+										AND m.MeetingID = v.MeetingID
+										AND UNIX_TIMESTAMP(m.EndTime) < UNIX_TIMESTAMP(NOW())
+										AND v.PersonID = p.PersonID
+										AND m.TeamID = (SELECT t.TeamID
+														 FROM teamperson t, person p
+														 WHERE t.PersonID = p.PersonID
+														 AND p.Eid = :eid)";
+
     protected static function Instance()
     {
         if (!self::$db)
@@ -467,6 +479,12 @@ class DataManagerSingleton
 	{
 		$result = self::$db->query($this->isInMeetingSQL, array(":meetingId" => $meetingId, ":eid" => $eid));
 		return (bool)$result[0]["Count"];
+	}
+
+	public function getUnconfirmedVolunteers($eid)
+	{
+		$result = self::$db->query($this->unconfirmedVolunteersSQL, array(":eid" => $eid));
+		return $result;
 	}
 }
 

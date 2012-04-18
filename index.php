@@ -106,6 +106,56 @@ switch ($pageGet)
 		$smarty->assign("return", $return);
 		break;
 
+	case "confirm_volunteer":
+		$unconfirmedVolunteers = $dataManager->getUnconfirmedVolunteers($userSession->getUsername());
+		$meetings = array();
+		foreach ($unconfirmedVolunteers AS $unconfirmedVolunteer)
+		{
+			if (!isset($meetings[$unconfirmedVolunteer["MeetingID"]]))
+				$meetings[$unconfirmedVolunteer["MeetingID"]] = array(
+					"MeetingID" => $unconfirmedVolunteer["MeetingID"],
+					"MeetingType" => $unconfirmedVolunteer["MeetingType"],
+					"Description" => $unconfirmedVolunteer["Description"],
+					"StartTime" => $unconfirmedVolunteer["StartTime"],
+					"EndTime" => $unconfirmedVolunteer["EndTime"],
+					"LocationID" => $unconfirmedVolunteer["LocationID"],
+					"Volunteers" => array());
+
+			array_push($meetings[$unconfirmedVolunteer["MeetingID"]]["Volunteers"], array(
+				"PersonID" => $unconfirmedVolunteer["PersonID"],
+				"FirstName" => $unconfirmedVolunteer["FirstName"],
+				"LastName" => $unconfirmedVolunteer["LastName"]
+			));
+		}
+		$smarty->assign("meetings", $meetings);
+		/*
+Array
+(
+    [002] => Array
+        (
+            [MeetingType] => Interview
+            [Description] => We are doing a research study on a new game that we are developing that
+                           is rooted in virtual reality. We just need someone to play the game and
+                           tell us how realistic the game was. You will be filmed during this study.
+            [StartTime] => 2012-02-02 12:35:00
+            [EndTime] => 2012-02-02 13:15:00
+            [LocationID] => 01
+            [Volunteers] => Array
+                (
+                    [0] => Array
+                        (
+                            [PersonID] => 0025
+                            [FirstName] => Louis
+                            [LastName] => Green
+                        )
+
+                )
+
+        )
+
+)		 */
+		break;
+
 	default:
 		$scriptUrls->redirectTo("index.php", array("page" => "main"));
 }
