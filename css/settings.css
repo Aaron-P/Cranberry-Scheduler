@@ -2,9 +2,56 @@
  * @copyright University of Illinois/NCSA Open Source License
  */
 
-div#stylized {
-	margin-top:151px;
+ .input {
+	border: 1px solid #006;
+	/*background: #ffc;*/
 }
+
+.button {
+	border: 1px solid #006;
+	background: #9cf;
+}
+
+.label {
+	display: block;
+	width: 210px;
+	float: left;
+	margin: 2px 4px 6px 4px;
+	text-align: right;
+}
+
+br {
+	clear: left;
+}
+
+label .small {
+	color: #666666;
+	font-size: 11px;
+	font-weight: normal;
+	text-align: right;
+	width: 140px;
+}
+
+ div#stylized {
+	position: static;
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+	height:183px;
+	padding: 10px;
+	margin-top:151px;
+
+	/*	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+	width: 500px;
+	position: relative;
+	margin-top: 100px;*/
+}
+
+/*div#stylized {
+	margin-top:151px;
+}*/
 
 div.centered {
 	text-align:center;

@@ -6,10 +6,10 @@
 {block name="page_title"}Settings{/block}
 
 {block name="page_head"}
-<link type="text/css" rel="stylesheet" href="{$baseUrl}css/base_style.css">
-<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />
+{*<link type="text/css" rel="stylesheet" href="{$baseUrl}css/base_style.css">*}
+{*<link rel="stylesheet" type="text/css" href="{$baseUrl}css/view_meetings.css" />*}
 <link rel="stylesheet" type="text/css" href="{$baseUrl}css/settings.css" />
-<link type="text/css" rel="stylesheet" href="{$baseUrl}css/schedule_meeting.css">
+{*<link type="text/css" rel="stylesheet" href="{$baseUrl}css/schedule_meeting.css">*}
 {/block}
 
 {block name="page_content"}
