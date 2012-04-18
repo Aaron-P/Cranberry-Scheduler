@@ -50,8 +50,9 @@ else
 
 $smarty->assign("token", $userSession->getPostToken());
 $smarty->assign("baseUrl", $scriptUrls->getBaseUrl());
+$smarty->assign("showConfirmDialog", false);
 
-if ($pageGet !== "confirm_volunteer" && $dataManager->areUnconfirmedVolunteers('esutten'))
+if ($dataManager->areUnconfirmedVolunteers('esutten'))
 	$smarty->assign("confirmVolunteers", true);
 else
 	$smarty->assign("confirmVolunteers", false);
@@ -59,16 +60,19 @@ else
 switch ($pageGet)
 {
 	case "main":
+		$smarty->assign("showConfirmDialog", true);
 		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "view_meetings":
+		$smarty->assign("showConfirmDialog", true);
 		$upcomingEvents = $dataManager->getUpcomingTeamEventsDetailed($username);
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "meeting_overview":
+		$smarty->assign("showConfirmDialog", true);
 		if (is_null($eventId = $getHandler->get("eventID")) || !$dataManager->isInMeeting($eventId, $userSession->getUsername()))
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$event = $dataManager->getEventInfo($eventId);
@@ -89,6 +93,7 @@ switch ($pageGet)
 		break;
 
 	case "schedule_meeting":
+		$smarty->assign("showConfirmDialog", true);
 		if (!is_null($eventId = $getHandler->get("eventID")))
 		{
 			if (!$dataManager->isInMeeting($eventId, $userSession->getUsername()))
@@ -101,6 +106,7 @@ switch ($pageGet)
 		break;
 
 	case "settings":
+		$smarty->assign("showConfirmDialog", true);
 		$settings = $dataManager->getSettings($username);
 		$smarty->assign("settings", $settings);
 		break;
@@ -133,32 +139,6 @@ switch ($pageGet)
 			));
 		}
 		$smarty->assign("meetings", $meetings);
-		/*
-Array
-(
-    [002] => Array
-        (
-            [MeetingType] => Interview
-            [Description] => We are doing a research study on a new game that we are developing that
-                           is rooted in virtual reality. We just need someone to play the game and
-                           tell us how realistic the game was. You will be filmed during this study.
-            [StartTime] => 2012-02-02 12:35:00
-            [EndTime] => 2012-02-02 13:15:00
-            [LocationID] => 01
-            [Volunteers] => Array
-                (
-                    [0] => Array
-                        (
-                            [PersonID] => 0025
-                            [FirstName] => Louis
-                            [LastName] => Green
-                        )
-
-                )
-
-        )
-
-)		 */
 		break;
 
 	default:

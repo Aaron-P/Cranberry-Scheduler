@@ -14,7 +14,7 @@
 		<script type="text/javascript" src="{$baseUrl}js/jquery.mousewheel-3.0.4.pack.js"></script>
 		<script type="text/javascript" src="{$baseUrl}js/jquery.fancybox-1.3.4.pack.js"></script>
 		<script type="text/javascript" src="{$baseUrl}js/resize_fix.js"></script>
-{if $confirmVolunteers}
+{if $confirmVolunteers and $showConfirmDialog}
 		<script type="text/javascript">
 		$(document).ready(function() {
 			$.fancybox.init();
