@@ -51,6 +51,11 @@ else
 $smarty->assign("token", $userSession->getPostToken());
 $smarty->assign("baseUrl", $scriptUrls->getBaseUrl());
 
+if ($pageGet !== "confirm_volunteer" && $dataManager->areUnconfirmedVolunteers('esutten'))
+	$smarty->assign("confirmVolunteers", true);
+else
+	$smarty->assign("confirmVolunteers", false);
+
 switch ($pageGet)
 {
 	case "main":
@@ -107,7 +112,7 @@ switch ($pageGet)
 		break;
 
 	case "confirm_volunteer":
-		$unconfirmedVolunteers = $dataManager->getUnconfirmedVolunteers($userSession->getUsername());
+		$unconfirmedVolunteers = $dataManager->getUnconfirmedVolunteers('esutten');//$userSession->getUsername());
 		$meetings = array();
 		foreach ($unconfirmedVolunteers AS $unconfirmedVolunteer)
 		{
