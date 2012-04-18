@@ -53,6 +53,13 @@ switch ($source)
 		break;
 
 	case "schedule_meeting":
+		if (!is_null($eventId = $postHandler->get("eventId")))
+		{
+			if (!$dataManager->isInMeeting($eventId, $userSession->getUsername()))
+				$scriptUrls->redirectTo("index.php", array("page" => "main"));
+			// update existing meeting with id
+
+		}
 		$loc = $postHandler->get("location");
 		$date = $postHandler->get("date") . " ";
 		$start = $date . $postHandler->get("start");
@@ -74,7 +81,7 @@ switch ($source)
 		{
 			$eid = $userSession->getUsername();
 			$dataManager->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers, $eid);
-			header("Location: /Cranberry-Scheduler");
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		}
 		else
 			echo "Bad date/time: " . $start . " --- " . $finish;	// Throw a real exception sometime.

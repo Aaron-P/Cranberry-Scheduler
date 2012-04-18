@@ -72,6 +72,7 @@ class DataManagerSingleton
     private $eventInfoSQL =
         "SELECT DISTINCT m.MeetingType,
                          m.Description,
+						 UNIX_TIMESTAMP(m.StartTime) < UNIX_TIMESTAMP(NOW()) AS InPast,
                          DATE_FORMAT(m.StartTime, '%W, %M %e, %Y') AS Date,
                          DATE_FORMAT(m.StartTime, '%l:%i %p') AS Start,
                          DATE_FORMAT(m.EndTime, '%l:%i %p') AS End,
@@ -237,6 +238,13 @@ class DataManagerSingleton
 							AND m.StartTime > NOW()
 							AND s.EmailNotify = 1";
 
+	private $isInMeetingSQL = "SELECT COUNT(*) AS Count
+							FROM meeting m, teamperson t, person p
+							WHERE m.TeamID = t.TeamID
+							AND t.PersonID = p.PersonID
+							AND m.MeetingID = :meetingId
+							AND p.Eid = :eid;";
+
     protected static function Instance()
     {
         if (!self::$db)
@@ -356,14 +364,14 @@ class DataManagerSingleton
     public function getLocationID($locName)
     {
         $result = self::$db->query($this->locationIDSQL, array(":locName" => $locName));
-        return $result[0][0];
+        return $result[0]["LocationID"];
     }
 
 
     public function getTeamID($eid)
     {
         $result = self::$db->query($this->teamIDSQL, array(":eid" => $eid));
-        return $result[0][0];
+        return $result[0]["TeamID"];
     }
 
 
@@ -446,13 +454,19 @@ class DataManagerSingleton
     public function getPersonID($eid)
     {
         $result = self::$db->query($this->personIDSQL, array(":eid" => $eid));
-        return $result[0][0];
+        return $result[0]["PersonID"];
     }
 
 	public function getReminderInfo()
 	{
 		$result = self::$db->query($this->reminderInfo, array());
         return $result;
+	}
+
+	public function isInMeeting($meetingId, $eid)
+	{
+		$result = self::$db->query($this->isInMeetingSQL, array(":meetingId" => $meetingId, ":eid" => $eid));
+		return (bool)$result[0]["Count"];
 	}
 }
 

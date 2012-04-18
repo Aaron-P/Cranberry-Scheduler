@@ -64,13 +64,18 @@ switch ($pageGet)
 		break;
 
 	case "meeting_overview":
-		if (is_null($eventId = $getHandler->get("eventID")))
+		if (is_null($eventId = $getHandler->get("eventID")) || !$dataManager->isInMeeting($eventId, $userSession->getUsername()))
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$event = $dataManager->getEventInfo($eventId);
 		$volunteers = $dataManager->getMeetingVolunteers($eventId);
 		$smarty->assign("eventId", $eventId);
 		$smarty->assign("event", $event);
 		$smarty->assign("volunteers", $volunteers);
+		if ((bool)$event["InPast"])
+			$smarty->assign("editable", false);
+		else
+			$smarty->assign("editable", true);
+
 		break;
 
 	case "volunteer_opportunities":
@@ -79,6 +84,13 @@ switch ($pageGet)
 		break;
 
 	case "schedule_meeting":
+		if (!is_null($eventId = $getHandler->get("eventID")))
+		{
+			if (!$dataManager->isInMeeting($eventId, $userSession->getUsername()))
+				$scriptUrls->redirectTo("index.php", array("page" => "main"));
+			// populate the form
+
+		}
 		$locations = $dataManager->getAllLocations();
 		$smarty->assign("locations", $locations);
 		break;

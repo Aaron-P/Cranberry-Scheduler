@@ -20,21 +20,88 @@
 <script type="text/javascript">
 	var currentLocation = "";
 
+	function enableInput(element)
+	{
+		element.prop("disabled", false);
+		element.removeClass("inputDisabled");
+		element.removeClass("textDisabled");
+	}
+	function disableInput(element)
+	{
+		element.prop("disabled", true);
+		element.addClass("inputDisabled");
+		element.addClass("textDisabled");
+	}
+
+	function formEnable(enable)
+	{
+		if (enable)
+		{
+			enableInput($("#date_picker"));
+			enableInput($("#start_time"));
+			enableInput($("#finish_time"));
+			enableInput($("#interview"));
+			enableInput($("#rehearsal"));
+			if ($("#interview").is(":checked"))
+				enableInput($("#num_volunteers"));
+			enableInput($("#description"));
+			enableInput($("#submit"));
+		}
+		else
+		{
+			disableInput($("#date_picker"));
+			disableInput($("#start_time"));
+			disableInput($("#finish_time"));
+			disableInput($("#interview"));
+			disableInput($("#rehearsal"));
+			disableInput($("#num_volunteers"));
+			disableInput($("#description"));
+			disableInput($("#submit"));
+		}
+	}
+
 	function changeLocation()
 	{
 		if ($("#location"))
 			currentLocation = $("#location").val();
 		else
 			currentLocation = "";
+
+		if (currentLocation != "")
+			formEnable(true);
+		else
+			formEnable(false);
+
 		$("#calendar").empty();
 		doCal();
 	}
 
 
-function doCal()
-{
+	function validateForm()
+	{
+		return true;
+	}
+/*
+		if ($("#location").val() == "")
+		{
+			setError($("#location"));
+		}
+
+			$("#date_picker").val())
+			$("#start_time")
+			$("#finish_time")
+			$("#interview")
+			$("#rehearsal")
+			$("#num_volunteers")
+			$("#description")
+
+		.is(":checked")
+		.val()
+*/
 
 
+	function doCal()
+	{
 		var date = new Date();
 		var d = date.getDate();
 		var m = date.getMonth();
@@ -78,17 +145,11 @@ function doCal()
 				}
 			]
 		});
-
-
-}
-
-
-
-
+	}
 
 	$(document).ready(function() {
-doCal()
-
+		formEnable(false);
+		doCal()
 	});
 </script>
 {/block}
@@ -100,7 +161,7 @@ doCal()
 
 	<div id="form_background">
 		<div id="form_left">
-			<form method="POST" action="{$baseUrl}post.php">
+			<form method="POST" action="{$baseUrl}post.php" onsubmit="return validateForm();">
 				<input type="hidden" name="source" value="schedule_meeting">
 				<input type="hidden" name="token" value="{$token}" />
 

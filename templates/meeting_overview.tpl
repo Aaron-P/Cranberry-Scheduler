@@ -43,8 +43,11 @@
 	<div class="spacer"></div>
 </div>
 <br />
-
 <div id="stylized2" class="myform">
+{if $editable}
 	<a href="{$baseUrl}index.php?page=schedule_meeting&eventID={$eventId}">Edit Meeting</a>
+{else}
+	Past meetings cannot be edited.
+{/if}
 </div>
 {/block}
