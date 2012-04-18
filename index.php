@@ -100,7 +100,11 @@ switch ($pageGet)
 				$scriptUrls->redirectTo("index.php", array("page" => "main"));
 			// populate the form
 
+			$meetingData = $dataManager->getMeetingData($eventId);
+			$smarty->assign("inputFields", $meetingData);
 		}
+		else
+			$smarty->assign("inputFields", false);
 		$locations = $dataManager->getAllLocations();
 		$smarty->assign("locations", $locations);
 		break;

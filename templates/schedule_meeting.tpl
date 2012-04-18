@@ -148,8 +148,21 @@
 	}
 
 	$(document).ready(function() {
+		doCal();
+{if $inputFields}
+		$("#location").val("{$inputFields.LocationID}");
+		$("#date_picker").val("{$inputFields.Date}");
+		$("#start_time").val("{$inputFields.Start}");
+		$("#finish_time").val("{$inputFields.End}");
+		$("#"+String.toLowerCase("{$inputFields.MeetingType}")).prop("checked", true);
+		$("#num_volunteers").val("{$inputFields.NumVolunteers}");
+		$("#description").val("{$inputFields.Description}");
+		formEnable(true);
+		checkMeeting();
+		checkSelect();
+{else}
 		formEnable(false);
-		doCal()
+{/if}
 	});
 </script>
 {/block}
@@ -164,7 +177,9 @@
 			<form method="POST" action="{$baseUrl}post.php" onsubmit="return validateForm();">
 				<input type="hidden" name="source" value="schedule_meeting">
 				<input type="hidden" name="token" value="{$token}" />
-
+{if $inputFields}
+				<input type="hidden" name="eventId" value="{$inputFields.MeetingID}" />
+{/if}
 				<label class="label">Location<br />
 				<span class="small">&nbsp;</span>
 				</label>
@@ -200,7 +215,7 @@
 					<label id="num_volunteers_label" class="label"># Volunteers<br />
 						<span class="small">&nbsp;</span>
 					</label>
-					<input class="input" type="text" name="numOfVolunteers" id="num_volunteers" value="" /><br />
+					<input class="input" type="text" name="numOfVolunteers" id="num_volunteers" value="0" /><br />
 				</div>
 
 				<label class="label">Description<br />
@@ -231,10 +246,13 @@
 		//var startTime = Math.round((new Date(date+" "+start)).getTime() / 1000);
 		//var endTime = Math.round((new Date(date+" "+end)).getTime() / 1000);
 
-		if (date != "" && start != "" && end != "")
+		if (date != "")
 		{
 			var day = new Date(date);
 			$("#calendar").fullCalendar("gotoDate", day.getFullYear(), day.getMonth(), day.getDate());
+		}
+		if (date != "" && start != "" && end != "")
+		{
 			$("#calendar").fullCalendar("select", new Date(date+" "+start), new Date(date+" "+end), false);
 		}
 	}

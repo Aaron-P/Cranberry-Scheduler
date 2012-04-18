@@ -190,12 +190,10 @@ class DataManagerSingleton
             "UPDATE meeting
              SET MeetingType = :meetType,
                  Description = :description,
-                 StartTime = :startTime,
-                 EndTime = :endTime,
+                 StartTime = FROM_UNIXTIME(:startTime),
+                 EndTime = FROM_UNIXTIME(:endTime),
                  LocationID = :locID,
-                 TeamID = :teamID,
-                 NumVolunteers = :numVolunteers,
-                 RequiredForms = :reqForms
+                 NumVolunteers = :numVolunteers
              WHERE MeetingID = :meetID;";
 
     private $updateVolunteerSQL =
@@ -268,6 +266,15 @@ class DataManagerSingleton
 														 FROM teamperson t, person p
 														 WHERE t.PersonID = p.PersonID
 														 AND p.Eid = :eid)";
+
+		private $meetingDataSQL = "SELECT m.MeetingID, m.MeetingType, m.Description, m.LocationID, m.NumVolunteers,
+									DATE_FORMAT(m.StartTime, '%m/%e/%Y') AS Date,
+									DATE_FORMAT(m.StartTime, '%l:%i %p') AS Start,
+									DATE_FORMAT(m.EndTime, '%l:%i %p') AS End
+									FROM meeting m
+									WHERE m.MeetingID = :meetingId";
+
+
 
     protected static function Instance()
     {
@@ -420,9 +427,14 @@ class DataManagerSingleton
         return self::$db->query($this->insertMeetingSQL, $sqlVars);
     }
 
+	public function getMeetingData($meetingId)
+	{
+		$result = self::$db->query($this->meetingDataSQL, array(":meetingId" => $meetingId));
+		return $result[0];
+	}
 
     // Update a meeting
-    public function updateMeeting($meetID, $meetType, $description, $startTime, $endTime, $locID, $teamID, $numVolunteers, $reqForms)
+    public function updateMeeting($meetID, $meetType, $description, $startTime, $endTime, $locID, $numVolunteers)
     {
         $sqlVars = array(
             ":meetID" => $meetID,
@@ -431,12 +443,9 @@ class DataManagerSingleton
             ":startTime" => $startTime,
             ":endTime" => $endTime,
             ":locID" => $locID,
-            ":teamID" => $teamID,
-            ":numVolunteers" => $numVolunteers,
-            ":reqForms" => $reqForms
+            ":numVolunteers" => $numVolunteers
         );
-
-        return self::$db->query($this->updateMeetingSQL, $sqlVars);
+		return self::$db->query($this->updateMeetingSQL, $sqlVars);
     }
 
 

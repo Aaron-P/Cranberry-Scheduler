@@ -58,7 +58,6 @@ switch ($source)
 			if (!$dataManager->isInMeeting($eventId, $userSession->getUsername()))
 				$scriptUrls->redirectTo("index.php", array("page" => "main"));
 			// update existing meeting with id
-
 		}
 		$loc = $postHandler->get("location");
 		$date = $postHandler->get("date") . " ";
@@ -77,10 +76,16 @@ switch ($source)
 		// echo "Description: " . $description . $nl;
 		// echo $startTimestamp . $nl;
 		// echo $finishTimestamp . $nl;
+
+//		updateMeeting
+
 		if ($startTimestamp != false && $finishTimestamp != false)
 		{
+			if (!is_null($eventId))
+				$dataManager->updateMeeting($eventId, $type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers);
+			else
+				$dataManager->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers, $eid);
 			$eid = $userSession->getUsername();
-			$dataManager->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers, $eid);
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		}
 		else
