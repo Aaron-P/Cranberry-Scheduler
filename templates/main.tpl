@@ -105,6 +105,15 @@
 	<div id="meeting_box" class="myform">
 		<p><a href="{$baseUrl}index.php?page=schedule_meeting">Create Meeting</a></p>
 		<p><a href="{$baseUrl}index.php?page=view_meetings">View Meetings</a></p>
+
+{*
+	List links by user type here (admin stuff, researcher stuff, volunteer stuff, etc.
+*}
+
+<!--		<hr />
+		<p>test</p>
+		<p>test</p>
+		<p>test</p>-->
 	</div>
 
 	<div id="upcoming_events" class="myform">

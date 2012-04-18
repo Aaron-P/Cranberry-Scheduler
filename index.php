@@ -52,7 +52,7 @@ $smarty->assign("token", $userSession->getPostToken());
 $smarty->assign("baseUrl", $scriptUrls->getBaseUrl());
 $smarty->assign("showConfirmDialog", false);
 
-if ($dataManager->areUnconfirmedVolunteers('esutten'))
+if (false && $dataManager->areUnconfirmedVolunteers('esutten'))
 	$smarty->assign("confirmVolunteers", true);
 else
 	$smarty->assign("confirmVolunteers", false);

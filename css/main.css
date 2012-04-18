@@ -31,28 +31,31 @@ div.myform {
 }
 
 div#meeting_box {
+	position: relative;
 	padding:10px;
 	width:150px;
-	top:40px;
-	right:20px;
-	height:50px;
+	margin-top:40px;
+	right:34px;
 }
 
 div#upcoming_events {
-	width:170px;
-	top:134px;
-	right:20px;
-	height:224px;
+	position: relative;
+	padding:10px;
+	width:150px;
+	margin-top:20px;
+	right:34px;
+/*	height:224px;*/
 }
 
 div#upcoming_events_title {
-	padding:10px;
+	/*padding:10px;*/
 }
 
 div#events_list {
+	margin-top:10px;
 	overflow-y:scroll;
 	height:170px;
-	width:160px;
+	width:150px;
 	position:relative;
 	left:0;
 }
