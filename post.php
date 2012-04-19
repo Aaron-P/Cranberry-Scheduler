@@ -102,6 +102,10 @@ switch ($source)
 		break;
 
 	case "delete_group":
+		$groups = $postHandler->get("groups");
+		foreach ($groups as $teamID)
+			$dataManager->deleteGroup($teamID);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "schedule_meeting":

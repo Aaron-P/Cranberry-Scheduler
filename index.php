@@ -185,6 +185,8 @@ switch ($pageGet)
 
 	case "delete_group":
 		// check user level
+		$groups = $dataManager->getAllGroups();
+		$smarty->assign("groups", $groups);
 		break;
 
 	default:

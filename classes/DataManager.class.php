@@ -305,6 +305,9 @@ class DataManagerSingleton
    
     private $addGroupPersonSQL = "INSERT INTO teamPerson(TeamID, PersonID) VALUES (:tid, :pid);";
 
+    private $allGroupsSQL = "SELECT TeamID, TeamName FROM team ORDER BY TeamName;";
+
+    private $deleteGroupSQL = "DELETE FROM team WHERE TeamID = :id;";
 
     protected static function Instance()
     {
@@ -620,6 +623,16 @@ class DataManagerSingleton
     public function addGroupPerson($teamID, $personID)
     {
         return self::$db->query($this->addGroupPersonSQL, array(":tid" => $teamID, ":pid" => $personID));
+    }
+
+    public function getAllGroups()
+    {
+        return self::$db->query($this->allGroupsSQL);
+    }
+
+    public function deleteGroup($teamID)
+    {
+        return self::$db->query($this->deleteGroupSQL, array(":id", $teamID));
     }
 }
 
