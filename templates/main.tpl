@@ -103,8 +103,32 @@
 
 <div id="right_side">
 	<div id="meeting_box" class="myform">
-		<p><a href="{$baseUrl}index.php?page=schedule_meeting">Create Meeting</a></p>
-		<p><a href="{$baseUrl}index.php?page=view_meetings">View Meetings</a></p>
+		<h4>Admin</h4>
+		<hr />
+
+		<div id="link_list">
+			<p><a href="{$baseUrl}index.php?page=add_location">Add Location</a></p>
+			<p><a href="{$baseUrl}index.php?page=view_meetings">Add Courses</a></p>
+			<p><a href="{$baseUrl}index.php?page=view_meetings">Add Students</a></p>
+			<p><a href="{$baseUrl}index.php?page=view_meetings">Add Groups</a></p>
+			<p><a href="{$baseUrl}index.php?page=add_location">Delete Location(s)</a></p>
+			<p><a href="{$baseUrl}index.php?page=view_meetings">Delete Course(s)</a></p>
+			<p><a href="{$baseUrl}index.php?page=view_meetings">Delete Student(s)</a></p>
+			<p><a href="{$baseUrl}index.php?page=view_meetings">Delete Group(s)</a></p>
+		</div>
+
+		<h4>Research</h4>
+		<hr />
+		<div id="link_list">
+			<p><a href="{$baseUrl}index.php?page=schedule_meeting">Create Meeting</a></p>
+			<p><a href="{$baseUrl}index.php?page=view_meetings">View Meetings</a></p>
+		</div>
+
+		<h4>Volunteer</h4>
+		<hr />
+		<div id="link_list">
+			<p><a href="{$baseUrl}index.php?page=volunteer_opportunities">Volunteer Opportunities</a></p>
+		</div>
 
 {*
 	List links by user type here (admin stuff, researcher stuff, volunteer stuff, etc.
