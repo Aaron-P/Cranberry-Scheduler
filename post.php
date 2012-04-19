@@ -48,8 +48,8 @@ if ($postHandler->get("token") !== $userSession->getPostToken())
 switch ($source)
 {
 	case "add_location":
-		$loc = $postHandler->get("location");
-		echo "Adding location: " . $loc . $nl;
+		$location = $postHandler->get("location");
+		$dataManager->addLocation($location);
 		break;
 
 	case "schedule_meeting":

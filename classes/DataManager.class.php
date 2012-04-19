@@ -255,25 +255,27 @@ class DataManagerSingleton
 														 WHERE t.PersonID = p.PersonID
 														 AND p.Eid = :eid)";
 
-		private $unconfirmedVolunteersCountSQL = "SELECT COUNT(*) AS Count
-										FROM meeting m, volunteer v, person p
-										WHERE m.NumVolunteers > 0
-										AND m.AllVolunteersConfirmed = '0'
-										AND m.MeetingID = v.MeetingID
-										AND UNIX_TIMESTAMP(m.EndTime) < UNIX_TIMESTAMP(NOW())
-										AND v.PersonID = p.PersonID
-										AND m.TeamID = (SELECT t.TeamID
-														 FROM teamperson t, person p
-														 WHERE t.PersonID = p.PersonID
-														 AND p.Eid = :eid)";
+	private $unconfirmedVolunteersCountSQL = "SELECT COUNT(*) AS Count
+									FROM meeting m, volunteer v, person p
+									WHERE m.NumVolunteers > 0
+									AND m.AllVolunteersConfirmed = '0'
+									AND m.MeetingID = v.MeetingID
+									AND UNIX_TIMESTAMP(m.EndTime) < UNIX_TIMESTAMP(NOW())
+									AND v.PersonID = p.PersonID
+									AND m.TeamID = (SELECT t.TeamID
+													 FROM teamperson t, person p
+													 WHERE t.PersonID = p.PersonID
+													 AND p.Eid = :eid)";
 
-		private $meetingDataSQL = "SELECT m.MeetingID, m.MeetingType, m.Description, m.LocationID, m.NumVolunteers,
-									DATE_FORMAT(m.StartTime, '%m/%e/%Y') AS Date,
-									DATE_FORMAT(m.StartTime, '%l:%i %p') AS Start,
-									DATE_FORMAT(m.EndTime, '%l:%i %p') AS End
-									FROM meeting m
-									WHERE m.MeetingID = :meetingId";
+	private $meetingDataSQL = "SELECT m.MeetingID, m.MeetingType, m.Description, m.LocationID, m.NumVolunteers,
+								DATE_FORMAT(m.StartTime, '%m/%e/%Y') AS Date,
+								DATE_FORMAT(m.StartTime, '%l:%i %p') AS Start,
+								DATE_FORMAT(m.EndTime, '%l:%i %p') AS End
+								FROM meeting m
+								WHERE m.MeetingID = :meetingId";
 
+    private $addLocationSQL = "INSERT INTO location(LocationName) 
+                               VALUES (:locname);";
 
 
     protected static function Instance()
@@ -513,6 +515,11 @@ class DataManagerSingleton
 		$result = self::$db->query($this->unconfirmedVolunteersSQL, array(":eid" => $eid));
 		return $result;
 	}
+
+    public function addLocation($location)
+    {
+        return self::$db->query($this->addLocationSQL, array(":locname" => $location));
+    }
 }
 
 class DataManager extends DataManagerSingleton

@@ -147,6 +147,10 @@ switch ($pageGet)
 		$smarty->assign("meetings", $meetings);
 		break;
 
+	case "add_location":
+		
+		break;
+
 	default:
 		$scriptUrls->redirectTo("index.php", array("page" => "main"));
 }
