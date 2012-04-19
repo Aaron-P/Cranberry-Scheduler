@@ -295,6 +295,10 @@ class DataManagerSingleton
                             IsVolunteer, IsResearcher, IsTeacher) 
                             VALUES (:Eid, :FirstName, :LastName, :IsVolunteer, :IsResearcher, :IsTeacher);";
 
+    private $allPeopleSQL = "SELECT PersonID, FirstName, LastName FROM person;";
+
+    private $deletePersonSQL = "DELETE FROM person WHERE PersonID = :id;";
+
 
     protected static function Instance()
     {
@@ -582,6 +586,16 @@ class DataManagerSingleton
             ":IsTeacher" => $isTeacher
         );
         return self::$db->query($this->addPersonSQL, $sqlVars);
+    }
+
+    public function getAllPeople()
+    {
+        return self::$db->query($this->allPeopleSQL);
+    }
+
+    public function deletePerson($personID)
+    {
+        return self::$db->query($this->deletePersonSQL, array(":id" => $personID));
     }
 }
 

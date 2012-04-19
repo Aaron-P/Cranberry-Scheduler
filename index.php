@@ -173,6 +173,8 @@ switch ($pageGet)
 
 	case "delete_student":
 		// check user level
+		$students = $dataManager->getAllPeople();
+		$smarty->assign("students", $students);
 		break;
 
 	case "add_group":

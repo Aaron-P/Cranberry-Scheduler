@@ -85,6 +85,10 @@ switch ($source)
 		break;
 
 	case "delete_student":
+		$people = $postHandler->get("students");
+		foreach ($people as $personID)
+			$dataManager->deletePerson($personID);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "add_group":
