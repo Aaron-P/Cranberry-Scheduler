@@ -18,7 +18,7 @@
         <input type="hidden" name="source" value="delete_location">
         <input type="hidden" name="token" value="{$token}" />
 
-        <h1>Disable Location(s)</h1>
+        <h1>Disable location(s)</h1>
         <br />
 
         <p>Disabling a location prevents a location from being used to create new events, but all
@@ -27,6 +27,7 @@
         before submitting. Disabled locations may be re-enabled any time.</p>
         <br />
      
+        {if $locations}
         <div class="padded">
             {foreach $locations as $l}
             <input type="checkbox" name="locations[]" value={$l["LocationID"]} {if $l["IsUsable"] == 0}checked{/if}>&nbsp; {$l["LocationName"]}<br />
@@ -40,6 +41,9 @@
             <br />
             <input type="submit" value="Submit" id="submit" name="submit" />
         </center>
+        {else}
+            <p><b>No locations available.</b></p>
+        {/if}
 
         <div class="spacer"></div>
     </form>
