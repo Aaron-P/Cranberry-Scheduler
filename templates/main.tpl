@@ -105,16 +105,11 @@
 	<div id="meeting_box" class="myform">
 		<h4>Admin</h4>
 		<hr />
-
 		<div id="link_list">
-			<p><a href="{$baseUrl}index.php?page=add_location">Add Location</a></p>
-			<p><a href="{$baseUrl}index.php?page=view_meetings">Add Courses</a></p>
-			<p><a href="{$baseUrl}index.php?page=view_meetings">Add Students</a></p>
-			<p><a href="{$baseUrl}index.php?page=view_meetings">Add Groups</a></p>
-			<p><a href="{$baseUrl}index.php?page=add_location">Delete Location(s)</a></p>
-			<p><a href="{$baseUrl}index.php?page=view_meetings">Delete Course(s)</a></p>
-			<p><a href="{$baseUrl}index.php?page=view_meetings">Delete Student(s)</a></p>
-			<p><a href="{$baseUrl}index.php?page=view_meetings">Delete Group(s)</a></p>
+			<p>Locations: <a href="{$baseUrl}index.php?page=add_location">Add</a> | <a href="{$baseUrl}index.php?page=main">Delete</a></p>
+			<p>Courses: <a href="{$baseUrl}index.php?page=main">Add</a> | <a href="{$baseUrl}index.php?page=main">Delete</a></p>
+			<p>Students: <a href="{$baseUrl}index.php?page=main">Add</a> | <a href="{$baseUrl}index.php?page=main">Delete</a></p>
+			<p>Groups: <a href="{$baseUrl}index.php?page=main">Add</a> | <a href="{$baseUrl}index.php?page=main">Delete</a></p>
 		</div>
 
 		<h4>Research</h4>
@@ -129,15 +124,6 @@
 		<div id="link_list">
 			<p><a href="{$baseUrl}index.php?page=volunteer_opportunities">Volunteer Opportunities</a></p>
 		</div>
-
-{*
-	List links by user type here (admin stuff, researcher stuff, volunteer stuff, etc.
-*}
-
-<!--		<hr />
-		<p>test</p>
-		<p>test</p>
-		<p>test</p>-->
 	</div>
 
 	<div id="upcoming_events" class="myform">
