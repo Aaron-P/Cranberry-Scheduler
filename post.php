@@ -73,6 +73,18 @@ switch ($source)
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
+	case "add_student":
+		break;
+
+	case "delete_student":
+		break;
+
+	case "add_group":
+		break;
+
+	case "delete_group":
+		break;
+
 	case "schedule_meeting":
 		if (!is_null($eventId = $postHandler->get("eventId")))
 		{

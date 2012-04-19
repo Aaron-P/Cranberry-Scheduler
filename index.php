@@ -167,6 +167,22 @@ switch ($pageGet)
 		$smarty->assign("courses", $courses);
 		break;
 
+	case "add_student":
+		// check user level
+		break;
+
+	case "delete_student":
+		// check user level
+		break;
+
+	case "add_group":
+		// check user level
+		break;
+
+	case "delete_group":
+		// check user level
+		break;
+
 	default:
 		$scriptUrls->redirectTo("index.php", array("page" => "main"));
 }
