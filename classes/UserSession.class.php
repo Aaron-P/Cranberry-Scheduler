@@ -6,6 +6,7 @@
 require_once("LDAP.class.php");
 require_once("UserInfo.class.php");
 require_once("SessionHandler.class.php");
+require_once("DataManager.class.php");
 
 define("ACCESS_TIMEOUT_LIMIT", 30 * 60);
 define("SESSION_TIMEOUT_LIMIT", 60 * 60);
@@ -57,8 +58,22 @@ class UserSession
 
 			if (true)
 			{
+				$dataManager = new DataManager();
+
+				$personInfo = $dataManager->getPersonInfo($username);
+				$firstName = $personInfo['FirstName'];
+				$lastName = $personInfo['LastName'];
+				if ($personInfo['IsTeacher'] === "1")
+					$userLevel = "teacher";
+				else if ($personInfo["IsResearcher"] === "1")
+					$userLevel = "researcher";
+				else if ($personInfo['IsVolunteer'] === "1")
+					$userLevel = "volunteer";
+				else
+					$userLevel = null;
+				
 				if (true)
-					$userInfo = new UserInfo($username, "John", "Doe", "");
+					$userInfo = new UserInfo($username, $firstName, $lastName, $userLevel);
 				else
 					$userInfo = new UserInfo($username, "", "", "");
 

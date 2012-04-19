@@ -41,6 +41,7 @@ $username = $userSession->getUsername();
 $smarty->assign("username", $username);
 $smarty->assign("firstName", $userSession->getFirstName());
 $smarty->assign("lastName", $userSession->getLastName());
+$smarty->assign("userLevel", $userSession->getUserLevel());
 $pageGet = $getHandler->get("page");
 
 if ($userSession->check())
@@ -65,6 +66,11 @@ switch ($pageGet)
 		$smarty->assign("showConfirmDialog", true);
 		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
 		$smarty->assign("upcomingEvents", $upcomingEvents);
+		if ($userSession->getUserLevel() === "volunteer")
+		{
+			$opportunities = $dataManager->getVolunteerOpportunities();
+			$smarty->assign("opportunities", $opportunities);
+		}
 		break;
 
 	case "view_meetings":

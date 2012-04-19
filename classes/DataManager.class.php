@@ -24,7 +24,7 @@ class DataManagerSingleton
                AND person.Eid = :eid;";
 
     private $personInfoSQL =
-        "SELECT Eid, FirstName, LastName
+        "SELECT Eid, FirstName, LastName, IsVolunteer, IsResearcher, IsTeacher
          FROM person
          WHERE Eid = :eid;";
 

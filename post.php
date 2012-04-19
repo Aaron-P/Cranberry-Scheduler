@@ -5,7 +5,7 @@
 
 error_reporting(E_ALL | E_STRICT);
 require_once("classes/UserSession.class.php");
-require_once("classes/smarty/Smarty.class.php");
+//require_once("classes/smarty/Smarty.class.php");
 require_once("classes/PostHandler.class.php");
 //require_once("classes/GetHandler.class.php");
 require_once("classes/SessionHandler.class.php");
@@ -164,10 +164,15 @@ switch ($source)
 		// should use UserSession class
 		$userSession->auth($username, $password);
 
-		$sessionHandler->set("username", $username);
-		$userInfo = $dataManager->getPersonInfo($username);
-		$sessionHandler->set("firstName", $userInfo["FirstName"]);
-		$sessionHandler->set("lastName", $userInfo["LastName"]);
+		//$sessionHandler->set("username", $username);
+		//$userInfo = $dataManager->getPersonInfo($username);
+		//$sessionHandler->set("firstName", $userInfo["FirstName"]);
+		//$sessionHandler->set("lastName", $userInfo["LastName"]);
+
+		// TODO: do this in UserSession
+		//$sessionHandler->set("isVolunteer", $userInfo['IsVolunteer']);
+		//$sessionHandler->set("isResearcher", $userInfo["IsResearcher"]);
+		//$sessionHandler->set("isTeacher", $userInfo["IsTeacher"]);
 
 		if (is_null($return = $postHandler->get("return")))
 			$return = "main";

@@ -16,6 +16,8 @@
 <link rel="stylesheet" type="text/css" href="{$baseUrl}css/main.css" />
 <script type="text/javascript" src="{$baseUrl}js/jquery-ui-1.8.11.custom.min.js"></script>
 <script type="text/javascript" src="{$baseUrl}js/fullcalendar.js"></script>
+
+{if $userLevel !== "volunteer"}
 <script type="text/javascript">
 	$(document).ready(function() {
 
@@ -31,30 +33,11 @@
 				right: "prev,next today month,agendaDay"/*month,basicWeek,basicDay*/
 			},
 
-/*			dayClick: function(date, allDay, jsEvent, view) {
-				var timestamp = Math.round((date).getTime() / 1000);
-				document.location.href = "shedule_meeting.htm?time=" + timestamp;
-			},
-*/
 			selectable: false,
 			selectHelper: false,
 
 			eventClick: function(calEvent, jsEvent, view) {
 				window.location.href = "{$baseUrl}index.php?page=meeting_overview&eventID=" + calEvent.id;
-
-				//$.post("event_click.php", { eventID: calEvent.id });
-				//,
-				// 	function(data) {
-				// 		alert(data);
-				// 	}
-				// );
-		        //alert("Event: " + calEvent.title);
-		        //alert("Coordinates: " + jsEvent.pageX + "," + jsEvent.pageY);
-		        //alert("View: " + view.name);
-		        //alert("ID: " + calEvent.id);
-
-		        // change the border color just for fun
-		        //$(this).css("border-color", "red");
 		    },
 
 			select: function(start, end, allDay) {
@@ -95,14 +78,22 @@
 		});
 	});
 </script>
+{/if}
 {/block}
 
 {block name="page_content"}
-<div id="calendar"></div>
+
+<div id="calendar">
+	{if $userLevel === "volunteer"}
+	{include file="volunteer_opportunities_content.tpl"}
+	{/if}
+</div>
+
 <div id="spacer_calendar"></div>
 
 <div id="right_side">
 	<div id="meeting_box" class="myform">
+		{if $userLevel === "teacher"}
 		<h4>Admin</h4>
 		<hr />
 		<div id="link_list">
@@ -111,19 +102,21 @@
 			<p>Students: <a href="{$baseUrl}index.php?page=add_student">Add</a> | <a href="{$baseUrl}index.php?page=delete_student">Delete</a></p>
 			<p>Groups: <a href="{$baseUrl}index.php?page=add_group">Add</a> | <a href="{$baseUrl}index.php?page=delete_group">Delete</a></p>
 		</div>
+		{/if}
 
+		{if $userLevel === "teacher"}
 		<h4>Research</h4>
 		<hr />
+		{/if}
+		{if $userLevel === "teacher" || $userLevel === "researcher" || $userLevel === "volunteer"}
 		<div id="link_list">
+			{if $userLevel === "teacher" || $userLevel === "researcher"}
 			<p><a href="{$baseUrl}index.php?page=schedule_meeting">Create Meeting</a></p>
+			<p><a href="{$baseUrl}index.php?page=volunteer_opportunities">Volunteer Opportunities</a></p>
+			{/if}
 			<p><a href="{$baseUrl}index.php?page=view_meetings">View Meetings</a></p>
 		</div>
-
-		<h4>Volunteer</h4>
-		<hr />
-		<div id="link_list">
-			<p><a href="{$baseUrl}index.php?page=volunteer_opportunities">Volunteer Opportunities</a></p>
-		</div>
+		{/if}		
 	</div>
 
 	<div id="upcoming_events" class="myform">
