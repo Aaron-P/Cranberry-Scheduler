@@ -148,7 +148,12 @@ switch ($pageGet)
 		break;
 
 	case "add_location":
-		
+		// check user level
+		break;
+
+	case "delete_location":
+		$locations = $dataManager->getAllLocations();
+		$smarty->assign("locations", $locations);
 		break;
 
 	default:

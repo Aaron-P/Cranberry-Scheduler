@@ -37,7 +37,6 @@ label .small {
 	margin-left: auto;
 	margin-right: auto;
 	width: 500px;
-	height:183px;
 	padding: 10px;
 	margin-top:151px;
 }
@@ -48,4 +47,8 @@ label .small {
 
 div.centered {
 	text-align:center;
+}
+
+div.padded {
+	padding-left: 150px;
 }

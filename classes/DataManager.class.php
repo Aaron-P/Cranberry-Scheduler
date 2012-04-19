@@ -165,7 +165,7 @@ class DataManagerSingleton
              ORDER BY p.LastName ASC;";
 
     private $allLocationsSQL =
-        "SELECT LocationID, LocationName
+        "SELECT LocationID, LocationName, IsUsable
          FROM location
          ORDER BY LocationName ASC;";
 
@@ -276,6 +276,13 @@ class DataManagerSingleton
 
     private $addLocationSQL = "INSERT INTO location(LocationName) 
                                VALUES (:locname);";
+
+    private $disableLocationSQL = "UPDATE location
+                                    SET IsUsable = :usable
+                                    WHERE LocationID = :id;";
+
+    private $deleteLocationSQL = "DELETE FROM location
+                                    WHERE LocationID = :id";
 
 
     protected static function Instance()
@@ -388,7 +395,7 @@ class DataManagerSingleton
     }
 
 
-    public function getAllLocations($locName = NULL)
+    public function getAllLocations()
     {
         return self::$db->query($this->allLocationsSQL);
     }
@@ -519,6 +526,23 @@ class DataManagerSingleton
     public function addLocation($location)
     {
         return self::$db->query($this->addLocationSQL, array(":locname" => $location));
+    }
+
+    public function updateDisabledLocations($locations, $delete)
+    {
+        $result = array();
+        if ($delete === "yes")
+        {
+            foreach ($locations as $l)
+                $result[] = self::$db->query($this->deleteLocationSQL, array(":id" => $l));
+        }
+        $allLocations = $this->getAllLocations();
+        foreach ($allLocations as $l)
+            self::$db->query($this->disableLocationSQL, array(":id" => $l['LocationID'], ":usable" => 1));
+        if ($delete !== "yes")
+            foreach ($locations as $id)
+                $result[] = self::$db->query($this->disableLocationSQL, array(":id" => $id, ":usable" => 0));
+        return $result;
     }
 }
 

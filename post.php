@@ -50,6 +50,14 @@ switch ($source)
 	case "add_location":
 		$location = $postHandler->get("location");
 		$dataManager->addLocation($location);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
+		break;
+
+	case "delete_location":
+		$locations = $postHandler->get("locations");
+		$delete = $postHandler->get("delete");
+		$dataManager->updateDisabledLocations($locations, $delete);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "schedule_meeting":
@@ -68,14 +76,6 @@ switch ($source)
 		$description = $postHandler->get("description");
 		$startTimestamp = $dataValidator->validDateTime($start);
 		$finishTimestamp = $dataValidator->validDateTime($finish);
-		// echo "Location: " . $loc . $nl;
-		// echo "Start: " . $start . $nl;
-		// echo "Finish: " . $finish . $nl;
-		// echo "Meeting type: " . $type . $nl;
-		// echo "Volunteer #: " . $numOfVolunteers . $nl;
-		// echo "Description: " . $description . $nl;
-		// echo $startTimestamp . $nl;
-		// echo $finishTimestamp . $nl;
 
 //		updateMeeting
 
