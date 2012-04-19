@@ -57,6 +57,8 @@ if (false && $dataManager->areUnconfirmedVolunteers('esutten'))
 else
 	$smarty->assign("confirmVolunteers", false);
 
+$smarty->loadFilter("variable", "htmlspecialchars");
+
 switch ($pageGet)
 {
 	case "main":

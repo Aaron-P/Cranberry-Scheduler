@@ -424,7 +424,7 @@ class DataManagerSingleton
             ":numOfVolunteers" => $numOfVolunteers
         );
 
-        return self::$db->query($this->insertMeetingSQL, $sqlVars);
+		return self::$db->query($this->insertMeetingSQL, $sqlVars);
     }
 
 	public function getMeetingData($meetingId)

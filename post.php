@@ -84,8 +84,7 @@ switch ($source)
 			if (!is_null($eventId))
 				$dataManager->updateMeeting($eventId, $type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers);
 			else
-				$dataManager->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers, $eid);
-			$eid = $userSession->getUsername();
+				$dataManager->insertMeeting($type, $description, $startTimestamp, $finishTimestamp, $loc, $numOfVolunteers, $userSession->getUsername());
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		}
 		else

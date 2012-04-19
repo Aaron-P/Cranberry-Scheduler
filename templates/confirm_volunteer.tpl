@@ -69,18 +69,22 @@
 		<input type="hidden" name="source" value="confirm_volunteer">
 		<input type="hidden" name="token" value="e3034bbcaeff433f81b7c7b68162682404342f22" />
 
+
+{foreach $meetings as $m}
 		<label class="label">Date:</label>
-		<span>2012-02-02 12:35:00</span><br />
+		<span>{$m.StartTime}</span><br />
 
 		<label class="label">Time:</label>
-		<span>2012-02-02 12:35:00 to 2012-02-02 13:15:00</span><br />
+		<span>{$m.StartTime} to {$m.EndTime}</span><br />
 
 		<p>Please mark the name(s) of the volunteer(s) that showed up to the above meeting.</p><br />
 
-			<label class="label">Louis Green</label>
+	{foreach $m.Volunteers as $v}
+		<label class="label">{$v.FirstName} {$v.LastName}</label>
 		<span class="small">&nbsp;</span>
-		<input type="checkbox" name="volunteers[]" value="002|0025" /><br />
-			<br />
+		<input type="checkbox" name="volunteers[]" value="{$m.MeetingID}|{$v.PersonID}" /><br />
+	{/foreach}
+{/foreach}
 
 		<center>
 			<input type="submit" value="Confirm" id="submit" name="submit" />

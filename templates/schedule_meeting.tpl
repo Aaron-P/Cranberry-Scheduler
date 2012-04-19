@@ -156,7 +156,7 @@
 		$("#finish_time").val("{$inputFields.End}");
 		$("#"+String.toLowerCase("{$inputFields.MeetingType}")).prop("checked", true);
 		$("#num_volunteers").val("{$inputFields.NumVolunteers}");
-		$("#description").val("{$inputFields.Description}");
+		$("#description").val("{$inputFields.Description|addslashes nofilter}");
 		formEnable(true);
 		checkMeeting();
 		checkSelect();
