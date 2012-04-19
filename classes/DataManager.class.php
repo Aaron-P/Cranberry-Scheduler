@@ -291,6 +291,10 @@ class DataManagerSingleton
 
     private $deleteCourseSQL = "DELETE FROM course WHERE CourseID = :id;";
 
+    private $addPersonSQL = "INSERT INTO person(Eid, FirstName, LastName,
+                            IsVolunteer, IsResearcher, IsTeacher) 
+                            VALUES (:Eid, :FirstName, :LastName, :IsVolunteer, :IsResearcher, :IsTeacher);";
+
 
     protected static function Instance()
     {
@@ -538,7 +542,7 @@ class DataManagerSingleton
     public function updateDisabledLocations($locations, $delete)
     {
         $result = array();
-        if ($delete === "yes")
+        if ($delete)
         {
             foreach ($locations as $l)
                 $result[] = self::$db->query($this->deleteLocationSQL, array(":id" => $l));
@@ -546,7 +550,7 @@ class DataManagerSingleton
         $allLocations = $this->getAllLocations();
         foreach ($allLocations as $l)
             self::$db->query($this->disableLocationSQL, array(":id" => $l['LocationID'], ":usable" => 1));
-        if ($delete !== "yes")
+        if (!$delete)
             foreach ($locations as $id)
                 $result[] = self::$db->query($this->disableLocationSQL, array(":id" => $id, ":usable" => 0));
         return $result;
@@ -565,6 +569,19 @@ class DataManagerSingleton
     public function deleteCourse($courseID)
     {
         return self::$db->query($this->deleteCourseSQL, array(":id" => $courseID));
+    }
+
+    public function addPerson($eid, $firstName, $lastName, $isVolunteer, $isResearcher, $isTeacher)
+    {
+        $sqlVars = array(
+            ":Eid" => $eid,
+            ":FirstName" => $firstName,
+            ":LastName" => $lastName,
+            ":IsVolunteer" => $isVolunteer,
+            ":IsResearcher" => $isResearcher,
+            ":IsTeacher" => $isTeacher
+        );
+        return self::$db->query($this->addPersonSQL, $sqlVars);
     }
 }
 

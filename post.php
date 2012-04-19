@@ -55,7 +55,7 @@ switch ($source)
 
 	case "delete_location":
 		$locations = $postHandler->get("locations");
-		$delete = $postHandler->get("delete");
+		$delete = $postHandler->get("delete") === "yes";
 		$dataManager->updateDisabledLocations($locations, $delete);
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
@@ -74,6 +74,14 @@ switch ($source)
 		break;
 
 	case "add_student":
+		$eid = $postHandler->get("eid");
+		$firstName = $postHandler->get("firstName");
+		$lastName = $postHandler->get("lastName");
+		$isVolunteer = $postHandler->get("volunteer") === "on";
+		$isResearcher = $postHandler->get("researcher") === "on";
+		$isTeacher = $postHandler->get("teacher") === "on";
+		$dataManager->addPerson($eid, $firstName, $lastName, $isVolunteer, $isResearcher, $isTeacher);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "delete_student":
