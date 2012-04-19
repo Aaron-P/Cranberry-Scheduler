@@ -11,21 +11,21 @@ class UserInfo
 	private $username;
 	private $firstName;
 	private $lastName;
-	private $userLevel;
+	private $userPermissions;
 	private $userAgent;
 	private $ipAddress;
 	private $loginTime;
 	private $accessTime;
 	private $postToken;
 
-	public function __construct($username, $firstName, $lastName, $userLevel)
+	public function __construct($username, $firstName, $lastName, $userPermissions)
 	{
 		$currentTime = time();
 		$this->serverInstance = new ServerHandler();
 		$this->username = $username;
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
-		$this->userLevel = $userLevel;
+		$this->userPermissions = $userPermissions;
 		$this->userAgent = $this->serverInstance->get("HTTP_USER_AGENT");
 		$this->ipAddress = $this->serverInstance->get("REMOTE_ADDR");
 		$this->loginTime = $currentTime;
@@ -44,6 +44,27 @@ class UserInfo
 		return $this->username;
 	}
 
+	public function isVolunteer()
+	{
+		if (isset($this->userPermissions["volunteer"]))
+			return (bool)$this->userPermissions["volunteer"];
+		return false;
+	}
+
+	public function isResearcher()
+	{
+		if (isset($this->userPermissions["researcher"]))
+			return (bool)$this->userPermissions["researcher"];
+		return false;
+	}
+
+	public function isTeacher()
+	{
+		if (isset($this->userPermissions["teacher"]))
+			return (bool)$this->userPermissions["teacher"];
+		return false;
+	}
+
 	public function getFirstName()
 	{
 		return $this->firstName;
@@ -52,11 +73,6 @@ class UserInfo
 	public function getLastName()
 	{
 		return $this->lastName;
-	}
-
-	public function getUserLevel()
-	{
-		return $this->userLevel;
 	}
 
 	public function getUserAgent()

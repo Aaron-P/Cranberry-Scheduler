@@ -16,8 +16,6 @@
 <link rel="stylesheet" type="text/css" href="{$baseUrl}css/main.css" />
 <script type="text/javascript" src="{$baseUrl}js/jquery-ui-1.8.11.custom.min.js"></script>
 <script type="text/javascript" src="{$baseUrl}js/fullcalendar.js"></script>
-
-{if $userLevel !== "volunteer"}
 <script type="text/javascript">
 	$(document).ready(function() {
 
@@ -78,22 +76,15 @@
 		});
 	});
 </script>
-{/if}
 {/block}
 
 {block name="page_content"}
 
-<div id="calendar">
-	{if $userLevel === "volunteer"}
-	{include file="volunteer_opportunities_content.tpl"}
-	{/if}
-</div>
-
+<div id="calendar"></div>
 <div id="spacer_calendar"></div>
-
 <div id="right_side">
 	<div id="meeting_box" class="myform">
-		{if $userLevel === "teacher"}
+		{if $isTeacher}
 		<h4>Admin</h4>
 		<hr />
 		<div id="link_list">
@@ -104,19 +95,19 @@
 		</div>
 		{/if}
 
-		{if $userLevel === "teacher"}
+		{if $isTeacher}
 		<h4>Research</h4>
 		<hr />
 		{/if}
-		{if $userLevel === "teacher" || $userLevel === "researcher" || $userLevel === "volunteer"}
+		{if $isTeacher || $isResearcher || $isVolunteer}
 		<div id="link_list">
-			{if $userLevel === "teacher" || $userLevel === "researcher"}
+			{if $isTeacher || $isResearcher}
 			<p><a href="{$baseUrl}index.php?page=schedule_meeting">Create Meeting</a></p>
-			<p><a href="{$baseUrl}index.php?page=volunteer_opportunities">Volunteer Opportunities</a></p>
 			{/if}
+			<p><a href="{$baseUrl}index.php?page=volunteer_opportunities">Volunteer Opportunities</a></p>
 			<p><a href="{$baseUrl}index.php?page=view_meetings">View Meetings</a></p>
 		</div>
-		{/if}		
+		{/if}
 	</div>
 
 	<div id="upcoming_events" class="myform">

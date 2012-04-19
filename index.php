@@ -41,7 +41,10 @@ $username = $userSession->getUsername();
 $smarty->assign("username", $username);
 $smarty->assign("firstName", $userSession->getFirstName());
 $smarty->assign("lastName", $userSession->getLastName());
-$smarty->assign("userLevel", $userSession->getUserLevel());
+$smarty->assign("isVolunteer", $userSession->isVolunteer());
+$smarty->assign("isResearcher", $userSession->isResearcher());
+$smarty->assign("isTeacher", $userSession->isTeacher());
+
 $pageGet = $getHandler->get("page");
 
 if ($userSession->check())
@@ -63,14 +66,12 @@ $smarty->loadFilter("variable", "htmlspecialchars");
 switch ($pageGet)
 {
 	case "main":
+		if ($userSession->isVolunteer() && !$userSession->isResearcher() && !$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "volunteer_opportunities"));
+
 		$smarty->assign("showConfirmDialog", true);
 		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
 		$smarty->assign("upcomingEvents", $upcomingEvents);
-		if ($userSession->getUserLevel() === "volunteer")
-		{
-			$opportunities = $dataManager->getVolunteerOpportunities();
-			$smarty->assign("opportunities", $opportunities);
-		}
 		break;
 
 	case "view_meetings":
@@ -96,6 +97,8 @@ switch ($pageGet)
 		break;
 
 	case "volunteer_opportunities":
+		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
+		$smarty->assign("upcomingEvents", $upcomingEvents);
 		$opportunities = $dataManager->getVolunteerOpportunities();
 		$smarty->assign("opportunities", $opportunities);
 		break;

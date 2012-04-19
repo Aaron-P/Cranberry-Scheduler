@@ -62,7 +62,7 @@ div#upcoming_events_title {
 div#events_list {
 	margin-top:10px;
 	overflow-y:scroll;
-	height:170px;
+	height:224px;
 	width:150px;
 	position:relative;
 	left:0;

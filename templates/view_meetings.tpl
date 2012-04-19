@@ -18,7 +18,7 @@
 				<h3>{$e.Date}</h3>
 				{$e.Start} - {$e.End}<br />
 				{$e.MeetingType}: {$e.Description}<br />
-				<a href="{$baseUrl}event_click.php?eventID={$e.MeetingID}">View details</a>
+				<a href="{$baseUrl}index.php?page=meeting_overview&eventID={$e.MeetingID}">View details</a>
 			</span></p>
 			<br />
 		{/foreach}

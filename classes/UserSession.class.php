@@ -58,10 +58,8 @@ class UserSession
 
 			if (true)
 			{
-				$dataManager = new DataManager();
 
-				$personInfo = $dataManager->getPersonInfo($username);
-				$firstName = $personInfo['FirstName'];
+/*				$firstName = $personInfo['FirstName'];
 				$lastName = $personInfo['LastName'];
 				if ($personInfo['IsTeacher'] === "1")
 					$userLevel = "teacher";
@@ -70,10 +68,25 @@ class UserSession
 				else if ($personInfo['IsVolunteer'] === "1")
 					$userLevel = "volunteer";
 				else
-					$userLevel = null;
-				
+					$userLevel = null;*/
+
+
+
+
+				$dataManager = new DataManager();
+				$personInfo = $dataManager->getPersonInfo($username);
+
+				$firstName = $personInfo['FirstName'];
+				$lastName = $personInfo['LastName'];
+
+				$userPermissions = array(
+					"volunteer"  => (bool)$personInfo["IsVolunteer"],
+					"researcher" => (bool)$personInfo["IsResearcher"],
+					"teacher"    => (bool)$personInfo["IsTeacher"]
+				);
+
 				if (true)
-					$userInfo = new UserInfo($username, $firstName, $lastName, $userLevel);
+					$userInfo = new UserInfo($username, $firstName, $lastName, $userPermissions);
 				else
 					$userInfo = new UserInfo($username, "", "", "");
 
@@ -88,12 +101,11 @@ class UserSession
 
 	public function destroy()
 	{
-		// Do other stuff?
+		// Do other stuff? CHECK USER LEVEL
 		if (!is_null($userInfo = $this->getInfoObject()) &&
 			!is_null($userInfo->getUsername()) &&
 			!is_null($userInfo->getFirstName()) &&
-			!is_null($userInfo->getLastName()) &&
-			!is_null($userInfo->getUserLevel()))
+			!is_null($userInfo->getLastName()))
 			$this->sessionInstance->destroy();
 	}
 
@@ -105,11 +117,11 @@ class UserSession
 
 //			!is_object($userInfo) ||
 //			!($userInfo instanceof UserInfo) ||
+// CHECK USER LEVEL
 
 			if (is_null($userInfo->getUsername()) ||
 				is_null($userInfo->getFirstName()) ||
 				is_null($userInfo->getLastName()) ||
-				is_null($userInfo->getUserLevel()) ||
 				$currentTime - SESSION_TIMEOUT_LIMIT > $userInfo->getLoginTime() ||
 				$currentTime - ACCESS_TIMEOUT_LIMIT > $userInfo->getAccessTime() ||
 				($this->sessionSecure && $userInfo->getUserAgent() !== $this->serverInstance->get("HTTP_USER_AGENT")) ||
@@ -129,11 +141,32 @@ class UserSession
 			return false;
 	}
 
-	public function getUserLevel()
+/*	public function getUserLevel()
 	{
 		if (!is_null($userInfo = $this->getInfoObject()))
 			return $userInfo->getUserLevel();
 		return false;// False, null, or throw?
+	}*/
+
+	public function isVolunteer()
+	{
+		if (!is_null($userInfo = $this->getInfoObject()))
+			return $userInfo->isVolunteer();
+		return false;
+	}
+
+	public function isResearcher()
+	{
+		if (!is_null($userInfo = $this->getInfoObject()))
+			return $userInfo->isResearcher();
+		return false;
+	}
+
+	public function isTeacher()
+	{
+		if (!is_null($userInfo = $this->getInfoObject()))
+			return $userInfo->isTeacher();
+		return false;
 	}
 
 	public function getUsername()
