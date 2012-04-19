@@ -3,7 +3,7 @@
  *}
 
 {extends file="template.tpl"}
-{block name="page_title"}Settings{/block}
+{block name="page_title"}Disable location(s){/block}
 
 {block name="page_head"}
 {*<link type="text/css" rel="stylesheet" href="{$baseUrl}css/base_style.css">*}
