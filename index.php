@@ -179,6 +179,8 @@ switch ($pageGet)
 
 	case "add_group":
 		// check user level
+		$people = $dataManager->getAllPeople();
+		$smarty->assign("people", $people);
 		break;
 
 	case "delete_group":

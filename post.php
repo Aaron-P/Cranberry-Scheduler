@@ -92,6 +92,13 @@ switch ($source)
 		break;
 
 	case "add_group":
+		$people = $postHandler->get("people");
+		$groupName = $postHandler->get("name");
+		$dataManager->addGroup($groupName);
+		$groupID = $dataManager->getGroupIDByName($groupName);
+		foreach ($people as $personID)
+			$dataManager->addGroupPerson($groupID, $personID);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "delete_group":
