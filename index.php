@@ -161,6 +161,12 @@ switch ($pageGet)
 		// check user level
 		break;
 
+	case "delete_course":
+		// check user level
+		$courses = $dataManager->getAllCourses();
+		$smarty->assign("courses", $courses);
+		break;
+
 	default:
 		$scriptUrls->redirectTo("index.php", array("page" => "main"));
 }

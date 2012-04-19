@@ -287,6 +287,10 @@ class DataManagerSingleton
     private $addCourseSQL = "INSERT INTO course(CourseName) 
                             VALUES (:name);";
 
+    private $allCoursesSQL = "SELECT * FROM course;";
+
+    private $deleteCourseSQL = "DELETE FROM course WHERE CourseID = :id;";
+
 
     protected static function Instance()
     {
@@ -551,6 +555,16 @@ class DataManagerSingleton
     public function addCourse($courseName)
     {
         return self::$db->query($this->addCourseSQL, array(":name" => $courseName));
+    }
+
+    public function getAllCourses()
+    {
+        return self::$db->query($this->allCoursesSQL);
+    }
+
+    public function deleteCourse($courseID)
+    {
+        return self::$db->query($this->deleteCourseSQL, array(":id" => $courseID));
     }
 }
 

@@ -66,6 +66,13 @@ switch ($source)
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
+	case "delete_course":
+		$courses = $postHandler->get("courses");
+		foreach ($courses as $courseID)
+			$dataManager->deleteCourse($courseID);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
+		break;
+
 	case "schedule_meeting":
 		if (!is_null($eventId = $postHandler->get("eventId")))
 		{
