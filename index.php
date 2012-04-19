@@ -152,8 +152,13 @@ switch ($pageGet)
 		break;
 
 	case "delete_location":
+		// check user level
 		$locations = $dataManager->getAllLocations();
 		$smarty->assign("locations", $locations);
+		break;
+
+	case "add_course":
+		// check user level
 		break;
 
 	default:

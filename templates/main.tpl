@@ -107,7 +107,7 @@
 		<hr />
 		<div id="link_list">
 			<p>Locations: <a href="{$baseUrl}index.php?page=add_location">Add</a> | <a href="{$baseUrl}index.php?page=delete_location">Delete</a></p>
-			<p>Courses: <a href="{$baseUrl}index.php?page=main">Add</a> | <a href="{$baseUrl}index.php?page=main">Delete</a></p>
+			<p>Courses: <a href="{$baseUrl}index.php?page=add_course">Add</a> | <a href="{$baseUrl}index.php?page=main">Delete</a></p>
 			<p>Students: <a href="{$baseUrl}index.php?page=main">Add</a> | <a href="{$baseUrl}index.php?page=main">Delete</a></p>
 			<p>Groups: <a href="{$baseUrl}index.php?page=main">Add</a> | <a href="{$baseUrl}index.php?page=main">Delete</a></p>
 		</div>

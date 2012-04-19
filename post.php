@@ -60,6 +60,12 @@ switch ($source)
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
+	case "add_course":
+		$location = $postHandler->get("course");
+		$dataManager->addCourse($location);
+		$scriptUrls->redirectTo("index.php", array("page" => $return));
+		break;
+
 	case "schedule_meeting":
 		if (!is_null($eventId = $postHandler->get("eventId")))
 		{

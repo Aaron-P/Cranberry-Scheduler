@@ -284,6 +284,9 @@ class DataManagerSingleton
     private $deleteLocationSQL = "DELETE FROM location
                                     WHERE LocationID = :id";
 
+    private $addCourseSQL = "INSERT INTO course(CourseName) 
+                            VALUES (:name);";
+
 
     protected static function Instance()
     {
@@ -543,6 +546,11 @@ class DataManagerSingleton
             foreach ($locations as $id)
                 $result[] = self::$db->query($this->disableLocationSQL, array(":id" => $id, ":usable" => 0));
         return $result;
+    }
+
+    public function addCourse($courseName)
+    {
+        return self::$db->query($this->addCourseSQL, array(":name" => $courseName));
     }
 }
 
