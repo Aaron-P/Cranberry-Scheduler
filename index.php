@@ -71,12 +71,20 @@ switch ($pageGet)
 
 		$smarty->assign("showConfirmDialog", true);
 		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
+
+		$volEvents = $dataManager->getVolEvents($username);
+		$upcomingEvents = array_merge($upcomingEvents, $volEvents);
+
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "view_meetings":
 		$smarty->assign("showConfirmDialog", true);
 		$upcomingEvents = $dataManager->getUpcomingTeamEventsDetailed($username);
+
+		$volEvents = $dataManager->getVolEventsDetailed($username);
+		$upcomingEvents = array_merge($upcomingEvents, $volEvents);
+
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
@@ -105,6 +113,10 @@ switch ($pageGet)
 
 	case "volunteer_opportunities":
 		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
+
+		$volEvents = $dataManager->getVolEvents($username);
+		$upcomingEvents = array_merge($upcomingEvents, $volEvents);
+
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		$opportunities = $dataManager->getVolunteerOpportunities();
 		$smarty->assign("opportunities", $opportunities);

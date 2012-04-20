@@ -102,16 +102,28 @@ class DataManagerSingleton
                AND m.StartTime BETWEEN FROM_UNIXTIME(:start) AND FROM_UNIXTIME(:end);";
 
     private $volEventsSQL =
-            "SELECT DISTINCT m.Description,
-                             DATE(m.StartTime) AS Date,
-                             TIME(m.StartTime) AS Start,
-                             TIME(m.EndTime) AS End,
-                             l.LocationName AS Location,
-                             m.RequiredForms
+            "SELECT DISTINCT 'Volunteer' AS MeetingType,
+                             DATE_FORMAT(m.StartTime, '%b %e') AS Date,
+                             m.MeetingID
              FROM meeting As m, location AS l, volunteer, person
              WHERE m.MeetingID = volunteer.MeetingID
                    AND l.LocationID = m.LocationID
                    AND volunteer.PersonID = person.PersonID
+                   AND NOW() < m.StartTime
+                   AND person.Eid = :eid;";
+
+    private $volEventsDetailedSQL =
+            "SELECT DISTINCT 'Volunteer' AS MeetingType,
+                             DATE_FORMAT(m.StartTime, '%W, %M %e, %Y') AS Date,
+                             DATE_FORMAT(m.StartTime, '%l:%i %p') AS Start,
+                             DATE_FORMAT(m.EndTime, '%l:%i %p') AS End,
+                             m.MeetingID,
+                             m.Description
+             FROM meeting As m, location AS l, volunteer, person
+             WHERE m.MeetingID = volunteer.MeetingID
+                   AND l.LocationID = m.LocationID
+                   AND volunteer.PersonID = person.PersonID
+                   AND NOW() < m.StartTime
                    AND person.Eid = :eid;";
 
     private $teamEventsAtLocSQL =
@@ -407,6 +419,12 @@ class DataManagerSingleton
         return self::$db->query($this->volEventsSQL, array(":eid" => $eid));
     }
 
+
+    public function getVolEventsDetailed($eid)
+    {
+        return self::$db->query($this->volEventsDetailedSQL, array(":eid" => $eid));
+    }
+    
 
     // Given an e-id for any team member and a location, return the events for
     // that team at that location.
