@@ -82,7 +82,7 @@ switch ($pageGet)
 
 	case "meeting_overview":
 		$smarty->assign("showConfirmDialog", true);
-		if (is_null($eventId = $getHandler->get("eventID")) || !$dataManager->isInMeeting($eventId, $userSession->getUsername()))
+		if (is_null($eventId = $getHandler->get("eventID")))
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$event = $dataManager->getEventInfo($eventId);
 		$volunteers = $dataManager->getMeetingVolunteers($eventId);
@@ -90,10 +90,17 @@ switch ($pageGet)
 		$smarty->assign("event", $event);
 		$smarty->assign("volunteers", $volunteers);
 		if ((bool)$event["InPast"])
+		{
 			$smarty->assign("editable", false);
+		}
+		else if (!$dataManager->ownsMeeting($eventId, $userSession->getUsername()))
+		{
+			$smarty->assign("editable", false);
+			if (!$dataManager->isInMeeting($eventId, $userSession->getUsername()))
+				$smarty->assign("signUp", true);
+		}
 		else
 			$smarty->assign("editable", true);
-
 		break;
 
 	case "volunteer_opportunities":

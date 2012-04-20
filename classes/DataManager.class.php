@@ -315,6 +315,18 @@ class DataManagerSingleton
                                         IsTeacher = :isTeacher
                                     WHERE PersonID = :personID;";
 
+    private $ownsMeetingSQL =
+        "SELECT m.MeetingID
+        FROM meeting m, person p, teamperson tp
+        WHERE m.TeamID = tp.TeamID
+        AND p.Eid = :eid
+        AND p.PersonID = tp.PersonID
+        AND m.MeetingID = :meetingID
+        AND p.IsResearcher = 1;";
+
+    private $signUpSQL = "INSERT INTO volunteer(MeetingID, PersonID) 
+                        VALUES (:mid, :pid);";
+
 
     protected static function Instance()
     {
@@ -653,6 +665,22 @@ class DataManagerSingleton
     public function deleteGroup($teamID)
     {
         return self::$db->query($this->deleteGroupSQL, array(":id", $teamID));
+    }
+
+    public function ownsMeeting($meetingID, $eid)
+    {
+        $sqlVars = array(
+            ":eid" => $eid,
+            ":meetingID" => $meetingID
+        );
+        $result = self::$db->query($this->ownsMeetingSQL, $sqlVars);
+        return !empty($result);
+    }
+
+    public function volunteerSignUp($eid, $meetingID)
+    {
+        $pid = $this->getPersonID($eid);
+        return self::$db->query($this->signUpSQL, array(":mid" => $meetingID, ":pid" => $pid));
     }
 }
 

@@ -188,18 +188,7 @@ switch ($source)
 		$username = $postHandler->get("username");
 		$password = $postHandler->get("password");
 
-		// should use UserSession class
 		$userSession->auth($username, $password);
-
-		//$sessionHandler->set("username", $username);
-		//$userInfo = $dataManager->getPersonInfo($username);
-		//$sessionHandler->set("firstName", $userInfo["FirstName"]);
-		//$sessionHandler->set("lastName", $userInfo["LastName"]);
-
-		// TODO: do this in UserSession
-		//$sessionHandler->set("isVolunteer", $userInfo['IsVolunteer']);
-		//$sessionHandler->set("isResearcher", $userInfo["IsResearcher"]);
-		//$sessionHandler->set("isTeacher", $userInfo["IsTeacher"]);
 
 		if (is_null($return = $postHandler->get("return")))
 			$return = "main";
@@ -229,6 +218,13 @@ switch ($source)
 		echo "Name: " . $name . $nl;
 		echo "E-id: " . $eid . $nl;
 		echo "Class: " . $class . $nl;
+		break;
+
+	case "sign_up":
+		$meetingID = $postHandler->get("eventId");
+		$eid = $userSession->getUsername();
+		$dataManager->volunteerSignUp($eid, $meetingID);
+		$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		break;
 
 	default:
