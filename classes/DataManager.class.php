@@ -255,6 +255,15 @@ class DataManagerSingleton
 							AND m.MeetingID = :meetingId
 							AND p.Eid = :eid;";
 
+    private $isVolunteerSQL = "SELECT COUNT(*) AS Count
+                            FROM meeting As m, location AS l, volunteer, person
+                            WHERE m.MeetingID = volunteer.MeetingID
+                            AND m.MeetingID = :meetingId
+                            AND l.LocationID = m.LocationID
+                            AND volunteer.PersonID = person.PersonID
+                            AND NOW() < m.StartTime
+                            AND person.Eid = :eid;";
+
 	private $unconfirmedVolunteersSQL = "SELECT m.*, p.PersonID, p.FirstName, p.LastName
 										FROM meeting m, volunteer v, person p
 										WHERE m.NumVolunteers > 0
@@ -581,6 +590,12 @@ class DataManagerSingleton
 		$result = self::$db->query($this->isInMeetingSQL, array(":meetingId" => $meetingId, ":eid" => $eid));
 		return (bool)$result[0]["Count"];
 	}
+
+    public function isVolunteer($meetingId, $eid)
+    {
+        $result = self::$db->query($this->isVolunteerSQL, array(":meetingId" => $meetingId, ":eid" => $eid));
+        return (bool)$result[0]["Count"];
+    }
 
 	public function areUnconfirmedVolunteers($eid)
 	{

@@ -97,6 +97,7 @@ switch ($pageGet)
 		$smarty->assign("eventId", $eventId);
 		$smarty->assign("event", $event);
 		$smarty->assign("volunteers", $volunteers);
+		$smarty->assign("signUp", false);
 		if ((bool)$event["InPast"])
 		{
 			$smarty->assign("editable", false);
@@ -104,7 +105,7 @@ switch ($pageGet)
 		else if (!$dataManager->ownsMeeting($eventId, $userSession->getUsername()))
 		{
 			$smarty->assign("editable", false);
-			if (!$dataManager->isInMeeting($eventId, $userSession->getUsername()))
+			if (!$dataManager->isVolunteer($eventId, $userSession->getUsername()))
 				$smarty->assign("signUp", true);
 		}
 		else
