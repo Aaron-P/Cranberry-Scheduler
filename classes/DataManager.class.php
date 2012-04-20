@@ -308,7 +308,9 @@ class DataManagerSingleton
 
     private $allPeopleSQL = "SELECT PersonID, FirstName, LastName FROM person;";
 
-    private $deletePersonSQL = "DELETE FROM person WHERE PersonID = :id;";
+    private $deletePersonSQL = "DELETE FROM courseperson
+                                WHERE PersonID = :personID
+                                AND CourseID = :courseID;";
 
     private $groupIDByNameSQL = "SELECT TeamID FROM team WHERE TeamName = :name;";
 
@@ -652,9 +654,22 @@ class DataManagerSingleton
         return self::$db->query($this->allPeopleSQL);
     }
 
-    public function deletePerson($personID)
+    public function deletePerson($personID, $courseID, $isResearcher, $isTeacher)
     {
-        return self::$db->query($this->deletePersonSQL, array(":id" => $personID));
+        $sqlVars = array(
+            ":isResearcher" => $isResearcher,
+            ":isTeacher" => $isTeacher,
+            ":personID" => $personID
+        );
+        $result[] = self::$db->query($this->updateUserLevelSQL, $sqlVars);
+
+        $sqlVars = array(
+            ":personID" => $personID,
+            ":courseID" => $courseID
+        );
+        $result[] = self::$db->query($this->deletePersonSQL, $sqlVars);
+
+        return $result;
     }
 
     public function getGroupIDByName($name)

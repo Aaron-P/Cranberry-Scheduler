@@ -99,9 +99,15 @@ switch ($source)
 	case "delete_student":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		$people = $postHandler->get("students");
+		
+		$courseID = $postHandler->get("courseID");
+		$people = $postHandler->get("people");
+		$isResearcher = $postHandler->get("researcher") === "on";
+		$isTeacher = $postHandler->get("teacher") === "on";
 		foreach ($people as $personID)
-			$dataManager->deletePerson($personID);
+		{
+			$dataManager->deletePerson($personID, $courseID, $isResearcher, $isTeacher);
+		}
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
