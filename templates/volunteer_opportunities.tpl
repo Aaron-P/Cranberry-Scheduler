@@ -42,6 +42,7 @@
 <div id="stylized" class="myform">
     <h1>Volunteer opportunities</h1><br />
 
+    {if $opportunities}
     {foreach $opportunities as $o}
     <h3>{$o["Date"]}</h3>
     <table border="0">
@@ -52,6 +53,9 @@
     </table>
     <br />
     {/foreach}
+    {else}
+    <p><b>No opportunities available at this time.</b></p><br />
+    {/if}
 </div>
 
 </div>
