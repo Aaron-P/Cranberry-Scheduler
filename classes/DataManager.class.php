@@ -291,9 +291,8 @@ class DataManagerSingleton
 
     private $deleteCourseSQL = "DELETE FROM course WHERE CourseID = :id;";
 
-    private $addPersonSQL = "INSERT INTO person(Eid, FirstName, LastName,
-                            IsVolunteer, IsResearcher, IsTeacher)
-                            VALUES (:Eid, :FirstName, :LastName, :IsVolunteer, :IsResearcher, :IsTeacher);";
+    private $addPersonSQL = "INSERT INTO courseperson(CourseID, PersonID)
+                            VALUES (:courseID, :personID);";
 
     private $allPeopleSQL = "SELECT PersonID, FirstName, LastName FROM person;";
 
@@ -311,7 +310,10 @@ class DataManagerSingleton
 
 	private $checkEidExistsSQL = "SELECT COUNT(*) AS Count FROM person p WHERE p.Eid = :eid;";
 
-
+    private $updateUserLevelSQL = "UPDATE person
+                                    SET IsResearcher = :isResearcher,
+                                        IsTeacher = :isTeacher
+                                    WHERE PersonID = :personID;";
 
 
     protected static function Instance()
@@ -597,17 +599,22 @@ class DataManagerSingleton
         return self::$db->query($this->deleteCourseSQL, array(":id" => $courseID));
     }
 
-    public function addPerson($eid, $firstName, $lastName, $isVolunteer, $isResearcher, $isTeacher)
+    public function addPerson($personID, $courseID, $isResearcher, $isTeacher)
     {
         $sqlVars = array(
-            ":Eid" => $eid,
-            ":FirstName" => $firstName,
-            ":LastName" => $lastName,
-            ":IsVolunteer" => $isVolunteer,
-            ":IsResearcher" => $isResearcher,
-            ":IsTeacher" => $isTeacher
+            ":isResearcher" => $isResearcher,
+            ":isTeacher" => $isTeacher,
+            ":personID" => $personID
         );
-        return self::$db->query($this->addPersonSQL, $sqlVars);
+        $result[] = self::$db->query($this->updateUserLevelSQL, $sqlVars);
+
+        $sqlVars = array(
+            ":personID" => $personID,
+            ":courseID" => $courseID
+        );
+        $result[] = self::$db->query($this->addPersonSQL, $sqlVars);
+        
+        return $result;
     }
 
     public function getAllPeople()

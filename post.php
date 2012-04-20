@@ -67,8 +67,8 @@ switch ($source)
 	case "add_course":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		$location = $postHandler->get("course");
-		$dataManager->addCourse($location);
+		$course = $postHandler->get("course");
+		$dataManager->addCourse($course);
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
@@ -84,13 +84,15 @@ switch ($source)
 	case "add_student":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		$eid = $postHandler->get("eid");
-		$firstName = $postHandler->get("firstName");
-		$lastName = $postHandler->get("lastName");
-		$isVolunteer = $postHandler->get("volunteer") === "on";
+
+		$courseID = $postHandler->get("courseID");
+		$people = $postHandler->get("people");
 		$isResearcher = $postHandler->get("researcher") === "on";
 		$isTeacher = $postHandler->get("teacher") === "on";
-		$dataManager->addPerson($eid, $firstName, $lastName, $isVolunteer, $isResearcher, $isTeacher);
+		foreach ($people as $personID)
+		{
+			$dataManager->addPerson($personID, $courseID, $isResearcher, $isTeacher);
+		}
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 

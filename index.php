@@ -196,7 +196,10 @@ switch ($pageGet)
 	case "add_student":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		// check user level
+		$courses = $dataManager->getAllCourses();
+		$people = $dataManager->getAllPeople();
+		$smarty->assign("courses", $courses);
+		$smarty->assign("people", $people);
 		break;
 
 	case "delete_student":

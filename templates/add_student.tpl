@@ -16,25 +16,29 @@
         <input type="hidden" name="token" value="{$token}" />
 
         <h1>Add student</h1><br />
-        <label class="label">SIUE e-id:<br />
-        <span class="small">&nbsp;</span>
-        </label>
-        <input type="text" name="eid" id="name" /><br />
 
-        <label class="label">First name:<br />
+        <label class="label">Class:<br />
         <span class="small">&nbsp;</span>
         </label>
-        <input type="text" name="firstName" id="name" /><br />
-
-        <label class="label">Last name:<br />
+        <select id="location" class="input" name="courseID">
+                <option selected="selected" value="">-- Select course --</option>
+                {foreach $courses as $c}
+                <option value="{$c["CourseID"]}">{$c["CourseName"]}</option>
+                {/foreach}
+        </select><br />
+        
+        <label class="label">People:<br />
         <span class="small">&nbsp;</span>
         </label>
-        <input type="text" name="lastName" id="name" /><br />
+        <select multiple size=12 name="people[]">
+            {foreach $people as $p}
+            <option value={$p["PersonID"]}>{$p["FirstName"]} {$p["LastName"]}
+            {/foreach}
+        </select><br /><br />
 
         <label class="label">Type:<br />
         <span class="small">&nbsp;</span>
         </label>
-        <input type="checkbox" name="volunteer" checked>&nbsp; Volunteer
         <input type="checkbox" name="researcher">&nbsp; Researcher
         <input type="checkbox" name="teacher">&nbsp; Teacher
         <br />
