@@ -274,7 +274,7 @@ class DataManagerSingleton
 								FROM meeting m
 								WHERE m.MeetingID = :meetingId";
 
-    private $addLocationSQL = "INSERT INTO location(LocationName) 
+    private $addLocationSQL = "INSERT INTO location(LocationName)
                                VALUES (:locname);";
 
     private $disableLocationSQL = "UPDATE location
@@ -284,7 +284,7 @@ class DataManagerSingleton
     private $deleteLocationSQL = "DELETE FROM location
                                     WHERE LocationID = :id";
 
-    private $addCourseSQL = "INSERT INTO course(CourseName) 
+    private $addCourseSQL = "INSERT INTO course(CourseName)
                             VALUES (:name);";
 
     private $allCoursesSQL = "SELECT * FROM course;";
@@ -292,7 +292,7 @@ class DataManagerSingleton
     private $deleteCourseSQL = "DELETE FROM course WHERE CourseID = :id;";
 
     private $addPersonSQL = "INSERT INTO person(Eid, FirstName, LastName,
-                            IsVolunteer, IsResearcher, IsTeacher) 
+                            IsVolunteer, IsResearcher, IsTeacher)
                             VALUES (:Eid, :FirstName, :LastName, :IsVolunteer, :IsResearcher, :IsTeacher);";
 
     private $allPeopleSQL = "SELECT PersonID, FirstName, LastName FROM person;";
@@ -302,12 +302,17 @@ class DataManagerSingleton
     private $groupIDByNameSQL = "SELECT TeamID FROM team WHERE TeamName = :name;";
 
     private $addGroupSQL = "INSERT INTO team(TeamName) VALUES (:tname);";
-   
+
     private $addGroupPersonSQL = "INSERT INTO teamPerson(TeamID, PersonID) VALUES (:tid, :pid);";
 
     private $allGroupsSQL = "SELECT TeamID, TeamName FROM team ORDER BY TeamName;";
 
     private $deleteGroupSQL = "DELETE FROM team WHERE TeamID = :id;";
+
+	private $checkEidExistsSQL = "SELECT COUNT(*) AS Count FROM person p WHERE p.Eid = :eid;";
+
+
+
 
     protected static function Instance()
     {
@@ -315,6 +320,14 @@ class DataManagerSingleton
             self::$db = new DBHandler("cranberryscheduler", "127.0.0.1", null, "root", null);
         return self::$db;
     }
+
+	public function eidExists($eid)
+	{
+		$result = self::$db->query($this->checkEidExistsSQL, array(":eid" => $eid));
+		if ($result[0]["Count"] !== "0")
+			return true;
+		return false;
+	}
 
 
     // Given an e-id for any team member, return the events for that team
@@ -619,7 +632,7 @@ class DataManagerSingleton
     {
         return self::$db->query($this->addGroupSQL, array(":tname" => $name));
     }
-   
+
     public function addGroupPerson($teamID, $personID)
     {
         return self::$db->query($this->addGroupPersonSQL, array(":tid" => $teamID, ":pid" => $personID));

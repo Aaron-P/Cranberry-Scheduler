@@ -46,34 +46,44 @@ class UserSession
 			$ldap = new LDAP();
 			if ($ldap->connect(LDAP_SERVER) && $ldap->bind($username, $password))
 			{
+				$dataManager = new DataManager();
+
+				if (!$dataManager->eidExists($username))
+					$dataManager->addPerson($username, $userFullName["firstName"], $userFullName["lastName"], 1, 0, 0);
+
+				$personInfo = $dataManager->getPersonInfo($username);
+				$userPermissions = array(
+					"volunteer"  => (bool)$personInfo["IsVolunteer"],
+					"researcher" => (bool)$personInfo["IsResearcher"],
+					"teacher"    => (bool)$personInfo["IsTeacher"]
+				);
+
 				if (!is_null($userFullName = $ldap->getUserName()))
-					$userInfo = new UserInfo($username, $userFullName["firstName"], $userFullName["lastName"], "");
+					$userInfo = new UserInfo($username, $userFullName["firstName"], $userFullName["lastName"], $userPermissions);
 				else
 					$userInfo = new UserInfo($username, "", "", "");
 
+				$this->sessionInstance->destroy();
 				$this->sessionInstance->regenerate();
 				$this->sessionInstance->set(USER_INFO_SESSION_VARIABLE, $userInfo);
 				return true;
 			}*/
 
+
+
 			if (true)
 			{
-
-/*				$firstName = $personInfo['FirstName'];
-				$lastName = $personInfo['LastName'];
-				if ($personInfo['IsTeacher'] === "1")
-					$userLevel = "teacher";
-				else if ($personInfo["IsResearcher"] === "1")
-					$userLevel = "researcher";
-				else if ($personInfo['IsVolunteer'] === "1")
-					$userLevel = "volunteer";
-				else
-					$userLevel = null;*/
-
-
-
+				$userFullName = array(
+					"firstName" => "test",
+					"lastName" => "name"
+				);
 
 				$dataManager = new DataManager();
+
+				// This should be done with a transaction or some other means.
+				if (!$dataManager->eidExists($username))
+					$dataManager->addPerson($username, $userFullName["firstName"], $userFullName["lastName"], 1, 0, 0);
+
 				$personInfo = $dataManager->getPersonInfo($username);
 
 				$firstName = $personInfo['FirstName'];
