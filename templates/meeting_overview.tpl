@@ -49,7 +49,7 @@
 	{if $editable}
 	<a href="{$baseUrl}index.php?page=schedule_meeting&eventID={$eventId}">Edit Meeting</a>
 	{/if}
-	{if $signUp}
+	{if isset($signup) && $signup}
 	<center>
 		<p>Volunteer for this event?</p>
 		<form method="POST" action="{$baseUrl}post.php">
