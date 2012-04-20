@@ -48,12 +48,16 @@ if ($postHandler->get("token") !== $userSession->getPostToken())
 switch ($source)
 {
 	case "add_location":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$location = $postHandler->get("location");
 		$dataManager->addLocation($location);
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "delete_location":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$locations = $postHandler->get("locations");
 		$delete = $postHandler->get("delete") === "yes";
 		$dataManager->updateDisabledLocations($locations, $delete);
@@ -61,12 +65,16 @@ switch ($source)
 		break;
 
 	case "add_course":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$location = $postHandler->get("course");
 		$dataManager->addCourse($location);
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "delete_course":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$courses = $postHandler->get("courses");
 		foreach ($courses as $courseID)
 			$dataManager->deleteCourse($courseID);
@@ -74,6 +82,8 @@ switch ($source)
 		break;
 
 	case "add_student":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$eid = $postHandler->get("eid");
 		$firstName = $postHandler->get("firstName");
 		$lastName = $postHandler->get("lastName");
@@ -85,6 +95,8 @@ switch ($source)
 		break;
 
 	case "delete_student":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$people = $postHandler->get("students");
 		foreach ($people as $personID)
 			$dataManager->deletePerson($personID);
@@ -92,6 +104,8 @@ switch ($source)
 		break;
 
 	case "add_group":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$people = $postHandler->get("people");
 		$groupName = $postHandler->get("name");
 		$dataManager->addGroup($groupName);
@@ -102,6 +116,8 @@ switch ($source)
 		break;
 
 	case "delete_group":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$groups = $postHandler->get("groups");
 		foreach ($groups as $teamID)
 			$dataManager->deleteGroup($teamID);
@@ -109,6 +125,8 @@ switch ($source)
 		break;
 
 	case "schedule_meeting":
+		if (!$userSession->isResearcher() && !$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		if (!is_null($eventId = $postHandler->get("eventId")))
 		{
 			if (!$dataManager->isInMeeting($eventId, $userSession->getUsername()))
@@ -140,6 +158,8 @@ switch ($source)
 		break;
 
 	case "confirm_volunteer":
+		if (!$userSession->isResearcher() && !$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$vols = $postHandler->get("volunteers");
 		echo "Volunteers: " . $nl;
 		foreach ($vols as $v)
@@ -147,6 +167,8 @@ switch ($source)
 		break;
 
 	case "create_group":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$class = $postHandler->get("class");
 		$groupName = $postHandler->get("groupName");
 		$members = $postHandler->get("members");
@@ -158,6 +180,9 @@ switch ($source)
 		break;
 
 	case "login":
+		if ($userSession->check())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
+
 		$username = $postHandler->get("username");
 		$password = $postHandler->get("password");
 

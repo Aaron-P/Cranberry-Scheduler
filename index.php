@@ -104,6 +104,9 @@ switch ($pageGet)
 		break;
 
 	case "schedule_meeting":
+		if (!$userSession->isResearcher() && !$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
+
 		$smarty->assign("showConfirmDialog", true);
 		if (!is_null($eventId = $getHandler->get("eventID")))
 		{
@@ -127,12 +130,18 @@ switch ($pageGet)
 		break;
 
 	case "login":
+		if ($userSession->check())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
+
 		if (is_null($return = $getHandler->get("return")))
 			$return = "";
 		$smarty->assign("return", $return);
 		break;
 
 	case "confirm_volunteer":
+		if (!$userSession->isResearcher() && !$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
+
 		$unconfirmedVolunteers = $dataManager->getUnconfirmedVolunteers('esutten');//$userSession->getUsername());
 		$meetings = array();
 		foreach ($unconfirmedVolunteers AS $unconfirmedVolunteer)
@@ -157,42 +166,58 @@ switch ($pageGet)
 		break;
 
 	case "add_location":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		// check user level
 		break;
 
 	case "delete_location":
 		// check user level
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$locations = $dataManager->getAllLocations();
 		$smarty->assign("locations", $locations);
 		break;
 
 	case "add_course":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		// check user level
 		break;
 
 	case "delete_course":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		// check user level
 		$courses = $dataManager->getAllCourses();
 		$smarty->assign("courses", $courses);
 		break;
 
 	case "add_student":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		// check user level
 		break;
 
 	case "delete_student":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		// check user level
 		$students = $dataManager->getAllPeople();
 		$smarty->assign("students", $students);
 		break;
 
 	case "add_group":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		// check user level
 		$people = $dataManager->getAllPeople();
 		$smarty->assign("people", $people);
 		break;
 
 	case "delete_group":
+		if (!$userSession->isTeacher())
+			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		// check user level
 		$groups = $dataManager->getAllGroups();
 		$smarty->assign("groups", $groups);
