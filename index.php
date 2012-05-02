@@ -71,33 +71,53 @@ switch ($pageGet)
 
 		$smarty->assign("showConfirmDialog", true);
 		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
+
+		$volEvents = $dataManager->getVolEvents($username);
+		$upcomingEvents = array_merge($upcomingEvents, $volEvents);
+
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "view_meetings":
 		$smarty->assign("showConfirmDialog", true);
 		$upcomingEvents = $dataManager->getUpcomingTeamEventsDetailed($username);
+
+		$volEvents = $dataManager->getVolEventsDetailed($username);
+		$upcomingEvents = array_merge($upcomingEvents, $volEvents);
+
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		break;
 
 	case "meeting_overview":
 		$smarty->assign("showConfirmDialog", true);
-		if (is_null($eventId = $getHandler->get("eventID")) || !$dataManager->isInMeeting($eventId, $userSession->getUsername()))
+		if (is_null($eventId = $getHandler->get("eventID")))
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		$event = $dataManager->getEventInfo($eventId);
 		$volunteers = $dataManager->getMeetingVolunteers($eventId);
 		$smarty->assign("eventId", $eventId);
 		$smarty->assign("event", $event);
 		$smarty->assign("volunteers", $volunteers);
+		$smarty->assign("signUp", false);
 		if ((bool)$event["InPast"])
+		{
 			$smarty->assign("editable", false);
+		}
+		else if (!$dataManager->ownsMeeting($eventId, $userSession->getUsername()))
+		{
+			$smarty->assign("editable", false);
+			if (!$dataManager->isVolunteer($eventId, $userSession->getUsername()))
+				$smarty->assign("signUp", true);
+		}
 		else
 			$smarty->assign("editable", true);
-
 		break;
 
 	case "volunteer_opportunities":
 		$upcomingEvents = $dataManager->getUpcomingTeamEvents($username);
+
+		$volEvents = $dataManager->getVolEvents($username);
+		$upcomingEvents = array_merge($upcomingEvents, $volEvents);
+
 		$smarty->assign("upcomingEvents", $upcomingEvents);
 		$opportunities = $dataManager->getVolunteerOpportunities();
 		$smarty->assign("opportunities", $opportunities);
@@ -196,15 +216,19 @@ switch ($pageGet)
 	case "add_student":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		// check user level
+		$courses = $dataManager->getAllCourses();
+		$people = $dataManager->getAllPeople();
+		$smarty->assign("courses", $courses);
+		$smarty->assign("people", $people);
 		break;
 
 	case "delete_student":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		// check user level
-		$students = $dataManager->getAllPeople();
-		$smarty->assign("students", $students);
+		$courses = $dataManager->getAllCourses();
+		$people = $dataManager->getAllPeople();
+		$smarty->assign("courses", $courses);
+		$smarty->assign("people", $people);
 		break;
 
 	case "add_group":

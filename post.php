@@ -67,8 +67,8 @@ switch ($source)
 	case "add_course":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		$location = $postHandler->get("course");
-		$dataManager->addCourse($location);
+		$course = $postHandler->get("course");
+		$dataManager->addCourse($course);
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
@@ -84,22 +84,30 @@ switch ($source)
 	case "add_student":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		$eid = $postHandler->get("eid");
-		$firstName = $postHandler->get("firstName");
-		$lastName = $postHandler->get("lastName");
-		$isVolunteer = $postHandler->get("volunteer") === "on";
+
+		$courseID = $postHandler->get("courseID");
+		$people = $postHandler->get("people");
 		$isResearcher = $postHandler->get("researcher") === "on";
 		$isTeacher = $postHandler->get("teacher") === "on";
-		$dataManager->addPerson($eid, $firstName, $lastName, $isVolunteer, $isResearcher, $isTeacher);
+		foreach ($people as $personID)
+		{
+			$dataManager->addPerson($personID, $courseID, $isResearcher, $isTeacher);
+		}
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
 	case "delete_student":
 		if (!$userSession->isTeacher())
 			$scriptUrls->redirectTo("index.php", array("page" => "main"));
-		$people = $postHandler->get("students");
+		
+		$courseID = $postHandler->get("courseID");
+		$people = $postHandler->get("people");
+		$isResearcher = $postHandler->get("researcher") === "on";
+		$isTeacher = $postHandler->get("teacher") === "on";
 		foreach ($people as $personID)
-			$dataManager->deletePerson($personID);
+		{
+			$dataManager->deletePerson($personID, $courseID, $isResearcher, $isTeacher);
+		}
 		$scriptUrls->redirectTo("index.php", array("page" => $return));
 		break;
 
@@ -186,18 +194,7 @@ switch ($source)
 		$username = $postHandler->get("username");
 		$password = $postHandler->get("password");
 
-		// should use UserSession class
 		$userSession->auth($username, $password);
-
-		//$sessionHandler->set("username", $username);
-		//$userInfo = $dataManager->getPersonInfo($username);
-		//$sessionHandler->set("firstName", $userInfo["FirstName"]);
-		//$sessionHandler->set("lastName", $userInfo["LastName"]);
-
-		// TODO: do this in UserSession
-		//$sessionHandler->set("isVolunteer", $userInfo['IsVolunteer']);
-		//$sessionHandler->set("isResearcher", $userInfo["IsResearcher"]);
-		//$sessionHandler->set("isTeacher", $userInfo["IsTeacher"]);
 
 		if (is_null($return = $postHandler->get("return")))
 			$return = "main";
@@ -227,6 +224,13 @@ switch ($source)
 		echo "Name: " . $name . $nl;
 		echo "E-id: " . $eid . $nl;
 		echo "Class: " . $class . $nl;
+		break;
+
+	case "sign_up":
+		$meetingID = $postHandler->get("eventId");
+		$eid = $userSession->getUsername();
+		$dataManager->volunteerSignUp($eid, $meetingID);
+		$scriptUrls->redirectTo("index.php", array("page" => "main"));
 		break;
 
 	default:

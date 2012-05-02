@@ -102,16 +102,28 @@ class DataManagerSingleton
                AND m.StartTime BETWEEN FROM_UNIXTIME(:start) AND FROM_UNIXTIME(:end);";
 
     private $volEventsSQL =
-            "SELECT DISTINCT m.Description,
-                             DATE(m.StartTime) AS Date,
-                             TIME(m.StartTime) AS Start,
-                             TIME(m.EndTime) AS End,
-                             l.LocationName AS Location,
-                             m.RequiredForms
+            "SELECT DISTINCT 'Volunteer' AS MeetingType,
+                             DATE_FORMAT(m.StartTime, '%b %e') AS Date,
+                             m.MeetingID
              FROM meeting As m, location AS l, volunteer, person
              WHERE m.MeetingID = volunteer.MeetingID
                    AND l.LocationID = m.LocationID
                    AND volunteer.PersonID = person.PersonID
+                   AND NOW() < m.StartTime
+                   AND person.Eid = :eid;";
+
+    private $volEventsDetailedSQL =
+            "SELECT DISTINCT 'Volunteer' AS MeetingType,
+                             DATE_FORMAT(m.StartTime, '%W, %M %e, %Y') AS Date,
+                             DATE_FORMAT(m.StartTime, '%l:%i %p') AS Start,
+                             DATE_FORMAT(m.EndTime, '%l:%i %p') AS End,
+                             m.MeetingID,
+                             m.Description
+             FROM meeting As m, location AS l, volunteer, person
+             WHERE m.MeetingID = volunteer.MeetingID
+                   AND l.LocationID = m.LocationID
+                   AND volunteer.PersonID = person.PersonID
+                   AND NOW() < m.StartTime
                    AND person.Eid = :eid;";
 
     private $teamEventsAtLocSQL =
@@ -243,6 +255,15 @@ class DataManagerSingleton
 							AND m.MeetingID = :meetingId
 							AND p.Eid = :eid;";
 
+    private $isVolunteerSQL = "SELECT COUNT(*) AS Count
+                            FROM meeting As m, location AS l, volunteer, person
+                            WHERE m.MeetingID = volunteer.MeetingID
+                            AND m.MeetingID = :meetingId
+                            AND l.LocationID = m.LocationID
+                            AND volunteer.PersonID = person.PersonID
+                            AND NOW() < m.StartTime
+                            AND person.Eid = :eid;";
+
 	private $unconfirmedVolunteersSQL = "SELECT m.*, p.PersonID, p.FirstName, p.LastName
 										FROM meeting m, volunteer v, person p
 										WHERE m.NumVolunteers > 0
@@ -291,13 +312,14 @@ class DataManagerSingleton
 
     private $deleteCourseSQL = "DELETE FROM course WHERE CourseID = :id;";
 
-    private $addPersonSQL = "INSERT INTO person(Eid, FirstName, LastName,
-                            IsVolunteer, IsResearcher, IsTeacher)
-                            VALUES (:Eid, :FirstName, :LastName, :IsVolunteer, :IsResearcher, :IsTeacher);";
+    private $addPersonSQL = "INSERT INTO courseperson(CourseID, PersonID)
+                            VALUES (:courseID, :personID);";
 
     private $allPeopleSQL = "SELECT PersonID, FirstName, LastName FROM person;";
 
-    private $deletePersonSQL = "DELETE FROM person WHERE PersonID = :id;";
+    private $deletePersonSQL = "DELETE FROM courseperson
+                                WHERE PersonID = :personID
+                                AND CourseID = :courseID;";
 
     private $groupIDByNameSQL = "SELECT TeamID FROM team WHERE TeamName = :name;";
 
@@ -311,7 +333,22 @@ class DataManagerSingleton
 
 	private $checkEidExistsSQL = "SELECT COUNT(*) AS Count FROM person p WHERE p.Eid = :eid;";
 
+    private $updateUserLevelSQL = "UPDATE person
+                                    SET IsResearcher = :isResearcher,
+                                        IsTeacher = :isTeacher
+                                    WHERE PersonID = :personID;";
 
+    private $ownsMeetingSQL =
+        "SELECT m.MeetingID
+        FROM meeting m, person p, teamperson tp
+        WHERE m.TeamID = tp.TeamID
+        AND p.Eid = :eid
+        AND p.PersonID = tp.PersonID
+        AND m.MeetingID = :meetingID
+        AND p.IsResearcher = 1;";
+
+    private $signUpSQL = "INSERT INTO volunteer(MeetingID, PersonID) 
+                        VALUES (:mid, :pid);";
 
 
     protected static function Instance()
@@ -393,6 +430,12 @@ class DataManagerSingleton
         return self::$db->query($this->volEventsSQL, array(":eid" => $eid));
     }
 
+
+    public function getVolEventsDetailed($eid)
+    {
+        return self::$db->query($this->volEventsDetailedSQL, array(":eid" => $eid));
+    }
+    
 
     // Given an e-id for any team member and a location, return the events for
     // that team at that location.
@@ -548,6 +591,12 @@ class DataManagerSingleton
 		return (bool)$result[0]["Count"];
 	}
 
+    public function isVolunteer($meetingId, $eid)
+    {
+        $result = self::$db->query($this->isVolunteerSQL, array(":meetingId" => $meetingId, ":eid" => $eid));
+        return (bool)$result[0]["Count"];
+    }
+
 	public function areUnconfirmedVolunteers($eid)
 	{
 		$result = self::$db->query($this->unconfirmedVolunteersCountSQL, array(":eid" => $eid));
@@ -597,17 +646,22 @@ class DataManagerSingleton
         return self::$db->query($this->deleteCourseSQL, array(":id" => $courseID));
     }
 
-    public function addPerson($eid, $firstName, $lastName, $isVolunteer, $isResearcher, $isTeacher)
+    public function addPerson($personID, $courseID, $isResearcher, $isTeacher)
     {
         $sqlVars = array(
-            ":Eid" => $eid,
-            ":FirstName" => $firstName,
-            ":LastName" => $lastName,
-            ":IsVolunteer" => $isVolunteer,
-            ":IsResearcher" => $isResearcher,
-            ":IsTeacher" => $isTeacher
+            ":isResearcher" => $isResearcher,
+            ":isTeacher" => $isTeacher,
+            ":personID" => $personID
         );
-        return self::$db->query($this->addPersonSQL, $sqlVars);
+        $result[] = self::$db->query($this->updateUserLevelSQL, $sqlVars);
+
+        $sqlVars = array(
+            ":personID" => $personID,
+            ":courseID" => $courseID
+        );
+        $result[] = self::$db->query($this->addPersonSQL, $sqlVars);
+        
+        return $result;
     }
 
     public function getAllPeople()
@@ -615,9 +669,22 @@ class DataManagerSingleton
         return self::$db->query($this->allPeopleSQL);
     }
 
-    public function deletePerson($personID)
+    public function deletePerson($personID, $courseID, $isResearcher, $isTeacher)
     {
-        return self::$db->query($this->deletePersonSQL, array(":id" => $personID));
+        $sqlVars = array(
+            ":isResearcher" => $isResearcher,
+            ":isTeacher" => $isTeacher,
+            ":personID" => $personID
+        );
+        $result[] = self::$db->query($this->updateUserLevelSQL, $sqlVars);
+
+        $sqlVars = array(
+            ":personID" => $personID,
+            ":courseID" => $courseID
+        );
+        $result[] = self::$db->query($this->deletePersonSQL, $sqlVars);
+
+        return $result;
     }
 
     public function getGroupIDByName($name)
@@ -646,6 +713,22 @@ class DataManagerSingleton
     public function deleteGroup($teamID)
     {
         return self::$db->query($this->deleteGroupSQL, array(":id", $teamID));
+    }
+
+    public function ownsMeeting($meetingID, $eid)
+    {
+        $sqlVars = array(
+            ":eid" => $eid,
+            ":meetingID" => $meetingID
+        );
+        $result = self::$db->query($this->ownsMeetingSQL, $sqlVars);
+        return !empty($result);
+    }
+
+    public function volunteerSignUp($eid, $meetingID)
+    {
+        $pid = $this->getPersonID($eid);
+        return self::$db->query($this->signUpSQL, array(":mid" => $meetingID, ":pid" => $pid));
     }
 }
 

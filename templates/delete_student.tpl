@@ -21,12 +21,32 @@
         <h1>Delete student(s)</h1>
         <br />
      
-        {if $students}
-        <div class="padded">
-            {foreach $students as $s}
-            <input type="checkbox" name="students[]" value={$s["PersonID"]}>&nbsp; {$s["FirstName"]} {$s["LastName"]}<br />
+        {if $people}
+        <label class="label">Class:<br />
+        <span class="small">&nbsp;</span>
+        </label>
+        <select id="location" class="input" name="courseID">
+                <option selected="selected" value="">-- Select course --</option>
+                {foreach $courses as $c}
+                <option value="{$c["CourseID"]}">{$c["CourseName"]}</option>
+                {/foreach}
+        </select><br />
+        
+        <label class="label">People:<br />
+        <span class="small">&nbsp;</span>
+        </label>
+        <select multiple size=12 name="people[]">
+            {foreach $people as $p}
+            <option value={$p["PersonID"]}>{$p["FirstName"]} {$p["LastName"]}
             {/foreach}
-        </div><br />
+        </select><br /><br />
+
+        <label class="label">Revise permissions:<br />
+        <span class="small">&nbsp;</span>
+        </label>
+        <input type="checkbox" name="researcher">&nbsp; Researcher
+        <input type="checkbox" name="teacher">&nbsp; Teacher
+        <br />
 
         <center>
             <input type="submit" value="Submit" id="submit" name="submit" />

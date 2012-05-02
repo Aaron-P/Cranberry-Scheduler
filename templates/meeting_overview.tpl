@@ -43,11 +43,25 @@
 	<div class="spacer"></div>
 </div>
 <br />
-<div id="stylized2" class="myform">
-{if $editable}
+
+{if $editable || $signUp}
+	<div id="stylized2" class="myform">
+	{if $editable}
 	<a href="{$baseUrl}index.php?page=schedule_meeting&eventID={$eventId}">Edit Meeting</a>
-{else}
-	Past meetings cannot be edited.
+	{/if}
+	{if isset($signUp) && $signUp}
+	<center>
+		<p>Volunteer for this event?</p>
+		<form method="POST" action="{$baseUrl}post.php">
+		<input type="hidden" name="source" value="sign_up">
+		<input type="hidden" name="eventId" value={$eventId}>
+		<input type="hidden" name="token" value="{$token}" />
+		<input type="submit" value="Sign up" id="submit" name="submit" />
+		&nbsp;|&nbsp;
+		<input type="submit" value="Cancel" id="submit" name="cancel" />
+	</center>
+	{/if}
+	</div>
 {/if}
-</div>
+
 {/block}
