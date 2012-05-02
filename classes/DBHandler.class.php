@@ -9,8 +9,14 @@
  * @copyright University of Illinois/NCSA Open Source License
  */
 
-define("DB_DEFAULT_HOST",   "127.0.0.1"); /**< The default database host. */
-define("DB_DEFAULT_DRIVER", "mysql"); /**< The default PDO driver. */
+/**
+ * The default database host.
+ */
+define("DB_DEFAULT_HOST",   "127.0.0.1");
+/**
+ * The default PDO driver.
+ */
+define("DB_DEFAULT_DRIVER", "mysql");
 
 /**
  * A wrapper class for PHP's PDO class.
