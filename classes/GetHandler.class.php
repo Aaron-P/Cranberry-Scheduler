@@ -5,7 +5,6 @@
  * @author    Aaron Papp
  * @version   1.0
  * @date      2011-2012
- * @cop
  * @copyright University of Illinois/NCSA Open Source License
  */
 
