@@ -14,10 +14,7 @@
  */
 class ServerSingleton
 {
-	/**
-	 * Holds the static instance of the ServerSingleton object.
-	 */
-	private static $serverInstance;
+	private static $serverInstance; /**< Holds the static instance of the ServerSingleton object. */
 
 	/**
 	 * Default constructor.

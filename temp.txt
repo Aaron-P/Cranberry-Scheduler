@@ -16,6 +16,51 @@
 
 
 
+
+
+
+
+			if (true)
+			{
+				$userFullName = array(
+					"firstName" => "test",
+					"lastName" => "name"
+				);
+
+				$dataManager = new DataManager();
+
+				// This should be done with a transaction or some other means.
+				if (!$dataManager->eidExists($username))
+					$dataManager->addPerson($username, $userFullName["firstName"], $userFullName["lastName"], 1, 0, 0);
+
+				$personInfo = $dataManager->getPersonInfo($username);
+
+				$firstName = $personInfo['FirstName'];
+				$lastName = $personInfo['LastName'];
+
+				$userPermissions = array(
+					"volunteer"  => (bool)$personInfo["IsVolunteer"],
+					"researcher" => (bool)$personInfo["IsResearcher"],
+					"teacher"    => (bool)$personInfo["IsTeacher"]
+				);
+
+				if (true)
+					$userInfo = new UserInfo($username, $firstName, $lastName, $userPermissions);
+				else
+					$userInfo = new UserInfo($username, "", "", "");
+
+				$this->sessionInstance->destroy();
+				$this->sessionInstance->regenerate();
+				$this->sessionInstance->set(USER_INFO_SESSION_VARIABLE, $userInfo);
+				return true;
+			}
+
+
+
+
+
+
+
 <?php
 require_once("LDAP.class.php");
 require_once("UserInfo.class.php");

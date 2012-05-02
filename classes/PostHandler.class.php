@@ -15,10 +15,7 @@
  */
 class PostSingleton
 {
-	/**
-	 * Holds the static instance of the PostSingleton object.
-	 */
-	private static $postInstance;
+	private static $postInstance; /**< Holds the static instance of the PostSingleton object. */
 
 	/**
 	 * Default constructor.

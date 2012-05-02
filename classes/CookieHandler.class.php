@@ -15,10 +15,7 @@
  */
 class CookieSingleton
 {
-	/**
-	 * Holds the static instance of the CookieSingleton object.
-	 */
-	private static $cookieInstance;
+	private static $cookieInstance; /**< Holds the static instance of the CookieSingleton object. */
 
 	/**
 	 * Default constructor.

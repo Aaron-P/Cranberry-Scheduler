@@ -3,8 +3,26 @@
  * @copyright University of Illinois/NCSA Open Source License
  */
 
+require_once("../config.php");
+
+if (!defined("ACCESS_TIMEOUT_LIMIT"))
+	define("ACCESS_TIMEOUT_LIMIT", 30 * 60);
+if (!defined("SESSION_TIMEOUT_LIMIT"))
+	define("SESSION_TIMEOUT_LIMIT", 60 * 60);
+if (!defined("USER_INFO_SESSION_VARIABLE"))
+	define("USER_INFO_SESSION_VARIABLE", "UserInfo");
+
+
 define("DB_DEFAULT_HOST",   "127.0.0.1");
 define("DB_DEFAULT_DRIVER", "mysql");
+if (!defined("DB_HOSTNAME"))
+	define("DB_HOSTNAME", "");
+if (!defined("DB_USERNAME"))
+	define("DB_USERNAME", "");
+if (!defined("DB_PASSWORD"))
+	define("DB_PASSWORD", "");
+if (!defined("DB_DATABASE"))
+	define("DB_DATABASE", "");
 
 class DBSingleton
 {

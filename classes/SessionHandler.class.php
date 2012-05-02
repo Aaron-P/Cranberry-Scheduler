@@ -14,10 +14,7 @@
  */
 class SessionSingleton
 {
-	/**
-	 * Holds the static instance of the SessionSingleton object.
-	 */
-	private static $sessionInstance;
+	private static $sessionInstance; /**< Holds the static instance of the SessionSingleton object. */
 
 	/**
 	 * Default constructor, starts the session.

@@ -15,10 +15,7 @@
  */
 class GetSingleton
 {
-	/**
-	 * Holds the static instance of the GetSingleton object.
-	 */
-	private static $getInstance;
+	private static $getInstance; /**< Holds the static instance of the GetSingleton object. */
 
 	/**
 	 * Default constructor.
