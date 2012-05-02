@@ -3,14 +3,11 @@
  * @copyright University of Illinois/NCSA Open Source License
  */
 
+require_once("../config.php");
 require_once("LDAP.class.php");
 require_once("UserInfo.class.php");
 require_once("SessionHandler.class.php");
 require_once("DataManager.class.php");
-
-define("ACCESS_TIMEOUT_LIMIT", 30 * 60);
-define("SESSION_TIMEOUT_LIMIT", 60 * 60);
-define("USER_INFO_SESSION_VARIABLE", "UserInfo");
 
 class UserSession
 {
