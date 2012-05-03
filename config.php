@@ -13,11 +13,11 @@
  */
 define("LDAP_SERVER", "");
 
-/*
+/**
  * The amount of time in minutes to wait for an access before timing out.
  */
 define("ACCESS_TIMEOUT_LIMIT", 30 * 60);
-/*
+/**
  * The amount of time in minutes after logging in to time out.
  */
 define("SESSION_TIMEOUT_LIMIT", 60 * 60);

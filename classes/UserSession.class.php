@@ -8,7 +8,6 @@
  * @copyright University of Illinois/NCSA Open Source License
  */
 
-require_once("../config.php");
 require_once("LDAP.class.php");
 require_once("UserInfo.class.php");
 require_once("SessionHandler.class.php");
