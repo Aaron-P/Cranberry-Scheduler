@@ -1,14 +1,28 @@
 <?php
 /**
+ * Defines the DataManagerSingleton and DataManager classes.
+ * @file      DataManager.class.php
+ * @author    Aaron Papp
+ * @author    Shawn LeMaster
+ * @version   1.0
+ * @date      2011-2012
  * @copyright University of Illinois/NCSA Open Source License
  */
+
 error_reporting(E_ALL | E_STRICT);
 require_once("DBHandler.class.php");
 
+/**
+ * A wrapper for interfacing with the database. One function per SQL query.
+ * @class DataManagerSingleton
+ */
 class DataManagerSingleton
 {
-    private static $db;
+    private static $db; /**< Holds the DBHandler singleton for interfacing with the database. */
 
+    /**
+     * All SQL queries used in this class.
+     */
     private $teamEventsSQL = "SELECT DISTINCT m.MeetingType,
                          m.Description,
                          DATE(m.StartTime) AS Date,
@@ -351,6 +365,9 @@ class DataManagerSingleton
                         VALUES (:mid, :pid);";
 
 
+    /**
+     * Constructs the DataManagerSingleton object.
+     */
     protected static function Instance()
     {
         if (!self::$db)
@@ -358,6 +375,11 @@ class DataManagerSingleton
         return self::$db;
     }
 
+
+    /**
+     * Checks to see if an e-id exists in the database.
+     * @param[in] $eid The e-id (username) that is checked
+     */
 	public function eidExists($eid)
 	{
 		$result = self::$db->query($this->checkEidExistsSQL, array(":eid" => $eid));
@@ -367,13 +389,20 @@ class DataManagerSingleton
 	}
 
 
-    // Given an e-id for any team member, return the events for that team
+    /**
+     * Given an e-id for any team member, return the events for that team.
+     * @param[in] $eid The e-id (username) of one of the teammates on a team
+     */
     public function getTeamEvents($eid)
     {
         return self::$db->query($this->teamEventsSQL, array(":eid" => $eid));
     }
 
 
+    /**
+     * Grabs detailed information about a person in the database.
+     * @param[in] $eid The e-id (username) of the person
+     */
     public function getPersonInfo($eid)
     {
         $result = self::$db->query($this->personInfoSQL, array(":eid" => $eid));
@@ -381,24 +410,39 @@ class DataManagerSingleton
     }
 
 
+    /**
+     * Retrieves all available volunteer opportunities.
+     */
     public function getVolunteerOpportunities()
     {
         return self::$db->query($this->volunteerOpportunitiesSQL);
     }
 
 
+    /**
+     * Grabs detailed information about a team's upcoming events.
+     * @param[in] $eid The e-id (username) of one of the teammates
+     */
     public function getUpcomingTeamEventsDetailed($eid)
     {
         return self::$db->query($this->upcomingTeamEventsDetailedSQL, array(":eid" => $eid));
     }
 
 
+    /**
+     * Grabs less detailed information about a team's upcoming events.
+     * @param[in] $eid The e-id (username) of one of the teammates
+     */
     public function getUpcomingTeamEvents($eid)
     {
         return self::$db->query($this->upcomingTeamEventsSQL, array(":eid" => $eid));
     }
 
 
+    /**
+     * Grabs the complete details of a single event.
+     * @param[in] $eventID The event's ID
+     */
     public function getEventInfo($eventID)
     {
         $result = self::$db->query($this->eventInfoSQL, array(":eventID" => $eventID));
@@ -406,81 +450,125 @@ class DataManagerSingleton
     }
 
 
+    /**
+     * Gets the information about a meeting's scheduled volunteers.
+     * @param[in] $meetingID The meeting's ID
+     */
     public function getMeetingVolunteers($meetingID)
     {
         return self::$db->query($this->meetingVolunteersSQL, array(":meetingID" => $meetingID));
     }
 
 
-    // Given an e-id for any team member, return the events for that team
-    // that happen between the times $start and $end (UNIX timestamps)
+    /**
+     * Return the events for a team scheduled between the specified periods of time
+     * @param[in] $eid The e-id (username) of a person on the team
+     * @param[in] $start The UNIX timestamp of the start of the time interval
+     * @param[in] $end The UNIX timestamp of the end of the time interval
+     */
     public function getTeamEventsBetween($eid, $start, $end)
     {
         return self::$db->query($this->teamEventsBetweenSQL, array(":eid" => $eid, ":start" => $start, ":end" => $end));
     }
 
+
+    /**
+     * Return the events scheduled at a location between the specified periods of time
+     * @param[in] $location The location ID
+     * @param[in] $start The UNIX timestamp of the start of the time interval
+     * @param[in] $end The UNIX timestamp of the end of the time interval
+     */
 	public function getLocationEventsBetween($location, $start, $end)
 	{
 		return self::$db->query($this->locationEventsBetweenSQL, array(":location" => $location, ":start" => $start, ":end" => $end));
 	}
 
-    // Given an e-id for a volunteer, return that volunteer's events
+
+    /**
+     * Grabs all the events that a volunteer is signed up for.
+     * @param[in] $eid The volunteer's e-id (username)
+     */
     public function getVolEvents($eid)
     {
         return self::$db->query($this->volEventsSQL, array(":eid" => $eid));
     }
 
 
+    /**
+     * Grabs all the events (including all details) that a volunteer is signed up for.
+     * @param[in] $eid The volunteer's e-id (username)
+     */
     public function getVolEventsDetailed($eid)
     {
         return self::$db->query($this->volEventsDetailedSQL, array(":eid" => $eid));
     }
     
 
-    // Given an e-id for any team member and a location, return the events for
-    // that team at that location.
+    /**
+     * Grabs all the events for a team at a particular location.
+     * @param[in] $eid The e-id (username) of one of the teammate's
+     * @param[in] $location The location ID
+     */
     public function getTeamEventsAtLoc($eid, $location)
     {
         return self::$db->query($this->teamEventsAtLocSQL, array(":eid" => $eid, ":location" => $location));
     }
 
 
-    // Given the e-id for a volunteer and a location, return the events for
-    // that volunteer at that location.
+    /**
+     * Grabs all the events for a volunteer at a particular location.
+     * @param[in] $eid The e-id (username) of the volunteer
+     * @param[in] $location The location ID
+     */
     public function getVolEventsAtLoc($eid, $location)
     {
         return self::$db->query($this->volEventsAtLocSQL, array(":eid" => $eid, ":location" => $location));
     }
 
 
-    // Given an e-id for any team member and a location, return the events in
-    // that location that are NOT for that team.
+    /**
+     * Grabs all the events at a location that do NOT belong to a team.
+     * @param[in] $eid The e-id (username) of one of the teammates
+     * @param[in] $location The location ID
+     */
     public function getNonTeamEventsAtLoc($eid, $location)
     {
          return self::$db->query($this->nonTeamEventsAtLocSQL, array(":eid" => $eid, ":location" => $location));
     }
 
 
-    // Selects name and participation points for all volunteers
+    /**
+     * Grabs the names and associated participation points of all volunteers.
+     */
     public function getVolsAndPoints()
     {
          return self::$db->query($this->volsAndPointsSQL);
     }
 
 
-    // Selects name and participation points for all volunteers, ordered by last name
+    /**
+     * Grabs the names and associated participation points of all volunteers
+     * ordered ascending by last name.
+     */
     public function getVolsAndPointsByLastName()
     {
         return self::$db->query($this->volsAndPointsByLastNameSQL);
     }
 
 
+    /**
+     * Returns all the locations in the database.
+     */
     public function getAllLocations()
     {
         return self::$db->query($this->allLocationsSQL);
     }
 
 
+    /**
+     * Fetches the location ID of a location given its name.
+     * @param[in] $locName The name of the location
+     */
     public function getLocationID($locName)
     {
         $result = self::$db->query($this->locationIDSQL, array(":locName" => $locName));
@@ -488,6 +576,10 @@ class DataManagerSingleton
     }
 
 
+    /**
+     * Gets the ID of a person's team
+     * @param[in] $eid The e-id (username) of one of the teammates
+     */
     public function getTeamID($eid)
     {
         $result = self::$db->query($this->teamIDSQL, array(":eid" => $eid));
@@ -495,6 +587,16 @@ class DataManagerSingleton
     }
 
 
+    /**
+     * Inserts a new meeting into the database
+     * @param[in] $type The type of meeting (rehearsal or interview)
+     * @param[in] $description The meeting description
+     * @param[in] $start The UNIX timestamp of when the meeting begins
+     * @param[in] $finish The UNIX timestamp of when the meeting ends
+     * @param[in] $locName The name of the location where the meeting will take place
+     * @param[in] $numOfVolunteers The number of requested volunteers
+     * @param[in] $eid The e-id of the person who scheduled the meeting
+     */
     public function insertMeeting($type, $description, $start, $finish, $locName, $numOfVolunteers, $eid)
     {
         $loc = $locName;//$this->getLocationID($locName);
@@ -516,13 +618,28 @@ class DataManagerSingleton
 		return self::$db->query($this->insertMeetingSQL, $sqlVars);
     }
 
+
+    /**
+     * Gets the details of a meeting
+     * @param[in] $meetingId The ID of the meeting
+     */
 	public function getMeetingData($meetingId)
 	{
 		$result = self::$db->query($this->meetingDataSQL, array(":meetingId" => $meetingId));
 		return $result[0];
 	}
 
-    // Update a meeting
+    
+    /**
+     * Updates the details of a meeting.
+     * @param[in] $meetID The meeting ID
+     * @param[in] $meetType The type of meeting (e.g. rehearsal or interview)
+     * @param[in] $description The meeting description
+     * @param[in] $startTime The UNIX timestamp of when the meeting begins
+     * @param[in] $endTime The UNIX timestamp of when the meeting ends
+     * @param[in] $locID The ID of the location where the meeting is to take place
+     * @param[in] $numVolunteers The number of volunteers requested for the meeting
+     */
     public function updateMeeting($meetID, $meetType, $description, $startTime, $endTime, $locID, $numVolunteers)
     {
         $sqlVars = array(
@@ -538,7 +655,13 @@ class DataManagerSingleton
     }
 
 
-    // Update a volunteer
+    /**
+     * Updates the information of a volunteer after he/she participates
+     * in a research meeting.
+     * @param[in] $personID The ID of the volunteer
+     * @param[in] $meetID The ID of the meeting the volunteer participated in
+     * @param[in] $incValue The number of participation points earned
+     */
     public function updateVolunteer($personID, $meetID, $incValue)
     {
         $sqlVars = array(
@@ -551,6 +674,10 @@ class DataManagerSingleton
     }
 
 
+    /**
+     * Gets the website settings for a person
+     * @param[in] $eid The person's e-id (username)
+     */
     public function getSettings($eid)
     {
 		$result = self::$db->query($this->settingsSQL, array(":eid" => $eid));
@@ -560,6 +687,13 @@ class DataManagerSingleton
 	}
 
 
+    /**
+     * Updates a person's settings
+     * @param[in] $eid The ID of the person
+     * @param[in] $email The email address of the person
+     * @param[in] $enotify Whether or not to send the person an email reminder
+     * @param[in] $rtime The amount of time (in hours) before an event that the person will receive an email reminder
+     */
     public function updateSettings($eid, $email, $enotify, $rtime)
     {
         $pid = $this->getPersonID($eid);
@@ -573,47 +707,93 @@ class DataManagerSingleton
     }
 
 
+    /**
+     * Gets the ID (the ID internal to the databse) of a person given their e-id
+     * @param[in] $eid The person's e-id (username)
+     */
     public function getPersonID($eid)
     {
         $result = self::$db->query($this->personIDSQL, array(":eid" => $eid));
         return $result[0]["PersonID"];
     }
 
+
+    /**
+     * Grabs the time remaining until scheduled events occur. Can be utilized
+     * when sending out email reminders X hours before a meeting is scheduled.
+     */
 	public function getReminderInfo()
 	{
 		$result = self::$db->query($this->reminderInfo, array());
         return $result;
 	}
 
+
+    /**
+     * Checks if a person is participating in a meeting as a researcher
+     * @param[in] $meetingId The ID of the meeting
+     * @param[in] $eid The researcher's e-id (username)
+     */
 	public function isInMeeting($meetingId, $eid)
 	{
 		$result = self::$db->query($this->isInMeetingSQL, array(":meetingId" => $meetingId, ":eid" => $eid));
 		return (bool)$result[0]["Count"];
 	}
 
+
+    /**
+     * Checks if a person is participating in a meeting as a volunteer
+     * @param[in] $meetingId The ID of the meeting
+     * @param[in] $eid The volunteer's e-id (username)
+     */
     public function isVolunteer($meetingId, $eid)
     {
         $result = self::$db->query($this->isVolunteerSQL, array(":meetingId" => $meetingId, ":eid" => $eid));
         return (bool)$result[0]["Count"];
     }
 
+
+    /**
+     * Checks if a person's team has volunteers that are still uncomfirmed
+     * (in terms of participation) from a previously held meeting.
+     * @param[in] $eid The e-id of the person
+     */
 	public function areUnconfirmedVolunteers($eid)
 	{
 		$result = self::$db->query($this->unconfirmedVolunteersCountSQL, array(":eid" => $eid));
 		return (bool)$result[0]["Count"];
 	}
 
+
+    /**
+     * Gets the uncomfirmed volunteers for a person's team.
+     * @param[in] $eid The e-id of the person
+     */
 	public function getUnconfirmedVolunteers($eid)
 	{
 		$result = self::$db->query($this->unconfirmedVolunteersSQL, array(":eid" => $eid));
 		return $result;
 	}
 
+
+    /**
+     * Adds a new location in the database to be used as a meeting place
+     * @param[in] $location The name of the new location
+     */
     public function addLocation($location)
     {
         return self::$db->query($this->addLocationSQL, array(":locname" => $location));
     }
 
+
+    /**
+     * Disables or deletes locations from the database. If disabled, a location
+     * cannot be used when scheduling new meetings. Deleting removes a location
+     * from the database completely - even currently scheduled events. So use
+     * with caution.
+     * @param[in] $locations The IDs of the locations
+     * @param[in] $locations boolean that determines whether or not to delete the locations
+     */
     public function updateDisabledLocations($locations, $delete)
     {
         $result = array();
@@ -631,21 +811,43 @@ class DataManagerSingleton
         return $result;
     }
 
+
+    /**
+     * Adds a new course to the database
+     * @param[in] $courseName The name of the new course
+     */
     public function addCourse($courseName)
     {
         return self::$db->query($this->addCourseSQL, array(":name" => $courseName));
     }
 
+
+    /**
+     * Retrieves all courses from the database
+     */
     public function getAllCourses()
     {
         return self::$db->query($this->allCoursesSQL);
     }
 
+
+    /**
+     * Deletes a course from the database.
+     * @param[in] $courseID The ID of the course
+     */
     public function deleteCourse($courseID)
     {
         return self::$db->query($this->deleteCourseSQL, array(":id" => $courseID));
     }
 
+
+    /**
+     * Adds a person to a course
+     * @param[in] $personID The ID of the person
+     * @param[in] $courseID The ID of the course
+     * @param[in] $isResearcher boolean determining if this person is a researcher
+     * @param[in] $isTeacher boolean determining if this person is a teacher/admin
+     */
     public function addPerson($personID, $courseID, $isResearcher, $isTeacher)
     {
         $sqlVars = array(
@@ -664,11 +866,23 @@ class DataManagerSingleton
         return $result;
     }
 
+
+    /**
+     * Retrieves all people in the database
+     */
     public function getAllPeople()
     {
         return self::$db->query($this->allPeopleSQL);
     }
 
+
+    /**
+     * Deletes a person from a course and revises their persmissions.
+     * @param[in] $personID The ID of the person
+     * @param[in] $courseID The ID of the course
+     * @param[in] $isResearcher boolean determining if this person is a researcher
+     * @param[in] $isTeacher boolean determining if this person is a teacher/admin
+     */
     public function deletePerson($personID, $courseID, $isResearcher, $isTeacher)
     {
         $sqlVars = array(
@@ -687,6 +901,11 @@ class DataManagerSingleton
         return $result;
     }
 
+
+    /**
+     * Gets the group ID of a group.
+     * @param[in] $name The name of the group
+     */
     public function getGroupIDByName($name)
     {
         $result = self::$db->query($this->groupIDByNameSQL, array(":name" => $name));
@@ -695,26 +914,52 @@ class DataManagerSingleton
         return null;
     }
 
+
+    /**
+     * Adds a new group to the database
+     * @param[in] $name The name of the group
+     */
     public function addGroup($name)
     {
         return self::$db->query($this->addGroupSQL, array(":tname" => $name));
     }
 
+
+    /**
+     * Adds a person to a group
+     * @param[in] $teamID The ID of the team
+     * @param[in] $personID The ID of the person
+     */
     public function addGroupPerson($teamID, $personID)
     {
         return self::$db->query($this->addGroupPersonSQL, array(":tid" => $teamID, ":pid" => $personID));
     }
 
+
+    /**
+     * Fetches all groups in the database
+     */
     public function getAllGroups()
     {
         return self::$db->query($this->allGroupsSQL);
     }
 
+
+    /**
+     * Deletes a group from the database
+     * @param[in] $teamID The ID of the team
+     */
     public function deleteGroup($teamID)
     {
         return self::$db->query($this->deleteGroupSQL, array(":id", $teamID));
     }
 
+
+    /**
+     * Determines if a person is in a group that owns a particular meeting
+     * @param[in] $meetingID The ID of the meeting
+     * @param[in] $eid The e-id of the person (username)
+     */
     public function ownsMeeting($meetingID, $eid)
     {
         $sqlVars = array(
@@ -725,6 +970,12 @@ class DataManagerSingleton
         return !empty($result);
     }
 
+
+    /**
+     * Signs a volunteer up for a meeting
+     * @param[in] $eid The e-id of the volunteer
+     * @param[in] $meetingID The ID of the meeting being signed up for
+     */
     public function volunteerSignUp($eid, $meetingID)
     {
         $pid = $this->getPersonID($eid);
@@ -732,8 +983,17 @@ class DataManagerSingleton
     }
 }
 
+
+
+/**
+ * A wrapper for the DataManagerSingleton class.
+ * @class DataManager
+ */
 class DataManager extends DataManagerSingleton
 {
+    /**
+     * Constructs the DataManager object.
+     */
     public function __construct()
     {
         DataManagerSingleton::Instance();
