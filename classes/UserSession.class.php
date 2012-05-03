@@ -13,6 +13,7 @@ require_once("LDAP.class.php");
 require_once("UserInfo.class.php");
 require_once("SessionHandler.class.php");
 require_once("DataManager.class.php");
+define("USER_INFO_SESSION_VARIABLE", "UserInfo");
 
 /**
  * Handles the storage and retrieval of user info and authentication for a session.
