@@ -45,6 +45,9 @@ if ($postHandler->get("token") !== $userSession->getPostToken())
 	$scriptUrls->redirectTo("index.php", array("page" => $location));
 }
 
+/**
+ * Checks the source page of the POST and handles the data accordingly.
+ */
 switch ($source)
 {
 	case "add_location":
